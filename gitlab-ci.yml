@@ -1,0 +1,46 @@
+
+
+variables:
+  GIT_CLEAN_FLAGS: none
+
+stages:
+  - build
+  - test
+
+cache:
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - .npm/
+
+docker-build:
+  image: registry.nexdev.net:5050/docker/docker-engine/docker:20.10.7
+  tags:
+    - docker-automation-test
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:   
+     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  when: manual
+
+
+smoketest:
+  image: git3.nexdev.net:5050/l1/ui-automation/ui-automation-tests:main
+  stage: test
+  tags:
+    - docker-automation-test
+  before_script:
+  script:
+    - npm run test
+
+  artifacts:
+    paths:
+      - playwright-report
+      - screenshots
+    when: always
+    expire_in: 1 day
