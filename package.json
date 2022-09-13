@@ -4,7 +4,7 @@
     "type": "module",
     "scripts": {
         "pretest": "rimraf screenshots",
-        "test": "npx playwright test",
+        "test": "playwright test",
         "report": "npx playwright show-report"
     },
     "devDependencies": {
