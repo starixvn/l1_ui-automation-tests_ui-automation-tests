@@ -37,6 +37,7 @@ smoketest:
   before_script:
   script:
     - npm run test
+  when: manual
 
   artifacts:
     paths:
