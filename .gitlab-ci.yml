@@ -30,7 +30,7 @@ docker-build:
 
 
 smoketest:
-  image: git3.nexdev.net:5050/l1/ui-automation/ui-automation-tests:main
+  image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests:main
   stage: test
   tags:
     - docker-automation-test
