@@ -7,5 +7,5 @@ COPY tests /app/tests
 COPY playwright.config.ts .
 COPY package.json .
 
-RUN npx playwright install
 RUN npm install
+RUN npx playwright install
