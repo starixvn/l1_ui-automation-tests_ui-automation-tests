@@ -1,0 +1,14 @@
+{
+    "name": "ui-aumation-tests",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "pretest": "rimraf screenshots",
+        "test": "npx playwright test",
+        "report": "npx playwright show-report"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.25.2",
+        "rimraf": "^3.0.2"
+    }
+}
