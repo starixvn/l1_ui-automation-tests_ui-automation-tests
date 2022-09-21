@@ -5,6 +5,7 @@
     "scripts": {
         "pretest": "rimraf screenshots",
         "test": "playwright test",
+        "update-snapshots": "playwright test --update-snapshots",
         "report": "npx playwright show-report"
     },
     "devDependencies": {

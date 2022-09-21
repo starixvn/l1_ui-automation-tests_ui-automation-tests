@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
         timeout: 5000,
     },
     /* Run tests in files in parallel */
-    fullyParallel: true,
+    fullyParallel: false,
     reporter: "html",
     use: {
         actionTimeout: 0,
@@ -27,22 +27,18 @@ const config: PlaywrightTestConfig = {
             width: 1280,
             height: 720,
         },
+        screenshot: "only-on-failure",
     },
 
     /* Configure projects for major browsers */
     projects: [
         {
-            name: "chromium",
+            name: "Smoke",
+            testMatch: /.*smoke.spec.ts/,
             use: {
                 ...devices["Desktop Chrome"],
             },
         },
-        // {
-        //   name: 'Mobile Safari',
-        //   use: {
-        //     ...devices['iPhone 12'],
-        //   },
-        // },
     ],
 
     /* Folder for test artifacts such as screenshots, videos, traces, etc. */
