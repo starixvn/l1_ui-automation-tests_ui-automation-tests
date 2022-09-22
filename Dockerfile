@@ -7,5 +7,5 @@ COPY tests /app/tests
 COPY playwright.config.ts .
 COPY package.json .
 
-RUN npm install
-RUN npx playwright install
+RUN npm install \
+ && npx playwright install chromium
