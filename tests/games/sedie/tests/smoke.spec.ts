@@ -16,6 +16,10 @@ test.describe("Sedie Smoke Tests", () => {
         await browser.close();
     });
 
+    test.beforeEach(async ({}, testInfo) => {
+        testInfo.snapshotPath = (name: string) => `${testInfo.file}-snapshots/${name}`;
+    });
+
     test("dealer should be displayed", async () => {
         // Arrange
 
@@ -46,9 +50,11 @@ test.describe("Sedie Smoke Tests", () => {
 
         // Act
         await game.clickToChoice("even");
+        const endBet = await game.waitForEndBet();
         const ownbetSnapshot = await game.captureOwnbet("even");
 
         // Assert
+        expect(endBet).not.toBeNull();
         expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name, { maxDiffPixelRatio: 0.06 });
     });
 });

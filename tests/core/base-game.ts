@@ -48,6 +48,10 @@ export class BaseGame {
         await this.page.waitForTimeout(wholeRound - placingBets);
     }
 
+    async waitForEndBet(): Promise<string> {
+        return await waitForMessage(this.gameSocket, GameEvent.EndBet, this.gameConfiguration.name);
+    }
+
     async waitForTimeout(time: number) {
         await this.page.waitForTimeout(time);
     }
@@ -71,7 +75,8 @@ export class BaseGame {
     async clickToChoice(choice: string) {
         const locatorName = `${choice}Choice`;
 
-        await this.locators[locatorName].click(this.page);
-        await this.waitForTimeout(500);
+        if (this.locators[locatorName]) {
+            await this.locators[locatorName].click(this.page);
+        }
     }
 }
