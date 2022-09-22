@@ -8,7 +8,7 @@ import { waitForMessage } from "./../_shared/socket-helpers.ts";
 import { GameEvent } from "./../_shared/events.ts";
 
 export class BaseGame {
-    readonly LobbyTimeout: number = 15000;
+    readonly LobbyTimeout: number = 20000;
 
     readonly page: Page;
     readonly locators: Array<ImageLocator>;

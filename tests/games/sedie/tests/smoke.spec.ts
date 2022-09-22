@@ -40,7 +40,7 @@ test.describe("Sedie Smoke Tests", () => {
         const evenChoice = await game.captureChoice("even");
 
         // Assert
-        expect(evenChoice.image).toMatchSnapshot(evenChoice.name);
+        expect(evenChoice.image).toMatchSnapshot(evenChoice.name, { maxDiffPixelRatio: 0.06 });
     });
 
     test("player could bet on even", async () => {
