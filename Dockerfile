@@ -8,4 +8,4 @@ COPY playwright.config.ts .
 COPY package.json .
 
 RUN npm install \
- && PLAYWRIGHT_BROWSERS_PATH=$HOME/pw-browsers npx playwright@1.24 install chromium
+ && npx playwright@1.24 install chromium
