@@ -10,7 +10,7 @@
         "create-test-image": "docker rmi test-playwright-docker:latest & docker build -t test-playwright-docker ."
     },
     "devDependencies": {
-        "@playwright/test": "^1.25.2",
-        "rimraf": "^3.0.2"
+        "@playwright/test": "1.24.0",
+        "rimraf": "3.0.2"
     }
 }
