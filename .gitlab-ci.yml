@@ -14,9 +14,6 @@ cache:
   paths:
     - .npm/
 
-before_script:
-  - npm ci --cache .npm --prefer-offline
-
 docker-build:
   image: registry.nexdev.net:5050/docker/docker-engine/docker:20.10.7
   tags:
