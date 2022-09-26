@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { imageType, formatScreenshotFile, formatName } from "./../_shared/screenshot-helpers.ts";
+import { imageType, formatScreenshotFile, formatName } from "./../_shared/screenshot-helpers";
 
 export class ImageLocator {
     x: number;

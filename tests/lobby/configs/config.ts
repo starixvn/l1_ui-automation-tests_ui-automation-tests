@@ -1,5 +1,5 @@
-import { local } from "./config.local.ts";
-import { local as local2 } from "./config.local2.ts";
+import { local } from "./config.local";
+import { local as local2 } from "./config.local2";
 
 export const configs = {
     local: { ...local },

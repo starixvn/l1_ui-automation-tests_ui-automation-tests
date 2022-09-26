@@ -1,4 +1,4 @@
-import { ImageLocator } from "../../../core/base-image-locator.ts";
+import { ImageLocator } from "../../../core/base-image-locator";
 
 export const SedieLocators = {
     dealer: new ImageLocator("dealer", 579, 44, 140, 156),

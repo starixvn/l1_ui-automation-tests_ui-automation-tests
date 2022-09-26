@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { SedieLocators } from "./../locators/sedie-locators.ts";
-import { SedieConfigs } from "./../sedie-configs.ts";
-import { BaseGame } from "./../../../core/base-game.ts";
+import { SedieLocators } from "./../locators/sedie-locators";
+import { SedieConfigs } from "./../sedie-configs";
+import { BaseGame } from "./../../../core/base-game";
 
 test.describe("Sedie Smoke Tests", () => {
     let game: BaseGame;

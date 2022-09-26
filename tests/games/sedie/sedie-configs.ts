@@ -1,4 +1,4 @@
-import { GameConfiguration } from "../../core/game-configuration.ts";
+import { GameConfiguration } from "../../core/game-configuration";
 export const SedieConfigs: GameConfiguration = {
     id: 2,
     name: "SeDie",

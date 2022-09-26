@@ -1,11 +1,11 @@
 import type { Page } from "@playwright/test";
 import type { WebSocket as PlaywrightWs } from "playwright-core";
-import { ImageLocator } from "./base-image-locator.ts";
-import { GameConfiguration } from "./game-configuration.ts";
-import { getLoginUrl } from "./../lobby/lobby.ts";
+import { ImageLocator } from "./base-image-locator";
+import { GameConfiguration } from "./game-configuration";
+import { getLoginUrl } from "./../lobby/lobby";
 
-import { waitForMessage } from "./../_shared/socket-helpers.ts";
-import { GameEvent } from "./../_shared/events.ts";
+import { waitForMessage } from "./../_shared/socket-helpers";
+import { GameEvent } from "./../_shared/events";
 
 export class BaseGame {
     readonly LobbyTimeout: number = 20000;

@@ -1,5 +1,5 @@
-import { LobbyLocator } from "./locators/index.ts";
-import { configs } from "./configs/config.ts";
+import { LobbyLocator } from "./locators/index";
+import { configs } from "./configs/config";
 
 import { chromium } from "@playwright/test";
 

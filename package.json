@@ -1,12 +1,12 @@
 {
     "name": "ui-aumation-tests",
     "version": "1.0.0",
-    "type": "module",
     "scripts": {
         "pretest": "rimraf screenshots",
         "test": "playwright test",
         "update-snapshots": "playwright test --update-snapshots",
-        "report": "npx playwright show-report"
+        "report": "npx playwright show-report",
+        "create-test-image": "docker rmi test-playwright-docker:latest & docker build -t test-playwright-docker ."
     },
     "devDependencies": {
         "@playwright/test": "^1.25.2",
