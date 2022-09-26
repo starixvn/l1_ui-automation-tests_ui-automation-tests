@@ -35,9 +35,12 @@ smoketest:
   image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests:main
   stage: test
   tags:
-    - docker-automation-test
+    - docker-automation-test  
   script:
-    - npm run test
+    - npm run test  
+  after_script:
+    - cd /
+    - du -hs ./ms-playwright/*
   when: manual
 
   artifacts:
