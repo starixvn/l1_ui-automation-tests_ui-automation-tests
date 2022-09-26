@@ -36,11 +36,12 @@ smoketest:
   stage: test
   tags:
     - docker-automation-test  
+  before_script:
+    - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright/
   script:
     - npm run test  
   after_script:
-    - cd /
-    - du -hs ./ms-playwright/*
+    - du -hs /ms-playwright/*
   when: manual
 
   artifacts:
