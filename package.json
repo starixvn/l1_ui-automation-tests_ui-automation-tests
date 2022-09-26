@@ -4,7 +4,7 @@
     "scripts": {
         "pretest": "rimraf screenshots",
         "test": "playwright test",
-        "ci-test": "PLAYWRIGHT_BROWSERS_PATH=/ms-playwright/chromium-1024 npx playwright test",
+        "ci-test": "PLAYWRIGHT_BROWSERS_PATH=/ms-playwright npx playwright test",
         "update-snapshots": "playwright test --update-snapshots",
         "report": "npx playwright show-report",
         "create-test-image": "docker rmi test-playwright-docker:latest & docker build -t test-playwright-docker ."
