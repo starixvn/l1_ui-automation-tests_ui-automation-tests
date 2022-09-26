@@ -36,10 +36,8 @@ smoketest:
   stage: test
   tags:
     - docker-automation-test  
-  before_script:
-    - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright/chromium-1024
   script:
-    - npm run test  
+    - npm run ci-test  
   after_script:
     - du -hs /ms-playwright/*
   when: manual
