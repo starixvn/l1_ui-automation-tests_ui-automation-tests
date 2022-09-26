@@ -1,9 +1,9 @@
 import type { WebSocket as PlaywrightWs } from "playwright-core";
 
-export async function waitForMessage(socket: PlaywrightWs, key: string, gameName: string) {
-    let resolve: (payload: unknown) => void;
+export async function waitForMessage(socket: PlaywrightWs, key: string, gameName: string): Promise<string> {
+    let resolve: (payload: any) => any;
 
-    const promise = new Promise((_resolve) => {
+    const promise = new Promise<any>((_resolve) => {
         resolve = _resolve;
     });
 
@@ -19,9 +19,14 @@ export async function waitForMessage(socket: PlaywrightWs, key: string, gameName
     return promise;
 }
 
-export function parseSocketPayload(gameName: string, payload: string): any {
+export function parseSocketPayload(gameName: string, payload: string): SocketPayload {
     const packetType = `42/user/${gameName.toLowerCase()},`;
     const jsonMessage = JSON.parse(payload.replace(packetType, ""));
 
-    return { event: jsonMessage[0] ?? "", message: jsonMessage[1] ?? "" };
+    return { eventName: jsonMessage[0] ?? "", message: jsonMessage[1] ?? "" };
 }
+
+export type SocketPayload = {
+    eventName: string;
+    message: string;
+};

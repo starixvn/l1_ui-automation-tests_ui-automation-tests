@@ -43,7 +43,7 @@ export class BaseGame {
     }
 
     async waitUntilPlaceBet() {
-        const { wholeRound, placingBets } = this.gameConfiguration;
+        const { wholeRound, placingBets } = this.gameConfiguration.durations;
         await this.waitUntilNextRound();
         await this.page.waitForTimeout(wholeRound - placingBets);
     }
