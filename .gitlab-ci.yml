@@ -37,7 +37,7 @@ smoketest:
   tags:
     - docker-automation-test  
   before_script:
-    - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright/
+    - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright/chromium-1024
   script:
     - npm run test  
   after_script:
