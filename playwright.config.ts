@@ -12,9 +12,9 @@ import { devices } from "@playwright/test";
  */
 const config: PlaywrightTestConfig = {
     testDir: "./tests",
-    timeout: 30 * 1000,
+    timeout: 60 * 1000,
     expect: {
-        timeout: 5000,
+        timeout: 10 * 1000,
     },
     /* Run tests in files in parallel */
     fullyParallel: false,
@@ -28,6 +28,12 @@ const config: PlaywrightTestConfig = {
             height: 720,
         },
         screenshot: "only-on-failure",
+        launchOptions: {
+            // force GPU hardware acceleration (even in headless mode)
+            // without hardware acceleration, our tests will be much slower
+            args: ["--use-gl=egl"],
+            channel: "chrome",
+        },
     },
 
     /* Configure projects for major browsers */

@@ -10,7 +10,7 @@ export const getLoginUrl = async (gameId: number = 2): Promise<string> => {
     //TODO should load by env since different env will have different way to get login URL
     const env = process.env.npm_config_env ?? "local";
     const memberId = configs[env].gameAccounts[gameId][0]; //TODO could use chance pickone
-    const memberSiteLink = `${configs[env].memberSite}?obCustId=${memberId}`;
+    const memberSiteLink = `${configs[env].memberSite}?obCustId=${memberId}&balance=20000`;
 
     await page.goto(memberSiteLink);
 
