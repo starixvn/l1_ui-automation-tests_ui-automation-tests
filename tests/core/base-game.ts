@@ -8,7 +8,7 @@ import { waitForMessage } from "./../_shared/socket-helpers";
 import { GameEvent } from "./../_shared/events";
 
 export class BaseGame {
-    readonly LobbyTimeout: number = 30000;
+    readonly LobbyTimeout: number = 40000;
 
     readonly page: Page;
     readonly locators: Array<ImageLocator>;
