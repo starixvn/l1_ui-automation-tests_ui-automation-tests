@@ -32,7 +32,6 @@ const config: PlaywrightTestConfig = {
             // force GPU hardware acceleration (even in headless mode)
             // without hardware acceleration, our tests will be much slower
             args: ["--use-gl=egl"],
-            channel: "chrome",
         },
     },
 
