@@ -35,7 +35,7 @@ smoketest:
   image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests:main
   stage: test
   tags:
-    - smoke-test
+    - power-docker-test-runner
   script:
     - npm run test  
   after_script:
