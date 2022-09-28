@@ -18,7 +18,10 @@ const config: PlaywrightTestConfig = {
     },
     /* Run tests in files in parallel */
     fullyParallel: false,
-    reporter: "html",
+    reporter: [
+        ["html", { open: "never" }],
+        ["junit", { outputFile: "playwright-report/results.xml" }],
+    ],
     use: {
         actionTimeout: 0,
         trace: "on-first-retry",

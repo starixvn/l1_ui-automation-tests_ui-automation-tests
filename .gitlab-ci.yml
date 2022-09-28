@@ -47,5 +47,8 @@ smoketest:
       - playwright-report
       - screenshots
       - test-results
+    reports:
+      junit: playwright-report/results.xml
     when: always
     expire_in: 1 day
+
