@@ -3,4 +3,5 @@ export enum GameEvent {
     Settlement = "finish",
     SignedIn = "signed",
     EndBet = "endBet",
+    WinStatus = "status",
 }

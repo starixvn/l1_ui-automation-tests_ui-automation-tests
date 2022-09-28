@@ -1,5 +1,6 @@
 import type { PlaywrightTestConfig } from "@playwright/test";
 import { devices } from "@playwright/test";
+import { GameMapper } from "./game-mapper";
 
 /**
  * Read environment variables from file.
@@ -10,18 +11,18 @@ import { devices } from "@playwright/test";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+const gameId = process.env.npm_config_game ?? "3";
+const game = GameMapper[gameId];
+
 const config: PlaywrightTestConfig = {
     testDir: "./tests",
-    timeout: 60 * 1000,
+    timeout: 120 * 1000,
     expect: {
         timeout: 10 * 1000,
     },
     /* Run tests in files in parallel */
     fullyParallel: false,
-    reporter: [
-        ["html", { open: "never" }],
-        ["junit", { outputFile: "playwright-report/results.xml" }],
-    ],
+    reporter: [["html", { open: "never" }]],
     use: {
         actionTimeout: 0,
         trace: "on-first-retry",
@@ -40,9 +41,16 @@ const config: PlaywrightTestConfig = {
 
     /* Configure projects for major browsers */
     projects: [
+        // {
+        //     name: "Smoke",
+        //     testMatch: /.*smoke.spec.ts/,
+        //     use: {
+        //         ...devices["Desktop Chrome"],
+        //     },
+        // },
         {
-            name: "Smoke",
-            testMatch: /.*smoke.spec.ts/,
+            name: "Smoke_CI",
+            testMatch: [`${game}.smoke.spec.ts`],
             use: {
                 ...devices["Desktop Chrome"],
             },

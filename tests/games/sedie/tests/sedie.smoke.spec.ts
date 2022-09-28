@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { SedieLocators } from "./../locators/sedie-locators";
-import { SedieConfigs } from "./../sedie-configs";
-import { BaseGame } from "./../../../core/base-game";
+import { SedieLocators } from "../locators/sedie-locators";
+import { SedieConfigs } from "../sedie-configs";
+import { BaseGame } from "../../../core/base-game";
 
 test.describe("Sedie Smoke Tests", () => {
     let game: BaseGame;
@@ -30,7 +30,7 @@ test.describe("Sedie Smoke Tests", () => {
         expect(dealerSnapshot.image).toMatchSnapshot(dealerSnapshot.name);
     });
 
-    test("bet choices should be displayed", async () => {
+    test("bet choices should be displayed on table", async () => {
         // Arrange
         test.setTimeout(SedieConfigs.maxTimeout);
         await game.waitUntilNextRound();
@@ -43,7 +43,7 @@ test.describe("Sedie Smoke Tests", () => {
         expect(evenChoice.image).toMatchSnapshot(evenChoice.name, { maxDiffPixelRatio: 0.06 });
     });
 
-    test("player could bet on even", async () => {
+    test("player able to place a bet", async () => {
         // Arrange
         test.setTimeout(SedieConfigs.maxTimeout);
         await game.waitUntilPlaceBet();
@@ -56,5 +56,22 @@ test.describe("Sedie Smoke Tests", () => {
         // Assert
         expect(endBet).not.toBeNull();
         expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name, { maxDiffPixelRatio: 0.06 });
+    });
+
+    test.only("balance of player should be updated after settlement", async () => {
+        // Arrange
+        const choice = "even";
+        test.setTimeout(SedieConfigs.maxTimeout);
+        await game.waitUntilPlaceBet();
+
+        // Act
+        await game.clickToChoice(choice);
+        await game.waitForEndBet();
+        const playerBalance = await game.locator("playerBalance")?.snapshot(game.page);
+        const results = await game.waitForSettlement();
+        await game.waitForTimeout(5000);
+
+        // Assert
+        expect(results).not.toBeNull();
     });
 });

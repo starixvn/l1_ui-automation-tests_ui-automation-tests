@@ -1,6 +1,6 @@
 import type { WebSocket as PlaywrightWs } from "playwright-core";
 
-export async function waitForMessage(socket: PlaywrightWs, key: string, gameName: string): Promise<string> {
+export async function waitForMessage(socket: PlaywrightWs, key: string, gameName: string): Promise<any> {
     let resolve: (payload: any) => any;
 
     const promise = new Promise<any>((_resolve) => {
@@ -28,5 +28,5 @@ export function parseSocketPayload(gameName: string, payload: string): SocketPay
 
 export type SocketPayload = {
     eventName: string;
-    message: string;
+    message: any;
 };

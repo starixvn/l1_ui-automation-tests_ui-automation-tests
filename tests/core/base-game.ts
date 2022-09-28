@@ -34,11 +34,11 @@ export class BaseGame {
         await this.page.waitForTimeout(this.LobbyTimeout);
     }
 
-    async waitForMessage(message: string): Promise<string> {
+    async waitForMessage(message: string): Promise<any> {
         return await waitForMessage(this.gameSocket, message, this.gameConfiguration.name);
     }
 
-    async waitUntilNextRound(): Promise<string> {
+    async waitUntilNextRound(): Promise<any> {
         return await waitForMessage(this.gameSocket, GameEvent.StartRound, this.gameConfiguration.name);
     }
 
@@ -48,8 +48,12 @@ export class BaseGame {
         await this.page.waitForTimeout(wholeRound - placingBets);
     }
 
-    async waitForEndBet(): Promise<string> {
+    async waitForEndBet(): Promise<any> {
         return await waitForMessage(this.gameSocket, GameEvent.EndBet, this.gameConfiguration.name);
+    }
+
+    async waitForSettlement(): Promise<any> {
+        return await waitForMessage(this.gameSocket, GameEvent.Settlement, this.gameConfiguration.name);
     }
 
     async waitForTimeout(time: number) {
@@ -57,26 +61,31 @@ export class BaseGame {
     }
 
     async captureDealer(): Promise<any> {
-        return this.locators["dealer"] ? await this.locators["dealer"].snapshot(this.page) : Promise.resolve(null);
+        const locator = this.locator(`dealer`);
+
+        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
     }
 
     async captureChoice(choice: string): Promise<any> {
-        const locatorName = `${choice}Choice`;
+        const locator = this.locator(`${choice}Choice`);
 
-        return this.locators[locatorName] ? await this.locators[locatorName].snapshot(this.page) : Promise.resolve(null);
+        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
     }
 
     async captureOwnbet(choice: string): Promise<any> {
-        const locatorName = `${choice}Ownbet`;
-
-        return this.locators[locatorName] ? await this.locators[locatorName].snapshot(this.page) : Promise.resolve(null);
+        const locator = this.locator(`${choice}Ownbet`);
+        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
     }
 
     async clickToChoice(choice: string) {
-        const locatorName = `${choice}Choice`;
+        const locator = this.locator(`${choice}Choice`);
 
-        if (this.locators[locatorName]) {
-            await this.locators[locatorName].click(this.page);
+        if (locator) {
+            await locator.click(this.page);
         }
+    }
+
+    locator(name: string): ImageLocator | undefined {
+        return this.locators.find((x) => x.name === name);
     }
 }
