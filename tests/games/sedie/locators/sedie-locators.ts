@@ -7,5 +7,5 @@ export const SedieLocators = [
     new ImageLocator("playerBalance", 192, 644, 125, 23),
     new ImageLocator("hamburgerMenu", 24, 146, 51, 56),
     new ImageLocator("historyMenu", 21, 346, 52, 42),
-    new ImageLocator("historyPopup", 57, 56, 1177, 163),
+    new ImageLocator("historyPopup", 465, 70, 609, 186),
 ];

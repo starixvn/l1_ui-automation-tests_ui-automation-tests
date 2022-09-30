@@ -64,14 +64,13 @@ test.describe("Sedie Smoke Tests", () => {
 
     test("AND player could open history popup", async () => {
         // Arrange
-        const eventMessage = await game.openHistory();
+        const historyPayload = await game.openHistory();
 
         // Act
         const historySnapshot = await game.captureHistory();
 
         // Assert
-        expect(eventMessage.history.betLogs).not.toBeNull();
-        expect(eventMessage.history.betLogs.length).toBeGreaterThan(0);
+        expect(historyPayload.history.betLogs.length).toBeGreaterThan(0);
         expect(historySnapshot.image).toMatchSnapshot(historySnapshot.name, { maxDiffPixelRatio: 0.06 });
     });
 });
