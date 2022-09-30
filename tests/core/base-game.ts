@@ -4,7 +4,7 @@ import { ImageLocator } from "./base-image-locator";
 import { GameConfiguration } from "./game-configuration";
 import { getLoginUrl } from "./../lobby/lobby";
 
-import { waitForMessage } from "./../_shared/socket-helpers";
+import { waitForMessage, parseSocketPayload } from "./../_shared/socket-helpers";
 import { GameEvent } from "./../_shared/events";
 
 export class BaseGame {
@@ -15,11 +15,13 @@ export class BaseGame {
     readonly gameConfiguration: GameConfiguration;
 
     gameSocket: PlaywrightWs;
+    capturedEvents: any;
 
     constructor(page: Page, locators: Array<ImageLocator>, gameConfiguration: GameConfiguration) {
         this.page = page;
         this.locators = locators;
         this.gameConfiguration = gameConfiguration;
+        this.capturedEvents = {};
     }
 
     async login() {
@@ -27,11 +29,32 @@ export class BaseGame {
         this.page.on("websocket", async (ws) => {
             if (ws.url().includes(this.gameConfiguration.name.toLowerCase())) {
                 this.gameSocket = ws;
+
+                ws.on("framereceived", async (msg: any) => {
+                    const { payload } = msg ?? "";
+
+                    Object.keys(this.capturedEvents)?.forEach((event) => {
+                        if (payload.includes(event)) {
+                            this.capturedEvents[event] = parseSocketPayload(this.gameConfiguration.name, payload).message;
+                        }
+                    });
+                });
             }
         });
 
         await this.page.goto(loginUrl);
         await this.page.waitForTimeout(this.LobbyTimeout);
+    }
+
+    attachSocketAndCaptureEvent(event: string) {
+        this.capturedEvents[event] = "";
+    }
+
+    latestCaptureEvent(event: string): any | undefined {
+        const message = this.capturedEvents[event];
+        delete this.capturedEvents[event];
+
+        return message;
     }
 
     async waitForMessage(message: string): Promise<any> {
@@ -77,6 +100,11 @@ export class BaseGame {
         return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
     }
 
+    async captureHistory(): Promise<any> {
+        const locator = this.locator(`historyPopup`);
+        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
+    }
+
     async clickToChoice(choice: string) {
         const locator = this.locator(`${choice}Choice`);
 
@@ -87,5 +115,19 @@ export class BaseGame {
 
     locator(name: string): ImageLocator | undefined {
         return this.locators.find((x) => x.name === name);
+    }
+
+    async openHistory(): Promise<any> {
+        this.attachSocketAndCaptureEvent(GameEvent.History);
+
+        if (this.locator("hamburgerMenu")) {
+            await this.locator("hamburgerMenu")?.click(this.page);
+            await this.waitForTimeout(500);
+        }
+
+        await this.locator("historyMenu")?.click(this.page);
+        await this.waitForTimeout(500);
+
+        return this.latestCaptureEvent(GameEvent.History);
     }
 }

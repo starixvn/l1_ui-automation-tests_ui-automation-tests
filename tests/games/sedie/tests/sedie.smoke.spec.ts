@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { SedieLocators } from "../locators/sedie-locators";
 import { SedieConfigs } from "../sedie-configs";
 import { BaseGame } from "../../../core/base-game";
+import { GameEvent } from "../../../_shared/events";
 
 test.describe("Sedie Smoke Tests", () => {
     let game: BaseGame;
@@ -20,7 +21,7 @@ test.describe("Sedie Smoke Tests", () => {
         testInfo.snapshotPath = (name: string) => `${testInfo.file}-snapshots/${name}`;
     });
 
-    test("dealer should be displayed", async () => {
+    test("GIVEN dealer are displayed", async () => {
         // Arrange
 
         // Act
@@ -30,7 +31,7 @@ test.describe("Sedie Smoke Tests", () => {
         expect(dealerSnapshot.image).toMatchSnapshot(dealerSnapshot.name);
     });
 
-    test("bet choices should be displayed on table", async () => {
+    test("AND bet choices should be displayed on table", async () => {
         // Arrange
         test.setTimeout(SedieConfigs.maxTimeout);
         await game.waitUntilNextRound();
@@ -43,7 +44,7 @@ test.describe("Sedie Smoke Tests", () => {
         expect(evenChoice.image).toMatchSnapshot(evenChoice.name, { maxDiffPixelRatio: 0.06 });
     });
 
-    test("player able to place a bet", async () => {
+    test("THEN player able to place a bet", async () => {
         // Arrange
         test.setTimeout(SedieConfigs.maxTimeout);
         await game.waitUntilPlaceBet();
@@ -52,26 +53,25 @@ test.describe("Sedie Smoke Tests", () => {
         await game.clickToChoice("even");
         const endBet = await game.waitForEndBet();
         const ownbetSnapshot = await game.captureOwnbet("even");
+        const message = await game.waitForSettlement();
 
         // Assert
         expect(endBet).not.toBeNull();
+        expect(message.finish.settlementResult).not.toBeNull();
+        expect(message.resultHash).not.toBeNull();
         expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name, { maxDiffPixelRatio: 0.06 });
     });
 
-    test.only("balance of player should be updated after settlement", async () => {
+    test("AND player could open history popup", async () => {
         // Arrange
-        const choice = "even";
-        test.setTimeout(SedieConfigs.maxTimeout);
-        await game.waitUntilPlaceBet();
+        const eventMessage = await game.openHistory();
 
         // Act
-        await game.clickToChoice(choice);
-        await game.waitForEndBet();
-        const playerBalance = await game.locator("playerBalance")?.snapshot(game.page);
-        const results = await game.waitForSettlement();
-        await game.waitForTimeout(5000);
+        const historySnapshot = await game.captureHistory();
 
         // Assert
-        expect(results).not.toBeNull();
+        expect(eventMessage.history.betLogs).not.toBeNull();
+        expect(eventMessage.history.betLogs.length).toBeGreaterThan(0);
+        expect(historySnapshot.image).toMatchSnapshot(historySnapshot.name, { maxDiffPixelRatio: 0.06 });
     });
 });
