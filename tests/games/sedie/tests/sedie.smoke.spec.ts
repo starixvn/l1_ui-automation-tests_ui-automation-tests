@@ -41,7 +41,7 @@ test.describe("Sedie Smoke Tests", () => {
         const evenChoice = await game.captureChoice("even");
 
         // Assert
-        expect(evenChoice.image).toMatchSnapshot(evenChoice.name, { maxDiffPixelRatio: 0.06 });
+        expect(evenChoice.image).toMatchSnapshot(evenChoice.name);
     });
 
     test("THEN player able to place a bet", async () => {
@@ -59,7 +59,25 @@ test.describe("Sedie Smoke Tests", () => {
         expect(endBet).not.toBeNull();
         expect(message.finish.settlementResult).not.toBeNull();
         expect(message.resultHash).not.toBeNull();
-        expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name, { maxDiffPixelRatio: 0.06 });
+        expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name);
+    });
+
+    test.only("THEN player should get error when they hedge their bets", async () => {
+        // Arrange
+        test.setTimeout(SedieConfigs.maxTimeout);
+        await game.waitUntilPlaceBet();
+
+        // Act
+        await game.clickToChoice("even");
+        await game.waitForEndBet();
+
+        await game.clickToChoice("odd");
+        await game.waitForEndBet();
+
+        const error = await game.locator("errorMessage")?.snapshot(game.page);
+
+        // Assert
+        expect(error.image).toMatchSnapshot(error.name, { maxDiffPixelRatio: 0.06 });
     });
 
     test("AND player could open history popup", async () => {
@@ -71,6 +89,6 @@ test.describe("Sedie Smoke Tests", () => {
 
         // Assert
         expect(historyPayload.history.betLogs.length).toBeGreaterThan(0);
-        expect(historySnapshot.image).toMatchSnapshot(historySnapshot.name, { maxDiffPixelRatio: 0.06 });
+        expect(historySnapshot.image).toMatchSnapshot(historySnapshot.name);
     });
 });
