@@ -1,16 +1,17 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./../../../core/base-fixture";
 import { SedieLocators } from "../locators/sedie-locators";
 import { SedieConfigs } from "../sedie-configs";
 import { BaseGame } from "../../../core/base-game";
 import { GameEvent } from "../../../_shared/events";
 
+test.use({ gameConfigurations: SedieConfigs });
+test.use({ locators: SedieLocators });
+
 test.describe("Sedie Smoke Tests", () => {
     let game: BaseGame;
 
-    test.beforeAll(async ({ browser }) => {
-        const page = await browser.newPage();
-        game = new BaseGame(page, SedieLocators, SedieConfigs);
-        await game.login();
+    test.beforeAll(async ({ baseGame }) => {
+        game = baseGame;
     });
 
     test.afterAll(async ({ browser }) => {
