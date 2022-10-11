@@ -14,14 +14,6 @@ test.describe("Sedie Smoke Tests", () => {
         game = baseGame;
     });
 
-    test.afterAll(async ({ browser }) => {
-        await browser.close();
-    });
-
-    test.beforeEach(async ({}, testInfo) => {
-        testInfo.snapshotPath = (name: string) => `${testInfo.file}-snapshots/${name}`;
-    });
-
     test("GIVEN dealer are displayed", async () => {
         // Arrange
 
@@ -63,7 +55,7 @@ test.describe("Sedie Smoke Tests", () => {
         expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name);
     });
 
-    test.only("THEN player should get error when they hedge their bets", async () => {
+    test("THEN player should get error when they hedge their bets", async () => {
         // Arrange
         test.setTimeout(SedieConfigs.maxTimeout);
         await game.waitUntilPlaceBet();

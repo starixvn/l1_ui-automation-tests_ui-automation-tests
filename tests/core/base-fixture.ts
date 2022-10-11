@@ -24,4 +24,12 @@ export const test = base.extend<BaseFixtures>({
     },
 });
 
+test.beforeEach(async ({}, testInfo) => {
+    testInfo.snapshotPath = (name: string) => `${testInfo.file}-snapshots/${name}`;
+});
+
+test.afterAll(async ({ browser }) => {
+    await browser.close();
+});
+
 export { expect } from "@playwright/test";
