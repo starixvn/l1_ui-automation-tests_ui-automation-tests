@@ -8,7 +8,7 @@ export const SedieConfigs: GameConfiguration = {
         lockingBet: 5 * 1000,
         shakeThePlateDuration: 2 * 1000,
     },
-    choices: ["even", "odd", "red3", "red4", "white3", "white4", "red2"],
+    choices: ["odd", "even", "red2", "red3", "red4", "white3", "white4"],
     hedgeBetGroups: [["even", "odd"]],
     maxTimeout: 100 * 1000, // miliseconds,
     odds: {

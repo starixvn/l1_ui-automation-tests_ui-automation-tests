@@ -1,6 +1,7 @@
 import type { PlaywrightTestConfig } from "@playwright/test";
 import { devices } from "@playwright/test";
 import { GameMapper } from "./game-mapper";
+import * as customExpect from "./tests/core/expects/expect-settlement-options";
 
 /**
  * Read environment variables from file.

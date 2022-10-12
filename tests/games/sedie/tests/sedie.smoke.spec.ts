@@ -16,7 +16,7 @@ test.describe("Sedie Smoke Tests", () => {
         player = new BasePlayer(game);
     });
 
-    test("GIVEN dealer are displayed", async () => {
+    test("GIVEN player joined game and saw dealer", async () => {
         // Arrange
 
         // Act
@@ -44,7 +44,7 @@ test.describe("Sedie Smoke Tests", () => {
         expect(game.odds).toStrictEqual(SedieConfigs.odds);
     });
 
-    test("THEN player able to place a bet and settle", async () => {
+    test.only("THEN player able to place a bet and settle", async () => {
         // Arrange
         const betChoice = "even";
         test.setTimeout(SedieConfigs.maxTimeout);
@@ -57,17 +57,18 @@ test.describe("Sedie Smoke Tests", () => {
 
         // Assert
         expect(endBet).not.toBeNull();
+        expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name);
+
+        expect(message.resultHash).not.toBeNull();
+
         expect(message.finish.settlementResult).not.toBeNull();
+        expect(message.finish.settlementResult).toHaveApproriateBetOptions(SedieConfigs.choices);
 
         if (message.finish.settlementResult[betChoice]) {
             const winningByChoice = game.latestCaptureEvent(GameEvent.WinStatus);
 
-            expect(winningByChoice.status.win).toBeTruthy();
             expect(winningByChoice.status.bet).toBeGreaterThan(0);
         }
-
-        expect(message.resultHash).not.toBeNull();
-        expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name);
     });
 
     test("THEN player should get error when they hedge their bets", async () => {
