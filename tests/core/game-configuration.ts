@@ -10,4 +10,5 @@ export class GameConfiguration {
     choices: Array<string>;
     hedgeBetGroups: any;
     maxTimeout: number;
+    odds: any;
 }

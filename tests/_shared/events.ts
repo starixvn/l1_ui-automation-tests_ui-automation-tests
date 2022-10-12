@@ -5,4 +5,5 @@ export enum GameEvent {
     EndBet = "endBet",
     WinStatus = "status",
     History = "history",
+    GameConfig = "gameConfigs",
 }

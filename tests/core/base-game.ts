@@ -16,6 +16,7 @@ export class BaseGame {
 
     gameSocket: PlaywrightWs;
     capturedEvents: any;
+    odds: any = null;
 
     constructor(page: Page, locators: Array<ImageLocator>, gameConfiguration: GameConfiguration) {
         this.page = page;
@@ -32,6 +33,11 @@ export class BaseGame {
 
                 ws.on("framereceived", async (msg: any) => {
                     const { payload } = msg ?? "";
+
+                    if (this.odds === null && payload.includes(GameEvent.GameConfig)) {
+                        const ingameResponse = parseSocketPayload(this.gameConfiguration.name, payload).message;
+                        this.odds = ingameResponse.gameConfigs.odds;
+                    }
 
                     Object.keys(this.capturedEvents)?.forEach((event) => {
                         if (payload.includes(event)) {
@@ -117,9 +123,7 @@ export class BaseGame {
         return this.locators.find((x) => x.name === name);
     }
 
-    async openHistory(): Promise<any> {
-        this.attachSocketAndCaptureEvent(GameEvent.History);
-
+    async clickHistory(): Promise<void> {
         if (this.locator("hamburgerMenu")) {
             await this.locator("hamburgerMenu")?.click(this.page);
             await this.waitForTimeout(500);
@@ -127,7 +131,10 @@ export class BaseGame {
 
         await this.locator("historyMenu")?.click(this.page);
         await this.waitForTimeout(500);
+    }
 
-        return this.latestCaptureEvent(GameEvent.History);
+    async captureErrorMessage(): Promise<any> {
+        const locator = this.locator(`errorMessage`);
+        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
     }
 }

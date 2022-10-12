@@ -1,17 +1,19 @@
 import { test, expect } from "./../../../core/base-fixture";
 import { SedieLocators } from "../locators/sedie-locators";
 import { SedieConfigs } from "../sedie-configs";
-import { BaseGame } from "../../../core/base-game";
 import { GameEvent } from "../../../_shared/events";
+import { BasePlayer, BaseGame } from "../../../core";
 
 test.use({ gameConfigurations: SedieConfigs });
 test.use({ locators: SedieLocators });
 
 test.describe("Sedie Smoke Tests", () => {
     let game: BaseGame;
+    let player: BasePlayer;
 
     test.beforeAll(async ({ baseGame }) => {
         game = baseGame;
+        player = new BasePlayer(game);
     });
 
     test("GIVEN dealer are displayed", async () => {
@@ -37,20 +39,33 @@ test.describe("Sedie Smoke Tests", () => {
         expect(evenChoice.image).toMatchSnapshot(evenChoice.name);
     });
 
-    test("THEN player able to place a bet", async () => {
+    test("AND odds should be correct", async () => {
+        // Assert
+        expect(game.odds).toStrictEqual(SedieConfigs.odds);
+    });
+
+    test("THEN player able to place a bet and settle", async () => {
         // Arrange
+        const betChoice = "even";
         test.setTimeout(SedieConfigs.maxTimeout);
-        await game.waitUntilPlaceBet();
+        game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
         // Act
-        await game.clickToChoice("even");
-        const endBet = await game.waitForEndBet();
-        const ownbetSnapshot = await game.captureOwnbet("even");
+        const endBet = await player.placeBet(betChoice, 1);
+        const ownbetSnapshot = await game.captureOwnbet(betChoice);
         const message = await game.waitForSettlement();
 
         // Assert
         expect(endBet).not.toBeNull();
         expect(message.finish.settlementResult).not.toBeNull();
+
+        if (message.finish.settlementResult[betChoice]) {
+            const winningByChoice = game.latestCaptureEvent(GameEvent.WinStatus);
+
+            expect(winningByChoice.status.win).toBeTruthy();
+            expect(winningByChoice.status.bet).toBeGreaterThan(0);
+        }
+
         expect(message.resultHash).not.toBeNull();
         expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name);
     });
@@ -58,24 +73,18 @@ test.describe("Sedie Smoke Tests", () => {
     test("THEN player should get error when they hedge their bets", async () => {
         // Arrange
         test.setTimeout(SedieConfigs.maxTimeout);
-        await game.waitUntilPlaceBet();
 
         // Act
-        await game.clickToChoice("even");
-        await game.waitForEndBet();
-
-        await game.clickToChoice("odd");
-        await game.waitForEndBet();
-
-        const error = await game.locator("errorMessage")?.snapshot(game.page);
+        await player.placeHedgeBet(SedieConfigs.hedgeBetGroups[0], 1);
+        const error = await game.captureErrorMessage();
 
         // Assert
-        expect(error.image).toMatchSnapshot(error.name, { maxDiffPixelRatio: 0.06 });
+        expect(error.image).toMatchSnapshot(error.name);
     });
 
     test("AND player could open history popup", async () => {
         // Arrange
-        const historyPayload = await game.openHistory();
+        const historyPayload = await player.openHistory();
 
         // Act
         const historySnapshot = await game.captureHistory();

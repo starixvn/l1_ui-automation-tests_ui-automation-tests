@@ -10,5 +10,14 @@ export const SedieConfigs: GameConfiguration = {
     },
     choices: ["even", "odd", "red3", "red4", "white3", "white4", "red2"],
     hedgeBetGroups: [["even", "odd"]],
-    maxTimeout: 100 * 1000, // miliseconds
+    maxTimeout: 100 * 1000, // miliseconds,
+    odds: {
+        even: 1.97,
+        odd: 1.97,
+        red2: 2.5,
+        red3: 3.76,
+        red4: 14.5,
+        white3: 3.76,
+        white4: 14.5,
+    },
 };
