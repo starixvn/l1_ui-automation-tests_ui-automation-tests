@@ -8,21 +8,23 @@ export class BasePlayer {
         this.game = game;
     }
 
-    async placeBet(choice: string, amount: number = 1): Promise<any> {
-        await this.game.waitUntilPlaceBet();
-
-        await this.game.clickToChoice(choice);
-        return await this.game.waitForEndBet();
-    }
-
     async placeHedgeBet(hedgeChoices: string[], amount: number = 1): Promise<void> {
         await this.game.waitUntilPlaceBet();
 
-        await this.game.clickToChoice(hedgeChoices[0]);
-        await this.game.waitForEndBet();
+        await this.betOn(hedgeChoices[0], amount);
+        await this.betOn(hedgeChoices[1], amount);
+    }
 
-        await this.game.clickToChoice(hedgeChoices[1]);
-        await this.game.waitForEndBet();
+    async placeBet(choice: string, amount: number = 1): Promise<any> {
+        await this.game.waitUntilPlaceBet();
+
+        return await this.betOn(choice, amount);
+    }
+
+    async betOn(choice: string, amount: number = 1): Promise<any> {
+        await this.game.clickToChoice(choice);
+
+        return await this.game.waitForEndBet();
     }
 
     async openHistory(): Promise<any> {

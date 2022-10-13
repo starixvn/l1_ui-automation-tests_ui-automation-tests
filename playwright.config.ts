@@ -1,6 +1,5 @@
 import type { PlaywrightTestConfig } from "@playwright/test";
 import { devices } from "@playwright/test";
-import { GameMapper } from "./game-mapper";
 import * as customExpect from "./tests/core/expects/expect-settlement-options";
 
 /**
@@ -13,7 +12,6 @@ import * as customExpect from "./tests/core/expects/expect-settlement-options";
  * See https://playwright.dev/docs/test-configuration.
  */
 const gameId = process.env.npm_config_game ?? "3";
-const game = GameMapper[gameId];
 
 const config: PlaywrightTestConfig = {
     testDir: "./tests",
@@ -45,16 +43,9 @@ const config: PlaywrightTestConfig = {
 
     /* Configure projects for major browsers */
     projects: [
-        // {
-        //     name: "Smoke",
-        //     testMatch: /.*smoke.spec.ts/,
-        //     use: {
-        //         ...devices["Desktop Chrome"],
-        //     },
-        // },
         {
             name: "Smoke_CI",
-            testMatch: [`${game}.smoke.spec.ts`],
+            testMatch: `**/${gameId}-*/tests/*.smoke.spec.ts`,
             use: {
                 ...devices["Desktop Chrome"],
             },

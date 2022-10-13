@@ -1,4 +1,4 @@
-export const local = {
+export default {
     memberSite: "https://gamelobby-simulator.lumigame.com/signin",
     gameAccounts: {
         2: ["21031988"],

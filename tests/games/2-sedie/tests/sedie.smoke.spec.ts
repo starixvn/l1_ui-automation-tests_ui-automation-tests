@@ -1,4 +1,4 @@
-import { test, expect } from "./../../../core/base-fixture";
+import { test, expect } from "../../../core/base-fixture";
 import { SedieLocators } from "../locators/sedie-locators";
 import { SedieConfigs } from "../sedie-configs";
 import { GameEvent } from "../../../_shared/events";
@@ -51,18 +51,16 @@ test.describe("Sedie Smoke Tests", () => {
         game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
         // Act
-        const endBet = await player.placeBet(betChoice, 1);
+        const placeBetResponse = await player.placeBet(betChoice, 1);
         const ownbetSnapshot = await game.captureOwnbet(betChoice);
         const message = await game.waitForSettlement();
 
         // Assert
-        expect(endBet).not.toBeNull();
+        expect(placeBetResponse.endBet).toBe(1);
         expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name);
 
         expect(message.resultHash).not.toBeNull();
-
-        expect(message.finish.settlementResult).not.toBeNull();
-        expect(message.finish.settlementResult).toHaveApproriateBetOptions(SedieConfigs.choices);
+        expect(message?.finish?.settlementResult).toHaveApproriateBetOptions(SedieConfigs.choices);
 
         if (message.finish.settlementResult[betChoice]) {
             const winningByChoice = game.latestCaptureEvent(GameEvent.WinStatus);

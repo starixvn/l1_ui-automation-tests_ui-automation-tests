@@ -2,7 +2,7 @@ import { expect } from "@playwright/test";
 
 expect.extend({
     toHaveApproriateBetOptions(settlementResult: any, betOptions: Array<string>) {
-        const settlementBetOptions = Object.keys(settlementResult);
+        const settlementBetOptions = settlementResult ? Object.keys(settlementResult) : [];
 
         if (settlementBetOptions.toString() === betOptions.toString()) {
             return {
