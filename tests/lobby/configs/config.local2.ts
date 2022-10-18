@@ -1,8 +1,9 @@
 export default {
     memberSite: "https://l1-glbs2.lumigame.com/signin",
+    lobbyDomain: "https://l1-glbs2.lumigame.com/",
+    lobbyTimeout: 20000, // 20s
+    enabledMsgPack: false,
     gameAccounts: {
         2: ["21031988"],
     },
-    lobbyDomain: "https://l1-glbs2.lumigame.com/",
-    lobbyTimeout: 20000, // 20s
 };

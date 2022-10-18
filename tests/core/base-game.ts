@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import type { WebSocket as PlaywrightWs } from "playwright-core";
 import { ImageLocator } from "./base-image-locator";
 import { GameConfiguration } from "./game-configuration";
-import { getLoginUrl } from "./../lobby/lobby";
+import { getLoginUrl, getConfig } from "./../lobby/lobby";
 
 import { waitForMessage, parseSocketPayload } from "./../_shared/socket-helpers";
 import { GameEvent } from "./../_shared/events";
@@ -14,6 +14,7 @@ export class BaseGame {
     readonly locators: Array<ImageLocator>;
     readonly gameConfiguration: GameConfiguration;
 
+    msgpack: boolean;
     gameSocket: PlaywrightWs;
     capturedEvents: any;
     odds: any = null;
@@ -27,6 +28,7 @@ export class BaseGame {
 
     async login() {
         const loginUrl = await getLoginUrl(this.gameConfiguration.id);
+        this.msgpack = getConfig().enabledMsgPack;
         this.page.on("websocket", async (ws) => {
             if (ws.url().includes(this.gameConfiguration.name.toLowerCase())) {
                 this.gameSocket = ws;
@@ -35,13 +37,13 @@ export class BaseGame {
                     const { payload } = msg ?? "";
 
                     if (this.odds === null && payload.includes(GameEvent.GameConfig)) {
-                        const ingameResponse = parseSocketPayload(this.gameConfiguration.name, payload).message;
+                        const ingameResponse = parseSocketPayload(this.gameConfiguration.name, payload, this.msgpack).message;
                         this.odds = ingameResponse.gameConfigs.odds;
                     }
 
                     Object.keys(this.capturedEvents)?.forEach((event) => {
                         if (payload.includes(event)) {
-                            this.capturedEvents[event] = parseSocketPayload(this.gameConfiguration.name, payload).message;
+                            this.capturedEvents[event] = parseSocketPayload(this.gameConfiguration.name, payload, this.msgpack).message;
                         }
                     });
                 });
@@ -64,11 +66,11 @@ export class BaseGame {
     }
 
     async waitForMessage(message: string): Promise<any> {
-        return await waitForMessage(this.gameSocket, message, this.gameConfiguration.name);
+        return await waitForMessage(this.gameSocket, message, this.gameConfiguration.name, this.msgpack);
     }
 
     async waitUntilNextRound(): Promise<any> {
-        return await waitForMessage(this.gameSocket, GameEvent.StartRound, this.gameConfiguration.name);
+        return await waitForMessage(this.gameSocket, GameEvent.StartRound, this.gameConfiguration.name, this.msgpack);
     }
 
     async waitUntilPlaceBet() {
@@ -78,11 +80,11 @@ export class BaseGame {
     }
 
     async waitForEndBet(): Promise<any> {
-        return await waitForMessage(this.gameSocket, GameEvent.EndBet, this.gameConfiguration.name);
+        return await waitForMessage(this.gameSocket, GameEvent.EndBet, this.gameConfiguration.name, this.msgpack);
     }
 
     async waitForSettlement(): Promise<any> {
-        return await waitForMessage(this.gameSocket, GameEvent.Settlement, this.gameConfiguration.name);
+        return await waitForMessage(this.gameSocket, GameEvent.Settlement, this.gameConfiguration.name, this.msgpack);
     }
 
     async waitForTimeout(time: number) {

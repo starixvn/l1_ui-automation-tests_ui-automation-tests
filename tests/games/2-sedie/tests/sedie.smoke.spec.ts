@@ -16,7 +16,7 @@ test.describe("Sedie Smoke Tests", () => {
         player = new BasePlayer(game);
     });
 
-    test("GIVEN player joined game and saw dealer", async () => {
+    test.only("GIVEN player joined game and saw dealer", async () => {
         // Arrange
 
         // Act
@@ -46,13 +46,13 @@ test.describe("Sedie Smoke Tests", () => {
 
     test("THEN player able to place a bet and settle", async () => {
         // Arrange
-        const betChoice = "even";
+        const bet = { choice: "even", amount: 1 };
         test.setTimeout(SedieConfigs.maxTimeout);
         game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
         // Act
-        const placeBetResponse = await player.placeBet(betChoice, 1);
-        const ownbetSnapshot = await game.captureOwnbet(betChoice);
+        const placeBetResponse = await player.placeBet(bet.choice, bet.amount);
+        const ownbetSnapshot = await game.captureOwnbet(bet.choice);
         const message = await game.waitForSettlement();
 
         // Assert
@@ -62,7 +62,7 @@ test.describe("Sedie Smoke Tests", () => {
         expect(message.resultHash).not.toBeNull();
         expect(message?.finish?.settlementResult).toHaveApproriateBetOptions(SedieConfigs.choices);
 
-        if (message.finish.settlementResult[betChoice]) {
+        if (message.finish.settlementResult[bet.choice]) {
             const winningByChoice = game.latestCaptureEvent(GameEvent.WinStatus);
 
             expect(winningByChoice.status.bet).toBeGreaterThan(0);
