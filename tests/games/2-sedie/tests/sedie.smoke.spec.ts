@@ -56,7 +56,7 @@ test.describe.serial("Sedie Smoke Tests", () => {
         const settledResults = await game.waitForSettlement();
 
         // Assert
-        expect(placeBetResponse.endBet).toBe(1);
+        expect(placeBetResponse.endBet).toBe(bet.amount);
         expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name);
         expect(settledResults.settlementResult).toMatchBetOptions(SedieConfigs.choices);
         expect(bet).toMatchWinning(settledResults);

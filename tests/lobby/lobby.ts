@@ -1,5 +1,5 @@
 import { LobbyLocator } from "./locators/index";
-import { configs } from "./configs/config";
+import { configs } from "./configs";
 
 import { chromium } from "@playwright/test";
 
