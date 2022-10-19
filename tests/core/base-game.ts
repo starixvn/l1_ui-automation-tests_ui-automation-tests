@@ -70,6 +70,8 @@ export class BaseGame {
     }
 
     async waitUntilNextRound(): Promise<any> {
+        this.capturedEvents[GameEvent.WinStatus] = "";
+
         return await waitForMessage(this.gameSocket, GameEvent.StartRound, this.gameConfiguration.name, this.msgpack);
     }
 
@@ -84,7 +86,16 @@ export class BaseGame {
     }
 
     async waitForSettlement(): Promise<any> {
-        return await waitForMessage(this.gameSocket, GameEvent.Settlement, this.gameConfiguration.name, this.msgpack);
+        const message = await waitForMessage(this.gameSocket, GameEvent.Settlement, this.gameConfiguration.name, this.msgpack);
+        const winningByChoice = this.latestCaptureEvent(GameEvent.WinStatus);
+
+        const settledResults = {
+            settlementResult: message?.finish?.settlementResult,
+            winAmount: winningByChoice?.status?.bet ?? 0,
+            odds: this.odds,
+        };
+
+        return settledResults;
     }
 
     async waitForTimeout(time: number) {

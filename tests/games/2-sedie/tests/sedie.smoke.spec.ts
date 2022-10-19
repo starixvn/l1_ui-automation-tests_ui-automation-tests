@@ -7,7 +7,7 @@ import { BasePlayer, BaseGame } from "../../../core";
 test.use({ gameConfigurations: SedieConfigs });
 test.use({ locators: SedieLocators });
 
-test.describe("Sedie Smoke Tests", () => {
+test.describe.serial("Sedie Smoke Tests", () => {
     let game: BaseGame;
     let player: BasePlayer;
 
@@ -16,7 +16,7 @@ test.describe("Sedie Smoke Tests", () => {
         player = new BasePlayer(game);
     });
 
-    test.only("GIVEN player joined game and saw dealer", async () => {
+    test("GIVEN player joined game and saw dealer", async () => {
         // Arrange
 
         // Act
@@ -44,7 +44,7 @@ test.describe("Sedie Smoke Tests", () => {
         expect(game.odds).toStrictEqual(SedieConfigs.odds);
     });
 
-    test("THEN player able to place a bet and settle", async () => {
+    test.only("THEN player able to place a bet and settle", async () => {
         // Arrange
         const bet = { choice: "even", amount: 1 };
         test.setTimeout(SedieConfigs.maxTimeout);
@@ -53,20 +53,13 @@ test.describe("Sedie Smoke Tests", () => {
         // Act
         const placeBetResponse = await player.placeBet(bet.choice, bet.amount);
         const ownbetSnapshot = await game.captureOwnbet(bet.choice);
-        const message = await game.waitForSettlement();
+        const settledResults = await game.waitForSettlement();
 
         // Assert
         expect(placeBetResponse.endBet).toBe(1);
         expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name);
-
-        expect(message.resultHash).not.toBeNull();
-        expect(message?.finish?.settlementResult).toHaveApproriateBetOptions(SedieConfigs.choices);
-
-        if (message.finish.settlementResult[bet.choice]) {
-            const winningByChoice = game.latestCaptureEvent(GameEvent.WinStatus);
-
-            expect(winningByChoice.status.bet).toBeGreaterThan(0);
-        }
+        expect(settledResults.settlementResult).toMatchBetOptions(SedieConfigs.choices);
+        expect(bet).toMatchWinning(settledResults);
     });
 
     test("THEN player should get error when they hedge their bets", async () => {
