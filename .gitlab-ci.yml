@@ -39,7 +39,7 @@ smoketest:
   tags:
     - power-docker-test-runner
   script:
-    - npm run test  
+    - npm run test --env=$ENV --game=$GAMEID
   after_script:
     - du -hs /ms-playwright/*
   when: manual
