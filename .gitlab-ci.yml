@@ -26,10 +26,11 @@ docker-build:
     - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  rules:   
+    - if: $CI_COMMIT_REF_NAME =~ /build-image/     
   script:   
      - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
      - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-  when: manual
 
 smoketest:
   image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests:main
