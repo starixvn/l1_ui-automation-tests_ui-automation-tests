@@ -44,7 +44,7 @@ test.describe.serial("Sedie Smoke Tests", () => {
         expect(game.odds).toStrictEqual(SedieConfigs.odds);
     });
 
-    test.only("THEN player able to place a bet and settle", async () => {
+    test("THEN player able to place a bet and settle", async () => {
         // Arrange
         const bet = { choice: "even", amount: 1 };
         test.setTimeout(SedieConfigs.maxTimeout);

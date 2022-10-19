@@ -18,7 +18,8 @@ expect.extend({
     },
 
     toMatchWinning(bet: any, settledResult: any) {
-        const expectedAmount = settledResult.settlementResult[bet.choice] ? bet.amount * settledResult.odds[bet.choice] : bet.amount;
+        const odds = settledResult.settlementResult[bet.choice] ? settledResult.odds[bet.choice] : 1;
+        const expectedAmount = bet.amount * odds;
 
         if (expectedAmount === settledResult.winAmount) {
             return {
