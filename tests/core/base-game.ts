@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import type { WebSocket as PlaywrightWs } from "playwright-core";
 import { ImageLocator } from "./base-image-locator";
 import { GameConfiguration } from "./game-configuration";
-import { getLoginUrl, getConfig } from "./../lobby/lobby";
+import { ssoToGame, getConfig } from "./../lobby/lobby";
 
 import { waitForMessage, parseSocketPayload } from "./../_shared/socket-helpers";
 import { GameEvent } from "./../_shared/events";
@@ -27,7 +27,7 @@ export class BaseGame {
     }
 
     async login() {
-        const loginUrl = await getLoginUrl(this.gameConfiguration.id);
+        await ssoToGame(this.page,this.gameConfiguration.id);
         this.msgpack = getConfig().enabledMsgPack;
         this.page.on("websocket", async (ws) => {
             if (ws.url().includes(this.gameConfiguration.name.toLowerCase())) {
@@ -49,8 +49,6 @@ export class BaseGame {
                 });
             }
         });
-
-        await this.page.goto(loginUrl);
         await this.page.waitForTimeout(this.LobbyTimeout);
     }
 
@@ -131,6 +129,18 @@ export class BaseGame {
             await locator.click(this.page);
         }
     }
+
+    async clickLocator(element: string) {
+        const locator = this.locator(element);
+        if (locator) {
+            await locator.click(this.page);
+        }else{
+            console.log('Missing locator');
+            
+        }
+        
+     }
+
 
     locator(name: string): ImageLocator | undefined {
         return this.locators.find((x) => x.name === name);

@@ -27,6 +27,14 @@ export class BasePlayer {
         return await this.game.waitForEndBet();
     }
 
+    async placeBetSelectStakeBoard(choice: string,btnaccept: string, amount: string = 'stake1'): Promise<any> {
+        await this.game.clickLocator(choice);
+        await this.game.clickLocator(amount);
+        await this.game.clickLocator(btnaccept);
+        await this.game.waitUntilPlaceBet();
+        return await this.game.waitForEndBet();
+    }
+
     async openHistory(): Promise<any> {
         this.game.attachSocketAndCaptureEvent(GameEvent.History);
 

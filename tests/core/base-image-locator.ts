@@ -8,7 +8,7 @@ export class ImageLocator {
     height: number;
     name: string;
 
-    constructor(name: string, x: number, y: number, width: number, height: number) {
+    constructor(name: string, x: number, y: number, width: number=0, height: number=0) {
         this.name = name;
         this.x = x;
         this.y = y;

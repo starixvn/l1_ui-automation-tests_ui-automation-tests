@@ -1,9 +1,15 @@
 export default {
-    memberSite: "https://l1-glbs2.lumigame.com/signin",
-    lobbyDomain: "https://l1-glbs2.lumigame.com/",
+    memberSite: "https://www.viva88.net/login888.aspx",
+    lobbyDomain: "/VendorGame/OpenSabaClub?GameID=",
     lobbyTimeout: 20000, // 20s
     enabledMsgPack: true,
     gameAccounts: {
-        2: ["123456789"],
+        1: ["supertestte120201002"],
+        2: ["supertestte120201002"],
     },
+    mapGameId:  {
+        1: 1612,
+        2: 1613,
+    },
+    getbalance: "https://proxy.sabagame.com/user/auth/balance",
 };

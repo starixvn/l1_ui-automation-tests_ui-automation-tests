@@ -19,7 +19,6 @@ export const test = base.extend<BaseFixtures>({
         const page = await browser.newPage();
         const game = new BaseGame(page, locators, gameConfigurations);
         await game.login();
-
         await use(game);
     },
 });
