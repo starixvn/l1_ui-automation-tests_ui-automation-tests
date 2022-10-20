@@ -21,12 +21,23 @@ export async function waitForMessage(socket: PlaywrightWs, key: string, gameName
 }
 
 export function parseSocketPayload(gameName: string, payload: string, msgpack: boolean = false): SocketPayload {
-    const decodedPayload = msgpack ? decode(payload) : payload;
+    if (msgpack) {
+        return parseMsgpack(payload);
+    }
 
     const packetType = `42/user/${gameName.toLowerCase()},`;
-    const jsonMessage = JSON.parse(decodedPayload.replace(packetType, ""));
+    const jsonMessage = JSON.parse(payload.replace(packetType, ""));
 
     return { eventName: jsonMessage[0] ?? "", message: jsonMessage[1] ?? "" };
+}
+
+export function parseMsgpack(payload: string): SocketPayload {
+    const { data } = decode(payload);
+
+    return {
+        eventName: data[0],
+        message: data[1],
+    };
 }
 
 export type SocketPayload = {
