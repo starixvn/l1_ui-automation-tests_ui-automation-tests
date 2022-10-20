@@ -46,18 +46,16 @@ test.describe.serial("Sedie Smoke Tests", () => {
 
     test("THEN player able to place a bet and settle", async () => {
         // Arrange
-        const bet = { choice: "even", amount: 1 };
         test.setTimeout(SedieConfigs.maxTimeout);
+        const bet = { choice: "even", amount: 1 };
         game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
         // Act
         const placeBetResponse = await player.placeBet(bet.choice, bet.amount);
-        const ownbetSnapshot = await game.captureOwnbet(bet.choice);
         const settledResults = await game.waitForSettlement();
 
         // Assert
         expect(placeBetResponse.endBet).toBe(bet.amount);
-        expect(ownbetSnapshot.image).toMatchSnapshot(ownbetSnapshot.name);
         expect(settledResults.settlementResult).toMatchBetOptions(SedieConfigs.choices);
         expect(bet).toMatchWinning(settledResults);
     });
