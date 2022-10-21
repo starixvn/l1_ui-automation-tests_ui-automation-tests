@@ -6,6 +6,9 @@ export const ssoToGame = async (page: Page, gameId: number = 2) => {
     const env = process.env.npm_config_env ?? "local";
     const config = configs[env]
     if (env.includes("local")) {
+        if (config.gameAccounts[gameId] == null) {
+            throw new Error(`Please setup testing account with game id ${gameId} first.`);
+        }
         const memberId = config.gameAccounts[gameId][0]; //TODO could use chance pickone
         const memberSiteLink = `${config.memberSite}?obCustId=${memberId}&balance=20000`;
         await page.goto(memberSiteLink);

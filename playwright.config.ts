@@ -11,7 +11,7 @@ import * as customExpect from "./tests/core/expects/expect-settlement-options";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const gameId = process.env.npm_config_game ?? "3";
+const gameId = process.env.npm_config_game ?? "22";
 
 const config: PlaywrightTestConfig = {
     testDir: "./tests",
