@@ -1,9 +1,15 @@
 export default {
-    memberSite: "https://l1-glbs2.lumigame.com/signin",
-    gameAccounts: {
-        2: ["123456789"],
-    },
-    lobbyDomain: "https://l1-glbs2.lumigame.com/",
+    memberSite: "http://qawer.viva88.com:5171",
+    lobbyDomain: "#ThirdPartyGame/vid=42&gid=",
     lobbyTimeout: 20000, // 20s
     enabledMsgPack: true,
+    gameAccounts: {
+        1: ["IT59Test789"],
+        2: ["IT55Test789"],
+    },
+    mapGameId:  {
+        1: 1612,
+        2: 1613,
+    },
+    getbalance: "https://l1uatproxy.sgamesuat.com/uat/user/auth/balance",
 };

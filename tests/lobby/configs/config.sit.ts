@@ -1,9 +1,15 @@
 export default {
-    memberSite: "https://l1-glbs2.lumigame.com/signin",
-    lobbyDomain: "https://l1-glbs2.lumigame.com/",
+    memberSite: "http://demo:one23@qawer.playthefun.com:5068/login",
+    lobbyDomain: "VendorGame/OpenSabaClub?GameID=",
     lobbyTimeout: 20000, // 20s
     enabledMsgPack: true,
     gameAccounts: {
-        2: ["123456789"],
+        1: ["supertestsaba70"],
+        2: ["supertestsaba66"],
     },
+    mapGameId:  {
+        1: 1612,
+        2: 1613,
+    },
+    getbalance: "https://l1sit.sgamesuat.com/sit/user/auth/balance",
 };
