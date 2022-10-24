@@ -27,10 +27,10 @@ export class BaseGame {
     }
 
     async login() {
-        await ssoToGame(this.page,this.gameConfiguration.id);
+        await ssoToGame(this.page, this.gameConfiguration.id);
         this.msgpack = getConfig().enabledMsgPack;
         this.page.on("websocket", async (ws) => {
-            if (ws.url().includes(this.gameConfiguration.name.toLowerCase())) {
+            if (ws.url().includes(this.gameConfiguration.socketName ?? this.gameConfiguration.name.toLowerCase())) {
                 this.gameSocket = ws;
 
                 ws.on("framereceived", async (msg: any) => {
@@ -134,13 +134,10 @@ export class BaseGame {
         const locator = this.locator(element);
         if (locator) {
             await locator.click(this.page);
-        }else{
-            console.log('Missing locator');
-            
+        } else {
+            console.log("Missing locator");
         }
-        
-     }
-
+    }
 
     locator(name: string): ImageLocator | undefined {
         return this.locators.find((x) => x.name === name);

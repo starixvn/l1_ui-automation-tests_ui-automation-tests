@@ -8,7 +8,12 @@ class VipSedieSmokeSpec extends TableGameBase {
      */
     constructor() {
         const smokeOptions: TableGameOptions = {
-            placeBetChoices: [VipSedieConfigs.choices[1]],
+            placeBetChoices: [
+                {
+                    choice: VipSedieConfigs.choices[1],
+                    amount: 10,
+                },
+            ],
             gameConfiguration: VipSedieConfigs,
             locators: VipSedieLocators,
             waitBetTimeout: 5000,
@@ -18,14 +23,10 @@ class VipSedieSmokeSpec extends TableGameBase {
         super(smokeOptions);
     }
 
-    //Remove this code below if you want to implement testing code.
+    //Remove or update these code below if you want use these test cases from base or add more test case code.
     protected override hedgeBetTests(): void {}
 
-    protected override inGameOddsTests(): void {}
-
     protected override ticketHistoryTests(): void {}
-
-    protected override inGameBetChoiceTests(): void {}
 
     protected override placeBetAndSettleTests(): void {}
 }

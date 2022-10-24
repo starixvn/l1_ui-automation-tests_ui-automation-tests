@@ -20,4 +20,5 @@ export const VipSedieConfigs: GameConfiguration = {
         white3: 3.76,
         white4: 14.5,
     },
+    socketName: "vsedie",
 };

@@ -5,7 +5,7 @@ export default {
     enabledMsgPack: false,
     gameAccounts: {
         2: ["222222"],
-        22: ["222222"],
+        22: ["222221"],
         1: ["21031988"],
     },
 };

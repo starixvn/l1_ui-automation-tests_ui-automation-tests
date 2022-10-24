@@ -11,4 +11,5 @@ export class GameConfiguration {
     hedgeBetGroups: any;
     maxTimeout: number;
     odds: any;
+    socketName?: string;
 }

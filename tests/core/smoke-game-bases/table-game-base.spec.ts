@@ -5,11 +5,16 @@ import { BasePlayer, BaseGame } from "..";
 import { GameConfiguration } from "../game-configuration";
 import { ImageLocator } from "../base-image-locator";
 
+export type Bet = {
+    choice: string;
+    amount: number;
+};
+
 export interface TableGameOptions {
     gameConfiguration: GameConfiguration;
     locators: ImageLocator[];
     waitBetTimeout: number;
-    placeBetChoices: string[];
+    placeBetChoices: Bet[];
     snapshotFolderPath: string;
 }
 
@@ -38,7 +43,7 @@ export class TableGameBase {
 
             for (const placeBetChoice of this.options.placeBetChoices) {
                 // Act
-                const betChoice = await this.game.captureChoice(placeBetChoice);
+                const betChoice = await this.game.captureChoice(placeBetChoice.choice);
 
                 // Assert
                 expect(betChoice.image).toMatchSnapshot(betChoice.name);
@@ -57,7 +62,7 @@ export class TableGameBase {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            const bet = { choice: this.options.placeBetChoices[0], amount: 1 };
+            const bet = this.options.placeBetChoices[0];
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act
