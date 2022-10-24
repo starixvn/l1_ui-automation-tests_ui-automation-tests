@@ -13,8 +13,8 @@ export type Bet = {
 export interface TableGameOptions {
     gameConfiguration: GameConfiguration;
     locators: ImageLocator[];
-    waitBetTimeout: number;
-    placeBetChoices: Bet[];
+    waitBetTimeout?: number;
+    placeBetChoices?: Bet[];
     snapshotFolderPath: string;
 }
 
@@ -22,7 +22,15 @@ export class TableGameBase {
     game: BaseGame;
     player: BasePlayer;
 
-    constructor(private options: TableGameOptions) {}
+    constructor(private options: TableGameOptions) {
+        this.options.waitBetTimeout = this.options.waitBetTimeout ?? 5000;
+        this.options.placeBetChoices = this.options.placeBetChoices ?? [
+            {
+                choice: this.options.gameConfiguration.choices[1],
+                amount: 1,
+            },
+        ];
+    }
 
     protected inGameDealerTests() {
         test("GIVEN player joined game and saw dealer", async () => {

@@ -16,7 +16,6 @@ class VipSedieSmokeSpec extends TableGameBase {
             ],
             gameConfiguration: VipSedieConfigs,
             locators: VipSedieLocators,
-            waitBetTimeout: 5000,
             snapshotFolderPath: __filename,
         };
 
