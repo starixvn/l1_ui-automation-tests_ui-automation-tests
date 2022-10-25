@@ -5,12 +5,14 @@ import { BasePlayer, BaseGame } from "..";
 import { GameConfiguration } from "../game-configuration";
 import { ImageLocator } from "../base-image-locator";
 
+const defaultWaitBetTimeout = 5000;
+
 export type Bet = {
     choice: string;
     amount: number;
 };
 
-export interface TableGameOptions {
+export interface ITableGameOptions {
     gameConfiguration: GameConfiguration;
     locators: ImageLocator[];
     waitBetTimeout?: number;
@@ -22,14 +24,20 @@ export class TableGameBase {
     game: BaseGame;
     player: BasePlayer;
 
-    constructor(private options: TableGameOptions) {
-        this.options.waitBetTimeout = this.options.waitBetTimeout ?? 5000;
-        this.options.placeBetChoices = this.options.placeBetChoices ?? [
-            {
-                choice: this.options.gameConfiguration.choices[1],
-                amount: 1,
-            },
-        ];
+    constructor(private options: ITableGameOptions) {
+        this.options.waitBetTimeout = this.options.waitBetTimeout ?? defaultWaitBetTimeout;
+        this.options.placeBetChoices = this.getPlaceBetBetChoices();
+    }
+
+    protected getPlaceBetBetChoices(): Bet[] {
+        return (
+            this.options.placeBetChoices ?? [
+                {
+                    choice: this.options.gameConfiguration.choices[1],
+                    amount: 1,
+                },
+            ]
+        );
     }
 
     protected inGameDealerTests() {
@@ -49,7 +57,7 @@ export class TableGameBase {
             await this.game.waitUntilNextRound();
             await this.game.waitForTimeout(this.options.waitBetTimeout);
 
-            for (const placeBetChoice of this.options.placeBetChoices) {
+            for (const placeBetChoice of this.getPlaceBetBetChoices()) {
                 // Act
                 const betChoice = await this.game.captureChoice(placeBetChoice.choice);
 
@@ -70,7 +78,7 @@ export class TableGameBase {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            const bet = this.options.placeBetChoices[0];
+            const bet = this.getPlaceBetBetChoices()[0];
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act

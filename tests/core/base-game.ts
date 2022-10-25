@@ -96,7 +96,7 @@ export class BaseGame {
         return settledResults;
     }
 
-    async waitForTimeout(time: number) {
+    async waitForTimeout(time: number = 5000) {
         await this.page.waitForTimeout(time);
     }
 
