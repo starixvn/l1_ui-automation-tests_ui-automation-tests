@@ -1,13 +1,13 @@
 import { VipSedieLocators } from "../locators/vip-sedie-locators";
 import { VipSedieConfigs } from "../vip-sedie-configs";
-import { TableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
+import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
 
 class VipSedieSmokeSpec extends TableGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: TableGameOptions = {
+        const smokeOptions: ITableGameOptions = {
             placeBetChoices: [
                 {
                     choice: VipSedieConfigs.choices[1],

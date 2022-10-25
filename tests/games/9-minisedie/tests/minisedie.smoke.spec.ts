@@ -17,8 +17,6 @@ class MultiMiniSedieSmokeSpec extends MultiMiniGameBase {
 
         super(smokeOptions);
     }
-
 }
-
 
 new MultiMiniSedieSmokeSpec().start();
