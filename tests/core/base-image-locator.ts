@@ -1,6 +1,18 @@
 import type { Page } from "@playwright/test";
 import { imageType, formatScreenshotFile, formatName } from "./../_shared/screenshot-helpers";
 
+export type ImageLocatorRect = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+};
+
+export type ImageSnapshot = {
+    name: string;
+    image: Buffer;
+};
+
 export class ImageLocator {
     x: number;
     y: number;
@@ -8,7 +20,7 @@ export class ImageLocator {
     height: number;
     name: string;
 
-    constructor(name: string, x: number, y: number, width: number=0, height: number=0) {
+    constructor(name: string, x: number, y: number, width: number = 0, height: number = 0) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -16,11 +28,11 @@ export class ImageLocator {
         this.height = height;
     }
 
-    rect(): any {
+    rect(): ImageLocatorRect {
         return { x: this.x, y: this.y, width: this.width, height: this.height };
     }
 
-    async snapshot(page: Page): Promise<any> {
+    async snapshot(page: Page): Promise<ImageSnapshot> {
         const imageName = formatName(this.name);
         const image = await page.screenshot({
             clip: this.rect(),
