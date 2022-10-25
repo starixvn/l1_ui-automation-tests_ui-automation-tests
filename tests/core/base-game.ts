@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import type { WebSocket as PlaywrightWs } from "playwright-core";
-import { ImageLocator } from "./base-image-locator";
+import { ImageLocator, ImageSnapshot } from "./base-image-locator";
 import { GameConfiguration } from "./game-configuration";
 import { ssoToGame, getConfig } from "./../lobby/lobby";
 
@@ -73,7 +73,7 @@ export class BaseGame {
         return await waitForMessage(this.gameSocket, GameEvent.StartRound, this.gameConfiguration.name, this.msgpack);
     }
 
-    async waitUntilPlaceBet() {
+    async waitUntilPlaceBet(): Promise<void> {
         const { wholeRound, placingBets } = this.gameConfiguration.durations;
         await this.waitUntilNextRound();
         await this.page.waitForTimeout(wholeRound - placingBets);
@@ -96,33 +96,34 @@ export class BaseGame {
         return settledResults;
     }
 
-    async waitForTimeout(time: number = 5000) {
+    async waitForTimeout(time: number = 5000): Promise<void> {
         await this.page.waitForTimeout(time);
     }
 
-    async captureDealer(): Promise<any> {
+    async captureDealer(): Promise<ImageSnapshot> {
         const locator = this.locator(`dealer`);
 
-        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
+        return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
     }
 
-    async captureChoice(choice: string): Promise<any> {
+    async captureChoice(choice: string): Promise<ImageSnapshot> {
         const locator = this.locator(`${choice}Choice`);
 
-        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
+        return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
     }
 
-    async captureOwnbet(choice: string): Promise<any> {
+    async captureOwnbet(choice: string): Promise<ImageSnapshot> {
         const locator = this.locator(`${choice}Ownbet`);
-        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
+
+        return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
     }
 
-    async captureHistory(): Promise<any> {
+    async captureHistory(): Promise<ImageSnapshot> {
         const locator = this.locator(`historyPopup`);
-        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
+        return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
     }
 
-    async clickToChoice(choice: string) {
+    async clickToChoice(choice: string): Promise<void> {
         const locator = this.locator(`${choice}Choice`);
 
         if (locator) {
@@ -130,12 +131,10 @@ export class BaseGame {
         }
     }
 
-    async clickLocator(element: string) {
+    async clickLocator(element: string): Promise<void> {
         const locator = this.locator(element);
         if (locator) {
             await locator.click(this.page);
-        } else {
-            console.log("Missing locator");
         }
     }
 
@@ -153,8 +152,9 @@ export class BaseGame {
         await this.waitForTimeout(500);
     }
 
-    async captureErrorMessage(): Promise<any> {
+    async captureErrorMessage(): Promise<ImageSnapshot> {
         const locator = this.locator(`errorMessage`);
-        return locator ? await locator.snapshot(this.page) : Promise.resolve(null);
+
+        return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
     }
 }
