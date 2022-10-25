@@ -4,7 +4,7 @@ import { Page } from "@playwright/test";
 
 export const ssoToGame = async (page: Page, gameId: number = 2) => {
     const env = process.env.npm_config_env ?? "local";
-    const config = configs[env]
+    const config = configs[env];
     if (env.includes("local")) {
         if (config.gameAccounts[gameId] == null) {
             throw new Error(`Please setup testing account with game id ${gameId} first.`);
@@ -15,9 +15,8 @@ export const ssoToGame = async (page: Page, gameId: number = 2) => {
         const ssoLink = (await page.locator(LobbyLocator.ssoLink).textContent()) ?? "";
         await page.goto(`${ssoLink.replace("gameId=0", `gameId=${gameId}`)}`);
     }
-
     //UAT, SIT , PROD
-     else{
+    else {
         await ssofrommemberSite(page, config, env, gameId);
     }
 };
@@ -37,10 +36,9 @@ export const ssofrommemberSite = async (page: Page, config: any, env: string, ga
     if (env == "prod") {
         await loginPROD(page, config, gameId);
     }
-    if (env =="sit") {
+    if (env == "sit") {
         await loginSIT(page, config, gameId);
     }
-    await page.waitForTimeout(1000);
     const sabalink =
         env == "prod"
             ? page
@@ -49,15 +47,15 @@ export const ssofrommemberSite = async (page: Page, config: any, env: string, ga
                   .replace(/\/[Ss]ports/g, "") +
               config.lobbyDomain +
               config.mapGameId[gameId]
-            : page.url().toString().replace("demo:one23@", "").replace("Sports/","") + config.lobbyDomain + config.mapGameId[gameId];
-    await page.goto(sabalink)
+            : page.url().toString().replace("demo:one23@", "").replace("Sports/", "") + config.lobbyDomain + config.mapGameId[gameId];
+    await page.goto(sabalink);
     await page.waitForLoadState();
 
     // select group currency
     if (env == "prod") {
         await page.selectOption('xpath=//*/select[@id="group"]', { value: "61b048d27e6d8f000145357f" });
+        await page.click('xpath=//input[@value="Submit"]');
     }
-    await page.click('xpath=//input[@value="Submit"]');
     await page.waitForLoadState();
     await page.waitForTimeout(15000);
 };
@@ -83,6 +81,6 @@ export const loginSIT = async (page: Page, config: any, gameId: number) => {
     await page.fill("id=txtPW", "1234aaAA");
     await page.click("//button");
     await page.waitForLoadState();
-    await page.click("//div[contains(@class,'c-dropdown--lang')]")
-    await page.click("//div[contains(text(),'Tiếng Việt')]")
+    await page.click("//div[contains(@class,'c-dropdown--lang')]");
+    await page.click("//div[contains(text(),'Tiếng Việt')]");
 };
