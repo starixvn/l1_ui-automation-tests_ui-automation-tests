@@ -2,85 +2,105 @@ import { LobbyLocator } from "./locators/index";
 import { configs } from "./configs/config";
 import { Page } from "@playwright/test";
 
-export const ssoToGame = async (page: Page, gameId: number = 2) => {
-    const env = process.env.npm_config_env ?? "local";
-    const config = configs[env];
+export enum Environment {
+    LOCAL = "local",
+    LOCAL1 = "local1",
+    LOCAL2 = "local2",
+    LOCAL3 = "local3",
+    SIT = "sit",
+    UAT = "uat",
+    PROD = "prod",
+}
+
+export const ssoToGame = async (page: Page, gameId: number = 2): Promise<void> => {
+    const env = process.env.npm_config_env ?? Environment.LOCAL;
+    const config = getConfig();
+
+    if (config.gameAccounts[gameId] == null) {
+        throw new Error(`Missing test account for game id ${gameId}!!!`);
+    }
+
     if (env.includes("local")) {
-        if (config.gameAccounts[gameId] == null) {
-            throw new Error(`Please setup testing account with game id ${gameId} first.`);
-        }
         const memberId = config.gameAccounts[gameId][0]; //TODO could use chance pickone
         const memberSiteLink = `${config.memberSite}?obCustId=${memberId}&balance=20000`;
         await page.goto(memberSiteLink);
         const ssoLink = (await page.locator(LobbyLocator.ssoLink).textContent()) ?? "";
+
         await page.goto(`${ssoLink.replace("gameId=0", `gameId=${gameId}`)}`);
-    }
-    //UAT, SIT , PROD
-    else {
-        await ssofrommemberSite(page, config, env, gameId);
+    } else {
+        await loginMemberSite(page, config, env, gameId);
     }
 };
 
 export const getConfig = (): any => {
-    const env = process.env.npm_config_env ?? "local";
+    const env = process.env.npm_config_env ?? Environment.LOCAL;
+
     return configs[env];
 };
 
-export const ssofrommemberSite = async (page: Page, config: any, env: string, gameId: number) => {
+const loginMemberSite = async (page: Page, config: any, env: string, gameId: number) => {
     // Go to Membersite Url
     await page.goto(config.memberSite);
-    await page.waitForLoadState();
-    if (env == "uat") {
-        await loginUAT(page, config, gameId);
-    }
-    if (env == "prod") {
-        await loginPROD(page, config, gameId);
-    }
-    if (env == "sit") {
-        await loginSIT(page, config, gameId);
-    }
-    const sabalink =
-        env == "prod"
-            ? page
-                  .url()
-                  .toString()
-                  .replace(/\/[Ss]ports/g, "") +
-              config.lobbyDomain +
-              config.mapGameId[gameId]
-            : page.url().toString().replace("demo:one23@", "").replace("Sports/", "") + config.lobbyDomain + config.mapGameId[gameId];
-    await page.goto(sabalink);
-    await page.waitForLoadState();
+    await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
 
-    // select group currency
-    if (env == "prod") {
-        await page.selectOption('xpath=//*/select[@id="group"]', { value: "61b048d27e6d8f000145357f" });
-        await page.click('xpath=//input[@value="Submit"]');
+    switch (env) {
+        case Environment.UAT:
+            await loginUAT(page, config.gameAccounts[gameId][0]);
+            break;
+
+        case Environment.PROD:
+            await loginPROD(page, config.gameAccounts[gameId][0]);
+            break;
+
+        default:
+            await loginSIT(page, config.gameAccounts[gameId][0]);
     }
-    await page.waitForLoadState();
-    await page.waitForTimeout(15000);
+
+    await goToGameLobby(page, env, config, gameId);
+    await selectGroupCurrency(page, env);
 };
 
-export const loginUAT = async (page: Page, config: any, gameId: number) => {
+const formatGameLobbyUrl = (env: string, url: string, lobbyDomain: string, operatorGameType: number): string => {
+    const formattedLink = env === Environment.PROD ? url : url.replace("demo:one23@", "");
+
+    return `${formattedLink.replace(/\/[Ss]ports/g, "")}${lobbyDomain}${operatorGameType}`;
+};
+
+const selectGroupCurrency = async (page: Page, env: string) => {
+    if (env === Environment.PROD) {
+        await page.selectOption('xpath=//*/select[@id="group"]', { value: "61b048d27e6d8f000145357f" });
+    }
+
+        await page.click('xpath=//input[@value="Submit"]');
+    await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
+};
+
+const loginUAT = async (page: Page, accountId: string) => {
     await page.click("id=LoginDiv");
     await page.selectOption("id=Langid", { value: "vi-VN" });
-    await page.fill("id=Username", config.gameAccounts[gameId][0]);
+    await page.fill("id=Username", accountId);
     await page.fill("id=Password", "1234aaAA");
     await page.click("id=LoginBtn");
-    await page.waitForLoadState();
+    await page.waitForLoadState("domcontentloaded");
 };
 
-export const loginPROD = async (page: Page, config: any, gameId: number) => {
-    await page.fill("id=txtID", config.gameAccounts[gameId][0]);
+const loginPROD = async (page: Page, accountId: string) => {
+    await page.fill("id=txtID", accountId);
     await page.fill("id=txtPW", "1234aa");
     await page.click("//a[contains(@class,'btn btn')]");
-    await page.waitForLoadState();
+    await page.waitForLoadState("domcontentloaded");
 };
 
-export const loginSIT = async (page: Page, config: any, gameId: number) => {
-    await page.fill("id=txtID", config.gameAccounts[gameId][0]);
+const loginSIT = async (page: Page, accountId: string) => {
+    await page.fill("id=txtID", accountId);
     await page.fill("id=txtPW", "1234aaAA");
     await page.click("//button");
-    await page.waitForLoadState();
+    await page.waitForLoadState("domcontentloaded");
     await page.click("//div[contains(@class,'c-dropdown--lang')]");
     await page.click("//div[contains(text(),'Tiếng Việt')]");
+};
+
+const goToGameLobby = async (page: Page, env: string, config: any, gameId: number) => {
+    await page.goto(formatGameLobbyUrl(env, page.url(), config.lobbyDomain, config.mapGameId[gameId]));
+    await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
 };
