@@ -7,9 +7,11 @@ export default {
         1: ["IT59Test789"],
         2: ["IT55Test789"],
     },
-    mapGameId:  {
+    mapGameId: {
         1: 1612,
         2: 1613,
     },
+    pwd: "1234aaAA",
+    groupCurrencyId: "61a5a48b7864f80001d3cb59",
     getbalance: "https://l1uatproxy.sgamesuat.com/uat/user/auth/balance",
 };

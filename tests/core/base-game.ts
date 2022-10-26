@@ -100,27 +100,26 @@ export class BaseGame {
         await this.page.waitForTimeout(time);
     }
 
-    async captureDealer(): Promise<ImageSnapshot> {
-        const locator = this.locator(`dealer`);
+    async capture(locatorName: string): Promise<ImageSnapshot> {
+        const locator = this.locator(locatorName);
 
         return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
+    }
+
+    async captureDealer(): Promise<ImageSnapshot> {
+        return this.capture("dealer");
     }
 
     async captureChoice(choice: string): Promise<ImageSnapshot> {
-        const locator = this.locator(`${choice}Choice`);
-
-        return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
+        return this.capture(`${choice}Choice`);
     }
 
     async captureOwnbet(choice: string): Promise<ImageSnapshot> {
-        const locator = this.locator(`${choice}Ownbet`);
-
-        return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
+        return this.capture(`${choice}Ownbet`);
     }
 
     async captureHistory(): Promise<ImageSnapshot> {
-        const locator = this.locator(`historyPopup`);
-        return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
+        return this.capture(`historyPopup`);
     }
 
     async clickToChoice(choice: string): Promise<void> {
@@ -153,8 +152,6 @@ export class BaseGame {
     }
 
     async captureErrorMessage(): Promise<ImageSnapshot> {
-        const locator = this.locator(`errorMessage`);
-
-        return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
+        return this.capture(`errorMessage`);
     }
 }

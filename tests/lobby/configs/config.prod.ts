@@ -7,9 +7,11 @@ export default {
         1: ["supertestte120201002"],
         2: ["supertestte120201002"],
     },
-    mapGameId:  {
+    mapGameId: {
         1: 1612,
         2: 1613,
     },
+    pwd: "1234aa",
+    groupCurrencyId: "61b048d27e6d8f000145357f",
     getbalance: "https://proxy.sabagame.com/user/auth/balance",
 };

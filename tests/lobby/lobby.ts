@@ -1,4 +1,4 @@
-import { LobbyLocator } from "./locators/index";
+import { LobbyLocator, SITLocator, UATLocator, PRODLocator, GroupCurrencyLocator } from "./locators/index";
 import { configs } from "./configs/config";
 import { Page } from "@playwright/test";
 
@@ -39,68 +39,68 @@ export const getConfig = (): any => {
 };
 
 const loginMemberSite = async (page: Page, config: any, env: string, gameId: number) => {
-    // Go to Membersite Url
+    const accountId = config.gameAccounts[gameId][0];
+
     await page.goto(config.memberSite);
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
 
     switch (env) {
         case Environment.UAT:
-            await loginUAT(page, config.gameAccounts[gameId][0]);
+            await loginUAT(page, accountId, config.pwd);
             break;
 
         case Environment.PROD:
-            await loginPROD(page, config.gameAccounts[gameId][0]);
+            await loginPROD(page, accountId, config.pwd);
             break;
 
         default:
-            await loginSIT(page, config.gameAccounts[gameId][0]);
+            await loginSIT(page, accountId, config.pwd);
     }
 
-    await goToGameLobby(page, env, config, gameId);
-    await selectGroupCurrency(page, env);
-};
+    await goToGameLobby(page, config, gameId);
 
-const formatGameLobbyUrl = (env: string, url: string, lobbyDomain: string, operatorGameType: number): string => {
-    const formattedLink = env === Environment.PROD ? url : url.replace("demo:one23@", "");
-
-    return `${formattedLink.replace(/\/[Ss]ports/g, "")}${lobbyDomain}${operatorGameType}`;
-};
-
-const selectGroupCurrency = async (page: Page, env: string) => {
-    if (env === Environment.PROD) {
-        await page.selectOption('xpath=//*/select[@id="group"]', { value: "61b048d27e6d8f000145357f" });
+    if (env !== Environment.SIT) {
+        await selectGroupCurrency(page, config.groupCurrencyId);
     }
+};
 
-    await page.click('xpath=//input[@value="Submit"]');
+const formatGameLobbyUrl = (url: string, lobbyDomain: string, operatorGameType: number): string => {
+    return `${url.replace(/\/[Ss]ports/g, "").replace("demo:one23@", "")}${lobbyDomain}${operatorGameType}`;
+};
+
+const selectGroupCurrency = async (page: Page, groupCurrencyId: string) => {
+    await page.selectOption(GroupCurrencyLocator.currencyGroupDropdown, { value: groupCurrencyId });
+    await page.click(GroupCurrencyLocator.submitButton);
+
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
 };
 
-const loginUAT = async (page: Page, accountId: string) => {
-    await page.click("id=LoginDiv");
-    await page.selectOption("id=Langid", { value: "vi-VN" });
-    await page.fill("id=Username", accountId);
-    await page.fill("id=Password", "1234aaAA");
-    await page.click("id=LoginBtn");
+const loginUAT = async (page: Page, accountId: string, pwd: string) => {
+    await page.click(UATLocator.loginDiv);
+    await page.selectOption(UATLocator.langDropdown, { value: UATLocator.vnLangOption });
+    await page.fill(UATLocator.memberIdInput, accountId);
+    await page.fill(UATLocator.pwdInput, pwd);
+    await page.click(UATLocator.loginButton);
+    await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
+};
+
+const loginPROD = async (page: Page, accountId: string, pwd: string) => {
+    await page.fill(PRODLocator.memberIdInput, accountId);
+    await page.fill(PRODLocator.pwdInput, pwd);
+    await page.click(PRODLocator.loginButton);
     await page.waitForLoadState("domcontentloaded");
 };
 
-const loginPROD = async (page: Page, accountId: string) => {
-    await page.fill("id=txtID", accountId);
-    await page.fill("id=txtPW", "1234aa");
-    await page.click("//a[contains(@class,'btn btn')]");
-    await page.waitForLoadState("domcontentloaded");
+const loginSIT = async (page: Page, accountId: string, pwd: string) => {
+    await page.fill(SITLocator.memberIdInput, accountId);
+    await page.fill(SITLocator.pwdInput, pwd);
+    await page.click(SITLocator.loginButton);
+    await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
+    await page.click(SITLocator.langDropdown);
+    await page.click(SITLocator.vnLangOption);
 };
 
-const loginSIT = async (page: Page, accountId: string) => {
-    await page.fill("id=txtID", accountId);
-    await page.fill("id=txtPW", "1234aaAA");
-    await page.click("//button");
-    await page.waitForLoadState("domcontentloaded");
-    await page.click("//div[contains(@class,'c-dropdown--lang')]");
-    await page.click("//div[contains(text(),'Tiếng Việt')]");
-};
-
-const goToGameLobby = async (page: Page, env: string, config: any, gameId: number) => {
-    await page.goto(formatGameLobbyUrl(env, page.url(), config.lobbyDomain, config.mapGameId[gameId]));
+const goToGameLobby = async (page: Page, config: any, gameId: number) => {
+    await page.goto(formatGameLobbyUrl(page.url(), config.lobbyDomain, config.mapGameId[gameId]));
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
 };
