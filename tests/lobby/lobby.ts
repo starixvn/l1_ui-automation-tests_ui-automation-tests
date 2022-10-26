@@ -71,7 +71,7 @@ const selectGroupCurrency = async (page: Page, env: string) => {
         await page.selectOption('xpath=//*/select[@id="group"]', { value: "61b048d27e6d8f000145357f" });
     }
 
-        await page.click('xpath=//input[@value="Submit"]');
+    await page.click('xpath=//input[@value="Submit"]');
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
 };
 
