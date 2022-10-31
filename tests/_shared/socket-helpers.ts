@@ -1,5 +1,6 @@
 import type { WebSocket as PlaywrightWs } from "playwright-core";
 import { decode } from "notepack.io";
+import { decodeJson } from "./socket-parser";
 
 export async function waitForMessage(socket: PlaywrightWs, key: string, gameName: string, msgpack: boolean = false): Promise<any> {
     let resolve: (payload: any) => any;
@@ -10,7 +11,7 @@ export async function waitForMessage(socket: PlaywrightWs, key: string, gameName
 
     socket.on("framereceived", async (msg: any) => {
         const { payload } = msg ?? "";
-        const jsonMsg = parseSocketPayload(gameName, payload, msgpack);
+        const jsonMsg = parseSocketPayload(payload, msgpack);
 
         if (payload.includes(key)) {
             resolve(jsonMsg.message);
@@ -20,15 +21,25 @@ export async function waitForMessage(socket: PlaywrightWs, key: string, gameName
     return promise;
 }
 
-export function parseSocketPayload(gameName: string, payload: string, msgpack: boolean = false): SocketPayload {
-    if (msgpack) {
-        return parseMsgpack(payload);
+export function parseSocketPayload(payload: string, msgpack: boolean = false): SocketPayload {
+    const packet = msgpack ? decode(payload) : decodeJson(payload);
+    const { data } = packet;
+
+    if (!data) {
+        return { eventName: "", message: "" };
     }
 
-    const packetType = `42/user/${gameName.toLowerCase()},`;
-    const jsonMessage = JSON.parse(payload.replace(packetType, ""));
+    if (data.length < 2) {
+        return {
+            eventName: data[0],
+            message: "",
+        };
+    }
 
-    return { eventName: jsonMessage[0] ?? "", message: jsonMessage[1] ?? "" };
+    return {
+        eventName: data[0],
+        message: data[1],
+    };
 }
 
 export function parseMsgpack(payload: string): SocketPayload {

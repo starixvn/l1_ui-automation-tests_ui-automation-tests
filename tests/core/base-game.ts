@@ -37,13 +37,13 @@ export class BaseGame {
                     const { payload } = msg ?? "";
 
                     if (this.odds === null && payload.includes(GameEvent.GameConfig)) {
-                        const ingameResponse = parseSocketPayload(this.gameConfiguration.name, payload, this.msgpack).message;
+                        const ingameResponse = parseSocketPayload(payload, this.msgpack).message;
                         this.odds = ingameResponse.gameConfigs.odds;
                     }
 
                     Object.keys(this.capturedEvents)?.forEach((event) => {
                         if (payload.includes(event)) {
-                            this.capturedEvents[event] = parseSocketPayload(this.gameConfiguration.name, payload, this.msgpack).message;
+                            this.capturedEvents[event] = parseSocketPayload(payload, this.msgpack).message;
                         }
                     });
                 });
