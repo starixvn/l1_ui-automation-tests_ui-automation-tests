@@ -24,27 +24,12 @@ export class BasePlayer {
     async betOn(choice: string, amount: number = 1): Promise<any> {
         await this.game.clickToChoice(choice);
 
+        if (this.game.gameConfiguration.betBoard) {
+            await this.game.clickStake(amount);
+            await this.game.clickSubmitBet();
+        }
+
         return await this.game.waitForEndBet();
-    }
-
-    async placeBetSelectChipBoard(choice: string, btnaccept: string, amount: number = 1): Promise<any> {
-        await this.game.waitUntilPlaceBet();
-        await this.selectChipBoard(choice, btnaccept, amount);
-        return await this.game.waitForEndBet();
-    }
-
-    async placeHedgeBetChipBoard(hedgeChoices: string[], btnaccept: string, amount: number = 1): Promise<void> {
-        await this.game.waitUntilPlaceBet();
-        await this.selectChipBoard(hedgeChoices[0], btnaccept, amount);
-        await this.game.waitForTimeout(1000);
-        await this.selectChipBoard(hedgeChoices[1], btnaccept, amount);
-        await this.game.waitForTimeout(1000);
-    }
-
-    async selectChipBoard(choice: string, btnaccept: string, amount: number = 1): Promise<any> {
-        await this.game.clickLocator(choice);
-        await this.game.clickLocator(`stake${amount}`);
-        await this.game.clickLocator(btnaccept);
     }
 
     async openHistory(): Promise<any> {

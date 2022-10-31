@@ -9,7 +9,6 @@ class TurboBigSmallSmokeSpec extends MiniGameBase {
     constructor() {
         const smokeOptions: MiniGameOptions = {
             placeBetChoices: [TurboBigSmallConfigs.choices[0]],
-            acceptbutton: "boardaccept",
             gameConfiguration: TurboBigSmallConfigs,
             locators: TurboBigSmallLocators,
             snapshotFolderPath: __filename,

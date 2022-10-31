@@ -12,4 +12,5 @@ export class GameConfiguration {
     maxTimeout: number;
     odds: any;
     socketName?: string;
+    betBoard?: boolean;
 }

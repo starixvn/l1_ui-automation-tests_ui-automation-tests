@@ -10,10 +10,11 @@ export const TurboBigSmallConfigs: GameConfiguration = {
     },
     choices: ["big", "small"],
     hedgeBetGroups: [["big", "small"]],
-    maxTimeout: 200 * 1000, // miliseconds,
+    maxTimeout: 200 * 1000, // miliseconds, should not over 2 * wholeRound
     odds: {
         big: 1.98,
         small: 1.98,
     },
     socketName: "turbobigsmall",
+    betBoard: true,
 };

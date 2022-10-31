@@ -7,7 +7,6 @@ import { ImageLocator } from "../base-image-locator";
 export interface MiniGameOptions {
     gameConfiguration: GameConfiguration;
     locators: ImageLocator[];
-    acceptbutton: string;
     waitBetTimeout: number;
     placeBetChoices: string[];
     snapshotFolderPath: string;
@@ -47,11 +46,11 @@ export class MiniGameBase {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            const bet = { choice: this.options.placeBetChoices[0], acceptbtn: this.options.acceptbutton, amount: 1 };
+            const bet = { choice: this.options.placeBetChoices[0], amount: 1 };
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act
-            const placeBetResponse = await this.player.placeBetSelectChipBoard(bet.choice, bet.acceptbtn, bet.amount);
+            const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);
             const settledResults = await this.game.waitForSettlement();
 
             // Assert
@@ -67,7 +66,7 @@ export class MiniGameBase {
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
 
             // Act
-            await this.player.placeHedgeBetChipBoard(this.options.gameConfiguration.hedgeBetGroups[0], "boardaccept", 1);
+            await this.player.placeHedgeBet(this.options.gameConfiguration.hedgeBetGroups[0], 1);
             const error = await this.game.captureErrorMessage();
 
             // Assert

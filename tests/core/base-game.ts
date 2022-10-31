@@ -9,6 +9,7 @@ import { GameEvent } from "./../_shared/events";
 
 export class BaseGame {
     readonly LobbyTimeout: number = 40000;
+    readonly BetBoardPostfix: string = "BetBoard";
 
     readonly page: Page;
     readonly locators: Array<ImageLocator>;
@@ -123,7 +124,8 @@ export class BaseGame {
     }
 
     async clickToChoice(choice: string): Promise<void> {
-        const locator = this.locator(`${choice}Choice`);
+        const postfix = this.gameConfiguration.betBoard ? this.BetBoardPostfix : "";
+        const locator = this.locator(`${choice}Choice${postfix}`);
 
         if (locator) {
             await locator.click(this.page);
@@ -153,5 +155,13 @@ export class BaseGame {
 
     async captureErrorMessage(): Promise<ImageSnapshot> {
         return this.capture(`errorMessage`);
+    }
+
+    async clickStake(amount: number = 1): Promise<void> {
+        await this.locator(`stake${amount}`)?.click(this.page);
+    }
+
+    async clickSubmitBet(): Promise<void> {
+        await this.locator(`submit${this.BetBoardPostfix}`)?.click(this.page);
     }
 }
