@@ -1,5 +1,5 @@
 import { MiniSedieLocators } from "../locators/minisedie-locators";
-import { MiniSedieConfigs } from "../minisedie-configs";
+import { MiniSedie1Configs,MiniSedie2Configs } from "../minisedie-configs";
 import { MultiMiniGameOptions, MultiMiniGameBase } from "../../../core/smoke-game-bases/multiple-mini-game-base.spec";
 
 class MultiMiniSedieSmokeSpec extends MultiMiniGameBase {
@@ -8,8 +8,8 @@ class MultiMiniSedieSmokeSpec extends MultiMiniGameBase {
      */
     constructor() {
         const smokeOptions: MultiMiniGameOptions = {
-            placeBetChoices: [MiniSedieConfigs.choices[0]],
-            gameConfiguration: MiniSedieConfigs,
+            placeBetChoices: [MiniSedie1Configs.choices[0],MiniSedie2Configs.choices[0]],
+            gameConfiguration:  [MiniSedie1Configs,MiniSedie2Configs],
             locators: MiniSedieLocators,
             waitBetTimeout: 5000,
             snapshotFolderPath: __filename,

@@ -5,7 +5,7 @@ import { GameConfiguration } from "../game-configuration";
 import { ImageLocator } from "../base-image-locator";
 
 export interface MultiMiniGameOptions {
-    gameConfiguration: GameConfiguration;
+    gameConfiguration: GameConfiguration[];
     locators: ImageLocator[];
     waitBetTimeout: number;
     placeBetChoices: string[];
@@ -21,10 +21,9 @@ export class MultiMiniGameBase {
     protected inGameBetChoiceTests() {
         test("AND bet choices should be displayed on table", async () => {
             // Arrange
-            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            test.setTimeout(this.options.gameConfiguration[0].maxTimeout);
             await this.game.waitUntilNextRound();
             await this.game.waitForTimeout(this.options.waitBetTimeout);
-
             for (const placeBetChoice of this.options.placeBetChoices) {
                 // Act
                 const betChoice = await this.game.captureChoice(placeBetChoice);
@@ -38,24 +37,28 @@ export class MultiMiniGameBase {
     protected inGameOddsTests() {
         test("AND odds should be correct", async () => {
             // Assert
-            expect(this.game.odds).toStrictEqual(this.options.gameConfiguration.odds);
+            expect(this.game.odds).toStrictEqual(this.options.gameConfiguration[0].odds);
         });
     }
 
     protected placeBetAndSettleTests() {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
-            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            test.setTimeout(this.options.gameConfiguration[0].maxTimeout);
             const bet = { choice: this.options.placeBetChoices[0], amount: 1 };
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act
+            console.log("placebet");
+
             const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);
+            console.log("wait settlement");
+
             const settledResults = await this.game.waitForSettlement();
 
-            // Assert
+            // // Assert
             expect(placeBetResponse.endBet).toBe(bet.amount);
-            expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
+            expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration[0].choices);
             expect(bet).toMatchWinning(settledResults);
         });
     }
@@ -63,10 +66,10 @@ export class MultiMiniGameBase {
     protected hedgeBetTests() {
         test("THEN player should get error when they hedge their bets", async () => {
             // Arrange
-            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            test.setTimeout(this.options.gameConfiguration[0].maxTimeout);
 
             // Act
-            await this.player.placeHedgeBet(this.options.gameConfiguration.hedgeBetGroups[0], 1);
+            await this.player.placeHedgeBet(this.options.gameConfiguration[0].hedgeBetGroups[0], 1);
             const error = await this.game.captureErrorMessage();
 
             // Assert
@@ -97,12 +100,9 @@ export class MultiMiniGameBase {
             };
         });
 
-        test.use({
-            gameConfigurations: this.options.gameConfiguration,
-            locators: this.options.locators,
-        });
+        this.useTestFixtures();
 
-        test.describe.serial(`${this.options.gameConfiguration.name} Smoke Tests`, () => {
+        test.describe.serial(`Smoke Tests`, () => {
             test.beforeAll(async ({ baseGame }) => {
                 this.game = baseGame;
                 this.player = new BasePlayer(this.game);
@@ -113,6 +113,13 @@ export class MultiMiniGameBase {
             this.placeBetAndSettleTests();
             this.hedgeBetTests();
             this.ticketHistoryTests();
+        });
+    }
+
+    protected useTestFixtures() {
+        test.use({
+            gameConfigurations: this.options.gameConfiguration[0],
+            locators: this.options.locators,
         });
     }
 }
