@@ -28,7 +28,7 @@ const config: PlaywrightTestConfig = {
     use: {
         actionTimeout: 0,
         trace: "on-first-retry",
-        headless: true,
+        headless: false,
         viewport: {
             width: 1280,
             height: 720,

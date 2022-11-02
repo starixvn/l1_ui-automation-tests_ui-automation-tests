@@ -6,10 +6,12 @@ export default {
     gameAccounts: {
         1: ["supertestsaba70"],
         2: ["supertestsaba66"],
+        9: ["supertestsaba66"],
     },
     mapGameId: {
         1: 1612,
         2: 1613,
+        9: 1620,
     },
     pwd: "1234aaAA",
     getbalance: "https://l1sit.sgamesuat.com/sit/user/auth/balance",
