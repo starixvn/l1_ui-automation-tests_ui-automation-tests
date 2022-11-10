@@ -1,6 +1,6 @@
 export default {
-    memberSite: "https://gamelobby-simulator.lumigame.com/signin",
-    lobbyDomain: "https://games.lumigame.com/",
+    memberSite: "https://l1-glbs1.lumigame.com/signin",
+    lobbyDomain: "https://l1-glbs1.lumigame.com/",
     lobbyTimeout: 20000, // 20s
     enabledMsgPack: false,
     gameAccounts: {
@@ -9,5 +9,6 @@ export default {
         4: ["222223"],
         9: ["222224"],
         22: ["222225"],
+        59: ["222225"],
     },
 };

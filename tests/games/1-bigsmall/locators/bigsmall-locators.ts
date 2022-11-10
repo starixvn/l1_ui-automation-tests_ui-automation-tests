@@ -12,7 +12,7 @@ export const BigSmallLocators = [
     new ImageLocator("historyPopup", 465, 70, 300, 70),
     new ImageLocator("errorMessage", 546, 387, 193, 37),
     new ImageLocator("stake1", 480, 530),
-    new ImageLocator("big", 457, 384),
-    new ImageLocator("small", 814, 384),
-    new ImageLocator("boardaccept", 783, 632),
+    new ImageLocator("bigChoiceBetBoard", 457, 384),
+    new ImageLocator("smallChoiceBetBoard", 814, 384),
+    new ImageLocator("submitBetBoard", 779, 610),
 ];

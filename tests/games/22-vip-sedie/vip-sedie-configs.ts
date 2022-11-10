@@ -14,11 +14,11 @@ export const VipSedieConfigs: GameConfiguration = {
     odds: {
         even: 1.96,
         odd: 1.96,
-        red2: 2.5,
-        red3: 3.76,
-        red4: 14.5,
-        white3: 3.76,
-        white4: 14.5,
+        red2: 2.4,
+        red3: 3.75,
+        red4: 14.4,
+        white3: 3.75,
+        white4: 14.4,
     },
     socketName: "vsedie",
 };

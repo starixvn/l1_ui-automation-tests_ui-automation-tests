@@ -5,7 +5,8 @@ import { GameConfiguration } from "../game-configuration";
 import { ImageLocator } from "../base-image-locator";
 
 export interface MultiMiniGameOptions {
-    gameConfiguration: GameConfiguration[];
+    mainConfigurations: GameConfiguration;
+    subGameConfigurations: GameConfiguration[];
     locators: ImageLocator[];
     waitBetTimeout: number;
     placeBetChoices: string[];
@@ -21,44 +22,39 @@ export class MultiMiniGameBase {
     protected inGameBetChoiceTests() {
         test("AND bet choices should be displayed on table", async () => {
             // Arrange
-            test.setTimeout(this.options.gameConfiguration[0].maxTimeout);
+            test.setTimeout(this.options.mainConfigurations.maxTimeout);
             await this.game.waitUntilNextRound();
+            await this.game.clickLocator("closeguide");
             await this.game.waitForTimeout(this.options.waitBetTimeout);
-            for (const placeBetChoice of this.options.placeBetChoices) {
-                // Act
-                const betChoice = await this.game.captureChoice(placeBetChoice);
+            // Act
+            const betChoice = await this.game.captureChoice(this.options.placeBetChoices[0]);
 
-                // Assert
-                expect(betChoice.image).toMatchSnapshot(betChoice.name);
-            }
+            // Assert
+            expect(betChoice.image).toMatchSnapshot(betChoice.name);
         });
     }
 
     protected inGameOddsTests() {
         test("AND odds should be correct", async () => {
             // Assert
-            expect(this.game.odds).toStrictEqual(this.options.gameConfiguration[0].odds);
+            expect(this.game.odds).toStrictEqual(this.options.mainConfigurations.odds);
         });
     }
 
     protected placeBetAndSettleTests() {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
-            test.setTimeout(this.options.gameConfiguration[0].maxTimeout);
+            test.setTimeout(this.options.mainConfigurations.maxTimeout);
             const bet = { choice: this.options.placeBetChoices[0], amount: 1 };
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act
-            console.log("placebet");
-
             const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);
-            console.log("wait settlement");
-
             const settledResults = await this.game.waitForSettlement();
 
             // // Assert
             expect(placeBetResponse.endBet).toBe(bet.amount);
-            expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration[0].choices);
+            expect(settledResults.settlementResult).toMatchBetOptions(this.options.mainConfigurations.choices);
             expect(bet).toMatchWinning(settledResults);
         });
     }
@@ -66,10 +62,10 @@ export class MultiMiniGameBase {
     protected hedgeBetTests() {
         test("THEN player should get error when they hedge their bets", async () => {
             // Arrange
-            test.setTimeout(this.options.gameConfiguration[0].maxTimeout);
+            test.setTimeout(this.options.mainConfigurations.maxTimeout);
 
             // Act
-            await this.player.placeHedgeBet(this.options.gameConfiguration[0].hedgeBetGroups[0], 1);
+            await this.player.placeHedgeBet(this.options.mainConfigurations.hedgeBetGroups[0], 1);
             const error = await this.game.captureErrorMessage();
 
             // Assert
@@ -88,6 +84,9 @@ export class MultiMiniGameBase {
             // Assert
             expect(historyPayload.history.betLogs.length).toBeGreaterThan(0);
             expect(historySnapshot.image).toMatchSnapshot(historySnapshot.name);
+
+            //Post-condition
+            await this.player.clickOutSide()
         });
     }
 
@@ -102,7 +101,7 @@ export class MultiMiniGameBase {
 
         this.useTestFixtures();
 
-        test.describe.serial(`Smoke Tests`, () => {
+        test.describe.serial(`${this.options.mainConfigurations.name} Smoke Tests`, () => {
             test.beforeAll(async ({ baseGame }) => {
                 this.game = baseGame;
                 this.player = new BasePlayer(this.game);
@@ -113,13 +112,36 @@ export class MultiMiniGameBase {
             this.placeBetAndSettleTests();
             this.hedgeBetTests();
             this.ticketHistoryTests();
+            this.subGameplaceBetAndSettleTests();
         });
     }
 
     protected useTestFixtures() {
         test.use({
-            gameConfigurations: this.options.gameConfiguration[0],
+            gameConfigurations: this.options.mainConfigurations,
             locators: this.options.locators,
         });
     }
+
+    protected subGameplaceBetAndSettleTests() {
+        this.options.subGameConfigurations.forEach((gameOptions) => {
+            test(`THEN player able to place a bet and settle ${gameOptions.name}`, async () => {
+                // Arrange
+                test.setTimeout(gameOptions.maxTimeout);
+                const bet = { choice: gameOptions.choices[0], amount: 1 };
+                this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
+
+                // Act
+                const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount, gameOptions.name);
+
+                const settledResults = await this.game.waitForSettlement(gameOptions.name);
+                // // Assert
+                expect(placeBetResponse.endBet).toBe(bet.amount);
+                expect(settledResults.settlementResult).toMatchBetOptions(this.options.mainConfigurations.choices);
+                // expect(bet).toMatchWinning(settledResults);
+            });
+        });
+    }
+
+
 }

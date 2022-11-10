@@ -12,8 +12,8 @@ export async function waitForMessage(socket: PlaywrightWs, key: string, gameName
     socket.on("framereceived", async (msg: any) => {
         const { payload } = msg ?? "";
         const jsonMsg = parseSocketPayload(payload, msgpack);
-        
-        if (payload.includes(key) && payload.includes(`"${gameName}"`) ) {
+
+        if (payload.includes(key) && jsonMsg.eventName?.toLocaleLowerCase() === gameName?.toLocaleLowerCase()) {
             resolve(jsonMsg.message);
         }
     });

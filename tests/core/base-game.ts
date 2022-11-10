@@ -64,28 +64,32 @@ export class BaseGame {
         return message;
     }
 
-    async waitForMessage(message: string): Promise<any> {
-        return await waitForMessage(this.gameSocket, message, this.gameConfiguration.name, this.msgpack);
+    private getGameName(subGameName?: string): string {
+        return subGameName ?? this.gameConfiguration.name;
     }
 
-    async waitUntilNextRound(): Promise<any> {
+    async waitForMessage(message: string, subGameName?: string): Promise<any> {
+        return await waitForMessage(this.gameSocket, message, this.getGameName(subGameName), this.msgpack);
+    }
+
+    async waitUntilNextRound(subGameName?: string): Promise<any> {
         this.capturedEvents[GameEvent.WinStatus] = "";
 
-        return await waitForMessage(this.gameSocket, GameEvent.StartRound, this.gameConfiguration.name, this.msgpack);
+        return await waitForMessage(this.gameSocket, GameEvent.StartRound, this.getGameName(subGameName), this.msgpack);
     }
 
-    async waitUntilPlaceBet(): Promise<void> {
+    async waitUntilPlaceBet(subGameName?: string): Promise<void> {
         const { wholeRound, placingBets } = this.gameConfiguration.durations;
-        await this.waitUntilNextRound();
+        await this.waitUntilNextRound(subGameName);
         await this.page.waitForTimeout(wholeRound - placingBets);
     }
 
-    async waitForEndBet(): Promise<any> {
-        return await waitForMessage(this.gameSocket, GameEvent.EndBet, this.gameConfiguration.name, this.msgpack);
+    async waitForEndBet(subGameName?: string): Promise<any> {
+        return await waitForMessage(this.gameSocket, GameEvent.EndBet, this.getGameName(subGameName), this.msgpack);
     }
 
-    async waitForSettlement(): Promise<any> {
-        const message = await waitForMessage(this.gameSocket, GameEvent.Settlement, this.gameConfiguration.name, this.msgpack);
+    async waitForSettlement(subGameName?: string): Promise<any> {
+        const message = await waitForMessage(this.gameSocket, GameEvent.Settlement, this.getGameName(subGameName), this.msgpack);
         const winningByChoice = this.latestCaptureEvent(GameEvent.WinStatus);
 
         const settledResults = {
@@ -148,7 +152,6 @@ export class BaseGame {
             await this.locator("hamburgerMenu")?.click(this.page);
             await this.waitForTimeout(500);
         }
-
         await this.locator("historyMenu")?.click(this.page);
         await this.waitForTimeout(500);
     }
@@ -163,5 +166,10 @@ export class BaseGame {
 
     async clickSubmitBet(): Promise<void> {
         await this.locator(`submit${this.BetBoardPostfix}`)?.click(this.page);
+    }
+
+    async clickOutSide(): Promise<void> {
+        await this.locator("outside")?.click(this.page);
+        await this.waitForTimeout(500);
     }
 }

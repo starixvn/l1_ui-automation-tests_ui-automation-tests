@@ -1,5 +1,4 @@
 import { test, expect } from "../base-fixture";
-
 import { GameEvent } from "../../_shared/events";
 import { BasePlayer, BaseGame } from "..";
 import { GameConfiguration } from "../game-configuration";
@@ -7,16 +6,11 @@ import { ImageLocator } from "../base-image-locator";
 
 const defaultWaitBetTimeout = 5000;
 
-export type Bet = {
-    choice: string;
-    amount: number;
-};
-
 export interface ITableGameOptions {
     gameConfiguration: GameConfiguration;
     locators: ImageLocator[];
-    waitBetTimeout?: number;
-    placeBetChoices?: Bet[];
+    waitBetTimeout: number;
+    placeBetChoices: string[];
     snapshotFolderPath: string;
 }
 
@@ -24,21 +18,7 @@ export class TableGameBase {
     game: BaseGame;
     player: BasePlayer;
 
-    constructor(private options: ITableGameOptions) {
-        this.options.waitBetTimeout = this.options.waitBetTimeout ?? defaultWaitBetTimeout;
-        this.options.placeBetChoices = this.getPlaceBetBetChoices();
-    }
-
-    protected getPlaceBetBetChoices(): Bet[] {
-        return (
-            this.options.placeBetChoices ?? [
-                {
-                    choice: this.options.gameConfiguration.choices[1],
-                    amount: 1,
-                },
-            ]
-        );
-    }
+    constructor(private options: ITableGameOptions) {}
 
     protected inGameDealerTests() {
         test("GIVEN player joined game and saw dealer", async () => {
@@ -56,10 +36,10 @@ export class TableGameBase {
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             await this.game.waitUntilNextRound();
             await this.game.waitForTimeout(this.options.waitBetTimeout);
-
-            for (const placeBetChoice of this.getPlaceBetBetChoices()) {
+            for (const placeBetChoice of this.options.placeBetChoices) {
                 // Act
-                const betChoice = await this.game.captureChoice(placeBetChoice.choice);
+                    
+                const betChoice = await this.game.captureChoice(placeBetChoice);
 
                 // Assert
                 expect(betChoice.image).toMatchSnapshot(betChoice.name);
@@ -78,17 +58,17 @@ export class TableGameBase {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            const bet = this.getPlaceBetBetChoices()[0];
+            const bet = { choice: this.options.placeBetChoices[0], amount: 1 };
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
-
+            
             // Act
             const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);
             const settledResults = await this.game.waitForSettlement();
 
             // Assert
-            expect(placeBetResponse.endBet).toBe(bet.amount);
+            expect(Math.abs(placeBetResponse.endBet)).toBe(bet.amount);
             expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
-            expect(bet).toMatchWinning(settledResults);
+            expect(bet).toMatchWinning(settledResults);    
         });
     }
 
@@ -115,8 +95,8 @@ export class TableGameBase {
             const historySnapshot = await this.game.captureHistory();
 
             // Assert
-            expect(historyPayload.history.betLogs.length).toBeGreaterThan(0);
-            expect(historySnapshot.image).toMatchSnapshot(historySnapshot.name);
+           expect(historyPayload.history.betLogs.length).toBeGreaterThan(0);
+           expect(historySnapshot.image).toMatchSnapshot(historySnapshot.name);
         });
     }
 
