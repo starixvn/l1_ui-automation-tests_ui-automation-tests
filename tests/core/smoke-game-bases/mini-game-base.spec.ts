@@ -1,15 +1,9 @@
 import { test, expect } from "../base-fixture";
 import { GameEvent } from "../../_shared/events";
 import { BasePlayer, BaseGame } from "..";
-import { GameConfiguration } from "../game-configuration";
-import { ImageLocator } from "../base-image-locator";
-
-export interface MiniGameOptions {
-    gameConfiguration: GameConfiguration;
-    locators: ImageLocator[];
-    waitBetTimeout: number;
+import IBaseOptions from "./base-options";
+export interface MiniGameOptions extends IBaseOptions {
     placeBetChoices: string[];
-    snapshotFolderPath: string;
 }
 
 export class MiniGameBase {
@@ -54,7 +48,7 @@ export class MiniGameBase {
             const settledResults = await this.game.waitForSettlement();
 
             // Assert
-            expect(placeBetResponse.endBet).toBe(bet.amount);           
+            expect(placeBetResponse.endBet).toBe(bet.amount);
             expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
             expect(bet).toMatchWinning(settledResults);
         });
@@ -108,11 +102,15 @@ export class MiniGameBase {
                 this.player = new BasePlayer(this.game);
             });
 
-            this.inGameBetChoiceTests();
-            this.inGameOddsTests();
-            this.placeBetAndSettleTests();
-            this.hedgeBetTests();
-            this.ticketHistoryTests();
+            this.runScenario();
         });
+    }
+
+    protected runScenario() {
+        this.inGameBetChoiceTests();
+        this.inGameOddsTests();
+        this.placeBetAndSettleTests();
+        this.hedgeBetTests();
+        this.ticketHistoryTests();
     }
 }
