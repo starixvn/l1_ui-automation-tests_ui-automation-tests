@@ -11,12 +11,16 @@ class FPCSmokeSpec extends MiniGameBase {
             placeBetChoices: [FPCConfigs.choices[0]],
             gameConfiguration: FPCConfigs,
             locators: FPCLocators,
-            waitBetTimeout: 10000,
+            waitBetTimeout: 5000,
             snapshotFolderPath: __filename,
         };
 
         super(smokeOptions);
     }
+    protected override hedgeBetTests(): void {}
+    // protected inGameBetChoiceTests(): void {
+        
+    // }
 }
 
 new FPCSmokeSpec().start();
