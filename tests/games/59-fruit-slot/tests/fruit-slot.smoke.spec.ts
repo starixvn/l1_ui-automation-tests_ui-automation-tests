@@ -23,8 +23,6 @@ class FruitSlotSmokeSpec extends TableGameBase {
 
     //Remove or update these code below if you want use these test cases from base or add more test case code.
     protected override inGameDealerTests(): void {}
-
-    // protected override ticketHistoryTests(): void {}
 }
 
 new FruitSlotSmokeSpec().start();

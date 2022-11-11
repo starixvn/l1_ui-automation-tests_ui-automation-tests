@@ -17,7 +17,7 @@ export class MultiMiniGameBase {
     game: BaseGame;
     player: BasePlayer;
 
-    constructor(private options: MultiMiniGameOptions) {}
+    constructor(protected options: MultiMiniGameOptions) {}
 
     protected inGameBetChoiceTests() {
         test("AND bet choices should be displayed on table", async () => {

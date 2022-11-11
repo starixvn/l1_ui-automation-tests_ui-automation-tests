@@ -11,7 +11,7 @@ class SedieSmokeSpec extends TableGameBase {
             gameConfiguration: SedieConfigs,
             locators: SedieLocators,
             waitBetTimeout: 5000,
-            placeBetChoices:  [SedieConfigs.choices[0]] ,
+            placeBetChoices: [SedieConfigs.choices[0]],
             snapshotFolderPath: __filename,
         };
 

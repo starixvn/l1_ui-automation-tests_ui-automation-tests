@@ -16,7 +16,7 @@ export class MiniGameBase {
     game: BaseGame;
     player: BasePlayer;
 
-    constructor(private options: MiniGameOptions) {}
+    constructor(protected options: MiniGameOptions) {}
 
     protected inGameBetChoiceTests() {
         test("AND bet choices should be displayed on table", async () => {
@@ -54,7 +54,7 @@ export class MiniGameBase {
             const settledResults = await this.game.waitForSettlement();
 
             // Assert
-            expect(placeBetResponse.endBet).toBe(bet.amount);
+            expect(placeBetResponse.endBet).toBe(bet.amount);           
             expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
             expect(bet).toMatchWinning(settledResults);
         });
