@@ -1,0 +1,33 @@
+import { GameConfiguration } from "../../core/game-configuration";
+export const SedieWarConfigs: GameConfiguration = {
+    id: 25,
+    name: "SicBo",
+    durations: {
+        wholeRound: 54 * 1000,
+        placingBets: 45 * 1000,
+        lockingBet: 5 * 1000,
+        shakeThePlateDuration: 4 * 1000,
+    },
+    choices: ["player", "banker", "red2", "red3", "red4", "white3", "white4"],
+    hedgeBetGroups: [["player", "banker"]],
+    maxTimeout: 100 * 1000, // miliseconds,
+    odds: {
+        banker: 2.6,
+        bankerEven: 1.96,
+        bankerOdd: 1.96,
+        bankerRed3: 3.75,
+        bankerRed4: 14.4,
+        bankerWhite3: 3.75,
+        bankerWhite4: 14.4,
+        even: 1.96,
+        odd: 1.96,
+        player: 2.6,
+        playerEven: 1.96,
+        playerOdd: 1.96,
+        playerRed3: 3.75,
+        playerRed4: 14.4,
+        playerWhite3: 3.75,
+        playerWhite4: 14.4,
+        tie: 3.5,
+    },
+};
