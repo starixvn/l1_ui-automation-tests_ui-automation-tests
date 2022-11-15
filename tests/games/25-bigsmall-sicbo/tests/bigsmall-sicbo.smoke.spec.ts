@@ -1,17 +1,17 @@
-import { SedieWarLocators } from "../locators/bigsmall-sicbo-locators";
-import { SedieWarConfigs } from "../sedie-war-configs";
+import { BigSmallSicBoLocators } from "../locators/bigsmall-sicbo-locators";
+import { BigSmallSicBoConfigs } from "../bigsmall-sicbo-configs";
 import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
 
-class SedieWarSmokeSpec extends TableGameBase {
+class BigSmallSicBoSmokeSpec extends TableGameBase {
     /**
      *
      */
     constructor() {
         const smokeOptions: ITableGameOptions = {
-            gameConfiguration: SedieWarConfigs,
-            locators: SedieWarLocators,
-            waitBetTimeout: 10000,
-            placeBetChoices: [SedieWarConfigs.choices[0]],
+            gameConfiguration: BigSmallSicBoConfigs,
+            locators: BigSmallSicBoLocators,
+            waitBetTimeout: 12000,
+            placeBetChoices: [BigSmallSicBoConfigs.choices[6]],
             snapshotFolderPath: __filename,
         };
 
@@ -19,4 +19,4 @@ class SedieWarSmokeSpec extends TableGameBase {
     }
 }
 
-new SedieWarSmokeSpec().start();
+new BigSmallSicBoSmokeSpec().start();

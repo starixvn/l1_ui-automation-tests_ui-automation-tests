@@ -1,10 +1,12 @@
 import { ImageLocator } from "../../../core/base-image-locator";
 
-export const SedieWarLocators = [
-    new ImageLocator("playerChoice", 140, 210, 180, 40),
-    new ImageLocator("bankerChoice", 910, 10, 180, 40),
-    new ImageLocator("hamburgerMenu", 36, 629),
-    new ImageLocator("historyMenu", 44, 470),
-    new ImageLocator("historyPopup", 562, 92, 170, 30),
-    new ImageLocator("errorMessage", 410, 506, 450, 20),
+export const BigSmallSicBoLocators = [
+    new ImageLocator("bigChoice", 176, 416, 130, 65),
+    new ImageLocator("smallChoice", 983, 416, 130, 65),
+    new ImageLocator("hamburgerMenu", 47, 637),
+    new ImageLocator("historyMenu", 48, 479),
+    new ImageLocator("historyPopup", 579, 87, 150, 30),
+    new ImageLocator("errorMessage", 465, 476, 380, 30),
+    new ImageLocator("stake1", 424, 632),
+
 ];
