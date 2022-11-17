@@ -1,6 +1,6 @@
 import { MiniSedieLocators } from "../locators/minisedie-locators";
 import { MiniSedie1Configs, MiniSedie2Configs, MiniSedie3Configs, MiniSedie4Configs } from "../minisedie-configs";
-import { MultiMiniGameOptions, MultiMiniGameBase } from "../../../core/smoke-game-bases/multiple-mini-game-base.spec";
+import { MultiMiniGameOptions, MultiMiniGameBase } from "../../../core/smoke-game-bases/multiplay-game-base.spec";
 
 class MultiMiniSedieSmokeSpec extends MultiMiniGameBase {
     /**

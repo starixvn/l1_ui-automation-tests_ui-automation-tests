@@ -4,6 +4,7 @@ import { BasePlayer, BaseGame } from "..";
 import IBaseOptions from "./base-options";
 export interface MiniGameOptions extends IBaseOptions {
     placeBetChoices: string[];
+    placeBetAmount?: number;
 }
 
 export class MiniGameBase {
@@ -40,7 +41,7 @@ export class MiniGameBase {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            const bet = { choice: this.options.placeBetChoices[0], amount: 1 };
+            const bet = { choice: this.options.placeBetChoices[0], amount: this.options.placeBetAmount ?? 1 };
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act
@@ -48,7 +49,7 @@ export class MiniGameBase {
             const settledResults = await this.game.waitForSettlement();
 
             // Assert
-            expect(placeBetResponse.endBet).toBe(bet.amount);
+            expect(placeBetResponse.endBet).toBe(bet.amount);           
             expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
             expect(bet).toMatchWinning(settledResults);
         });
@@ -60,7 +61,7 @@ export class MiniGameBase {
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
 
             // Act
-            await this.player.placeHedgeBet(this.options.gameConfiguration.hedgeBetGroups[0], 1);
+            await this.player.placeHedgeBet(this.options.gameConfiguration.hedgeBetGroups[0], this.options.placeBetAmount ?? 1);
             const error = await this.game.captureErrorMessage();
 
             // Assert

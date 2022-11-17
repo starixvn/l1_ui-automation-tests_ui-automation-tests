@@ -17,7 +17,6 @@ class TurboBigSmallSmokeSpec extends MiniGameBase {
         super(smokeOptions);
     }
 
-    protected override ticketHistoryTests(): void {}
 }
 
 new TurboBigSmallSmokeSpec().start();

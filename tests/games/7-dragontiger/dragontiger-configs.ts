@@ -12,9 +12,9 @@ export const DragonTigerConfigs: GameConfiguration = {
     hedgeBetGroups: [["dragon", "tiger"]],
     maxTimeout: 200 * 1000, // miliseconds,
     odds: {
-        dragon: 3,
-        tiger: 3,
-        tie: 12,
+        dragon: 2,
+        tiger: 2,
+        tie: 11,
     },
     betBoard: false,
 };

@@ -11,7 +11,6 @@ export const TurboBigSmallLocators = [
     new ImageLocator("historyMenu", 374, 265, 52, 42),
     new ImageLocator("historyPopup", 465, 70, 300, 70),
     new ImageLocator("errorMessage", 546, 365, 193, 30),
-
     new ImageLocator("bigChoiceBetBoard", 457, 384),
     new ImageLocator("smallChoiceBetBoard", 814, 384),
     new ImageLocator("stake1", 480, 500),
