@@ -1,13 +1,13 @@
 import { TurboBigSmallLocators } from "../locators/turbobigsmall-locators";
 import { TurboBigSmallConfigs } from "../turbobigsmall-configs";
-import { MiniGameOptions, MiniGameBase } from "../../../core/smoke-game-bases/mini-game-base.spec";
+import { IBaseOptions, BalancedBettingGameBase } from "../../../core/smoke-game-bases";
 
-class TurboBigSmallSmokeSpec extends MiniGameBase {
+class TurboBigSmallSmokeSpec extends BalancedBettingGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: MiniGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [TurboBigSmallConfigs.choices[0]],
             gameConfiguration: TurboBigSmallConfigs,
             locators: TurboBigSmallLocators,
@@ -16,7 +16,6 @@ class TurboBigSmallSmokeSpec extends MiniGameBase {
         };
         super(smokeOptions);
     }
-
 }
 
 new TurboBigSmallSmokeSpec().start();
