@@ -6,4 +6,6 @@ export default interface IBaseOptions {
     locators: ImageLocator[];
     waitBetTimeout: number;
     snapshotFolderPath: string;
+    placeBetChoices: string[];
+    placeBetAmount?: number;
 }

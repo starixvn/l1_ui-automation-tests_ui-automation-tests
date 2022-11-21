@@ -7,7 +7,6 @@ import IBaseOptions from "./base-options";
 export interface MultiMiniGameOptions extends IBaseOptions {
     gameConfiguration: GameConfiguration;
     subGameConfigurations: GameConfiguration[];
-    placeBetChoices: string[];
 }
 
 export class MultiMiniGameBase {

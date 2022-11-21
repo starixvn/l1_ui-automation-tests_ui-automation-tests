@@ -2,16 +2,12 @@ import { test, expect } from "../base-fixture";
 import { GameEvent } from "../../_shared/events";
 import { BasePlayer, BaseGame } from "..";
 import IBaseOptions from "./base-options";
-export interface MiniGameOptions extends IBaseOptions {
-    placeBetChoices: string[];
-    placeBetAmount?: number;
-}
 
 export class MiniGameBase {
     game: BaseGame;
     player: BasePlayer;
 
-    constructor(protected options: MiniGameOptions) {}
+    constructor(protected options: IBaseOptions) {}
 
     protected inGameBetChoiceTests() {
         test("AND bet choices should be displayed on table", async () => {
@@ -49,7 +45,7 @@ export class MiniGameBase {
             const settledResults = await this.game.waitForSettlement();
 
             // Assert
-            expect(placeBetResponse.endBet).toBe(bet.amount);           
+            expect(placeBetResponse.endBet).toBe(bet.amount);
             expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
             expect(bet).toMatchWinning(settledResults);
         });

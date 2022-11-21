@@ -3,16 +3,11 @@ import { BasePlayer, BaseGame } from "..";
 import IBaseOptions from "./base-options";
 import { MiniGameBase } from "./mini-game-base.spec";
 
-export interface ITableGameOptions extends IBaseOptions {
-    waitBetTimeout: number;
-    placeBetChoices: string[];
-}
-
 export class TableGameBase extends MiniGameBase {
     game: BaseGame;
     player: BasePlayer;
 
-    constructor(protected options: ITableGameOptions) {
+    constructor(protected options: IBaseOptions) {
         super(options);
     }
 
@@ -25,7 +20,6 @@ export class TableGameBase extends MiniGameBase {
             expect(dealerSnapshot.image).toMatchSnapshot(dealerSnapshot.name);
         });
     }
-
 
     protected override runScenario(): void {
         this.inGameDealerTests();
