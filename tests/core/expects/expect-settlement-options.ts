@@ -18,25 +18,36 @@ expect.extend({
     },
 
     toMatchWinning(bet: any, settledResult: any) {
-        if (settledResult.winAmount > 0) {
-            const odds = settledResult.settlementResult[bet.choice] ? settledResult.odds[bet.choice] : 1;
+        const odds = settledResult.settlementResult[bet.choice] ? settledResult.odds[bet.choice] : 0;
+        const expectedAmount = bet.amount * odds;
 
-            const expectedAmount = bet.amount * odds;
-            if (expectedAmount === settledResult.winAmount) {
-                return {
-                    message: () => "passed",
-                    pass: true,
-                };
-            }
-
+        if (expectedAmount === settledResult.winAmount) {
             return {
-                message: () => `failed. Expected ${expectedAmount} but received ${settledResult.winAmount}`,
-                pass: false,
+                message: () => "passed",
+                pass: true,
             };
         }
+
         return {
-            message: () => "passed",
-            pass: true,
+            message: () => `failed. Expected ${expectedAmount} but received ${settledResult.winAmount}`,
+            pass: false,
+        };
+    },
+
+    toMatchWinningAndRefund(bet: any, settledResult: any) {
+        const odds = settledResult.settlementResult[bet.choice] ? settledResult.odds[bet.choice] : 0;
+        const expectedAmount = bet.refund + (bet.amount - bet.refund) * odds;
+
+        if (expectedAmount === settledResult.winAmount) {
+            return {
+                message: () => "passed",
+                pass: true,
+            };
+        }
+
+        return {
+            message: () => `failed. Expected ${expectedAmount} but received ${settledResult.winAmount}`,
+            pass: false,
         };
     },
 
@@ -61,5 +72,4 @@ expect.extend({
             pass: false,
         };
     },
-
 });

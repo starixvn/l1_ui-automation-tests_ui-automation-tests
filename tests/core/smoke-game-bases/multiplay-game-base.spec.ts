@@ -4,16 +4,16 @@ import { BasePlayer, BaseGame } from "..";
 import { GameConfiguration } from "../game-configuration";
 import IBaseOptions from "./base-options";
 
-export interface MultiMiniGameOptions extends IBaseOptions {
+export interface MultiplayGameOptions extends IBaseOptions {
     gameConfiguration: GameConfiguration;
     subGameConfigurations: GameConfiguration[];
 }
 
-export class MultiMiniGameBase {
+export class MultiplayGameBase {
     game: BaseGame;
     player: BasePlayer;
 
-    constructor(protected options: MultiMiniGameOptions) {}
+    constructor(protected options: MultiplayGameOptions) {}
 
     protected inGameBetChoiceTests() {
         test("AND bet choices should be displayed on table", async () => {
