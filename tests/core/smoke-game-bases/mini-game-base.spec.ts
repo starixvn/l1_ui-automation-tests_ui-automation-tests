@@ -34,7 +34,7 @@ export class MiniGameBase {
     }
 
     protected placeBetAndSettleTests() {
-        test("THEN player able to place a bet and settle", async () => {
+        test.only("THEN player able to place a bet and settle", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             const bet = { choice: this.options.placeBetChoices[0], amount: this.options.placeBetAmount ?? 1 };
@@ -54,10 +54,11 @@ export class MiniGameBase {
     protected hedgeBetTests() {
         test("THEN player should get error when they hedge their bets", async () => {
             // Arrange
-            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            const { maxTimeout, hedgeBetGroups } = this.options.gameConfiguration;
+            test.setTimeout(maxTimeout);
 
             // Act
-            await this.player.placeHedgeBet(this.options.gameConfiguration.hedgeBetGroups[0], this.options.placeBetAmount ?? 1);
+            await this.player.placeHedgeBet(hedgeBetGroups[0], this.options.placeBetAmount ?? 1);
             const error = await this.game.captureErrorMessage();
 
             // Assert
