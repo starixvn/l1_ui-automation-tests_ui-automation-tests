@@ -1,13 +1,10 @@
 import { BigSmallLocators } from "../locators/bigsmall-locators";
 import { BigSmallConfigs } from "../bigsmall-configs";
-import { MiniGameOptions, MiniGameBase } from "../../../core/smoke-game-bases/mini-game-base.spec";
+import { IBaseOptions, BalancedBettingGameBase } from "../../../core/smoke-game-bases";
 
-class BigSmallSmokeSpec extends MiniGameBase {
-    /**
-     *
-     */
+class BigSmallSmokeSpec extends BalancedBettingGameBase {
     constructor() {
-        const smokeOptions: MiniGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [BigSmallConfigs.choices[0]],
             gameConfiguration: BigSmallConfigs,
             locators: BigSmallLocators,

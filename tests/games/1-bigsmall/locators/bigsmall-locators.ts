@@ -2,17 +2,17 @@ import { ImageLocator } from "../../../core/base-image-locator";
 
 export const BigSmallLocators = [
     new ImageLocator("dealer", 610, 230, 60, 30),
+
     new ImageLocator("bigChoice", 415, 270, 90, 50),
-    new ImageLocator("smallChoice", 350, 356, 97, 28),
-    new ImageLocator("oddChoice", 741, 277, 292, 53),
-    new ImageLocator("oddOwnbet", 866, 356, 97, 28),
+    new ImageLocator("bigOwnbet", 430, 325, 65, 29),
+    new ImageLocator("smallChoice", 774, 270, 89, 59),
     new ImageLocator("playerBalance", 192, 644, 125, 23),
-    new ImageLocator("hamburgerMenu", 0, 0, 0, 0), //no hamberger icon
     new ImageLocator("historyMenu", 380, 240, 52, 42),
     new ImageLocator("historyPopup", 465, 70, 300, 70),
-    new ImageLocator("errorMessage", 546, 387, 193, 37),
-    new ImageLocator("stake1", 480, 530),
-    new ImageLocator("bigChoiceBetBoard", 457, 384),
-    new ImageLocator("smallChoiceBetBoard", 814, 384),
-    new ImageLocator("submitBetBoard", 779, 610),
+    new ImageLocator("errorMessage", 546, 385, 193, 30),
+    new ImageLocator("bigChoiceBetBoard", 391, 369, 157, 42),
+    new ImageLocator("smallChoiceBetBoard", 742, 369, 157, 42),
+    new ImageLocator("stake1", 436, 489, 97, 36),
+    new ImageLocator("submitBetBoard", 730, 595, 119, 31),
+    new ImageLocator("outside", 0, 0, 0, 0),
 ];
