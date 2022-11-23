@@ -1,13 +1,13 @@
 import { SpecialSedieLocators } from "../locators/special-sedie-locators";
 import { SpecialSedieConfigs } from "../special-sedie-configs";
-import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
+import { IBaseOptions, BalancedBettingGameBase } from "../../../core/smoke-game-bases";
 
-class SpecialSedieSmokeSpec extends TableGameBase {
+class SpecialSedieSmokeSpec extends BalancedBettingGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: ITableGameOptions = {
+        const smokeOptions: IBaseOptions = {
             gameConfiguration: SpecialSedieConfigs,
             locators: SpecialSedieLocators,
             waitBetTimeout: 6000,
@@ -17,7 +17,6 @@ class SpecialSedieSmokeSpec extends TableGameBase {
 
         super(smokeOptions);
     }
-
 }
 
 new SpecialSedieSmokeSpec().start();
