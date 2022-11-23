@@ -1,13 +1,13 @@
 import { TurboOddEvenLocators } from "../locators/turbo-oddeven-locators";
 import { TurboOddEvenConfigs } from "../turbo-oddeven-configs";
-import { MiniGameOptions, MiniGameBase } from "../../../core/smoke-game-bases/mini-game-base.spec";
+import { IBaseOptions, BalancedBettingGameBase } from "../../../core/smoke-game-bases";
 
-class TurboBigSmallSmokeSpec extends MiniGameBase {
+class TurboBigSmallSmokeSpec extends BalancedBettingGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: MiniGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [TurboOddEvenConfigs.choices[0]],
             placeBetAmount: 5,
             gameConfiguration: TurboOddEvenConfigs,
@@ -17,7 +17,6 @@ class TurboBigSmallSmokeSpec extends MiniGameBase {
         };
         super(smokeOptions);
     }
-
 }
 
 new TurboBigSmallSmokeSpec().start();

@@ -10,12 +10,11 @@ export const TurboOddEvenConfigs: GameConfiguration = {
     },
     choices: ["odd", "even"],
     hedgeBetGroups: [["odd", "even"]],
-    maxTimeout: 300 * 1000, // miliseconds,
+    maxTimeout: 100 * 1000, // miliseconds,
     odds: {
         odd: 1.96,
         even: 1.96,
     },
     socketName: "turbooddeven",
     betBoard: true,
-
 };
