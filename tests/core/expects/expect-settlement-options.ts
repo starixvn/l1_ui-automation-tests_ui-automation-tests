@@ -3,8 +3,15 @@ import { expect } from "@playwright/test";
 expect.extend({
     toMatchBetOptions(settlementResult: any, betOptions: Array<string>) {
         const settlementBetOptions = settlementResult ? Object.keys(settlementResult) : [];
-        
-        if (settlementBetOptions.toString() === betOptions.toString()) {
+
+        const uniqueBetOptions = Array.from(new Set(settlementBetOptions));
+        const isEqual =
+            uniqueBetOptions.length === betOptions.length &&
+            uniqueBetOptions.every(function (value, index) {
+                return betOptions.includes(value);
+            });
+
+        if (isEqual) {
             return {
                 message: () => "passed",
                 pass: true,
@@ -12,7 +19,7 @@ expect.extend({
         }
 
         return {
-            message: () => "failed",
+            message: () => `failed. Expected ${betOptions} but received ${settlementBetOptions}`,
             pass: false,
         };
     },
