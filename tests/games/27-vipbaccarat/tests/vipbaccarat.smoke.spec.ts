@@ -1,13 +1,13 @@
 import { VipBaccaratLocators } from "../locators/vipbaccarat-locators";
 import { VipBaccaratConfigs } from "../vipbaccarat-configs";
-import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
+import { IBaseOptions, TableGameBase } from "../../../core/smoke-game-bases";
 
 class VipBaccaratSmokeSpec extends TableGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: ITableGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [VipBaccaratConfigs.choices[3]],
             gameConfiguration: VipBaccaratConfigs,
             locators: VipBaccaratLocators,

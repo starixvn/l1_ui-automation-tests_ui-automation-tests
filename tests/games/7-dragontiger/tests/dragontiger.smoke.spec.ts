@@ -1,13 +1,13 @@
 import { DragonTigerLocators } from "../locators/dragontiger-locators";
 import { DragonTigerConfigs } from "../dragontiger-configs";
-import { MiniGameOptions, MiniGameBase } from "../../../core/smoke-game-bases/mini-game-base.spec";
+import { IBaseOptions, MiniGameBase } from "../../../core/smoke-game-bases";
 
 class DragonTigerSmokeSpec extends MiniGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: MiniGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [DragonTigerConfigs.choices[0]],
             gameConfiguration: DragonTigerConfigs,
             locators: DragonTigerLocators,
@@ -17,7 +17,6 @@ class DragonTigerSmokeSpec extends MiniGameBase {
 
         super(smokeOptions);
     }
-
 }
 
 new DragonTigerSmokeSpec().start();

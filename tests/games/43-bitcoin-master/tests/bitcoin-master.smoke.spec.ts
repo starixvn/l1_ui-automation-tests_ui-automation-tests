@@ -1,15 +1,15 @@
-import {test, expect} from '../../../core/base-fixture'
-import {GameEvent} from '../../../_shared/events'
+import { test, expect } from "../../../core/base-fixture";
+import { GameEvent } from "../../../_shared/events";
 import { BitCoinMasterLocators } from "../locators/bitcoin-master-locators";
 import { BitCoinMasterConfigs } from "../bitcoin-master-configs";
-import { MiniGameOptions, MiniGameBase } from "../../../core/smoke-game-bases/mini-game-base.spec";
+import { IBaseOptions, MiniGameBase } from "../../../core/smoke-game-bases";
 
 class BitCoinMasterSmokeSpec extends MiniGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: MiniGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [BitCoinMasterConfigs.choices[0]],
             gameConfiguration: BitCoinMasterConfigs,
             locators: BitCoinMasterLocators,

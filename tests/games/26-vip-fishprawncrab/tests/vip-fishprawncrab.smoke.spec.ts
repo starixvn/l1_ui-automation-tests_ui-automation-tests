@@ -1,13 +1,13 @@
 import { VIPFPCLocators } from "../locators/vip-fishprawncrab-locators";
 import { VIPFPCConfigs } from "../vip-fishprawncrab-configs";
-import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
+import { IBaseOptions, TableGameBase } from "../../../core/smoke-game-bases";
 
 class VIPFPCSmokeSpec extends TableGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: ITableGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [VIPFPCConfigs.choices[7]],
             gameConfiguration: VIPFPCConfigs,
             locators: VIPFPCLocators,
