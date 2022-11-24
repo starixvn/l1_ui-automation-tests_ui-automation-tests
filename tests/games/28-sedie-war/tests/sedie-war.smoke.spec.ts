@@ -1,13 +1,13 @@
 import { SedieWarLocators } from "../locators/sedie-war-locators";
 import { SedieWarConfigs } from "../sedie-war-configs";
-import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
+import { IBaseOptions, TableGameBase } from "../../../core/smoke-game-bases";
 
 class SedieWarSmokeSpec extends TableGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: ITableGameOptions = {
+        const smokeOptions: IBaseOptions = {
             gameConfiguration: SedieWarConfigs,
             locators: SedieWarLocators,
             waitBetTimeout: 10000,

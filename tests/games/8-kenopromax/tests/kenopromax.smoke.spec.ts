@@ -1,13 +1,13 @@
 import { KenoProMaxLocators } from "../locators/kenopromax-locators";
 import { KenoProMaxConfigs } from "../kenopromax-configs";
-import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
+import { IBaseOptions, TableGameBase } from "../../../core/smoke-game-bases";
 
 class KenoProMaxSmokeSpec extends TableGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: ITableGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [KenoProMaxConfigs.choices[0]],
             gameConfiguration: KenoProMaxConfigs,
             locators: KenoProMaxLocators,

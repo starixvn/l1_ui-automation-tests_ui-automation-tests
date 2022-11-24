@@ -1,13 +1,13 @@
 import { ThreeCardsLocators } from "../locators/threecards-locators";
 import { ThreeCardsConfigs } from "../threecards-configs";
-import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
+import { IBaseOptions, TableGameBase } from "../../../core/smoke-game-bases";
 
 class ThreeCardsSmokeSpec extends TableGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: ITableGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [ThreeCardsConfigs.choices[0]],
             gameConfiguration: ThreeCardsConfigs,
             locators: ThreeCardsLocators,

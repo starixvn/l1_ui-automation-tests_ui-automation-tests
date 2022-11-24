@@ -1,6 +1,6 @@
 import { FruitSlotLocators } from "../locators/fruit-slot-locators";
 import { FruitSlotConfigs } from "../fruit-slot-configs";
-import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
+import { IBaseOptions, TableGameBase } from "../../../core/smoke-game-bases";
 
 // import { GameConfiguration } from "../game-configuration";
 // import { ImageLocator } from "../base-image-locator";
@@ -10,7 +10,7 @@ class FruitSlotSmokeSpec extends TableGameBase {
      *
      */
     constructor() {
-        const smokeOptions: ITableGameOptions = {
+        const smokeOptions: IBaseOptions = {
             gameConfiguration: FruitSlotConfigs,
             placeBetChoices: [FruitSlotConfigs.choices[8]],
             waitBetTimeout: 10000,
