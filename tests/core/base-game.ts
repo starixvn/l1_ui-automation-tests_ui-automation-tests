@@ -88,16 +88,30 @@ export class BaseGame {
         return await waitForMessage(this.gameSocket, GameEvent.EndBet, this.getGameName(subGameName), this.msgpack);
     }
 
+    async waitForDeal(subGameName?: string): Promise<any> {
+        return await waitForMessage(this.gameSocket, GameEvent.Deal, this.getGameName(subGameName), this.msgpack);
+    }
+
+    async waitForEndDeal(subGameName?: string): Promise<any> {
+        return await waitForMessage(this.gameSocket, GameEvent.EndDeal, this.getGameName(subGameName), this.msgpack);
+    }
+
+    async waitForStandBet(subGameName?: string): Promise<any> {
+        return await waitForMessage(this.gameSocket, GameEvent.Stand, this.getGameName(subGameName), this.msgpack);
+    }
+
     async waitForSettlement(subGameName?: string): Promise<any> {
         const message = await waitForMessage(this.gameSocket, GameEvent.Settlement, this.getGameName(subGameName), this.msgpack);
         const winningByChoice = this.latestCaptureEvent(GameEvent.WinStatus);
-
-        const settledResults = {
+        let settledResults = {
             settlementResult: message?.finish?.settlementResult,
-            winAmount: winningByChoice?.status?.bet ?? 0,
             odds: this.odds,
         };
-
+        if (this.gameConfiguration.slotsgame) {
+            settledResults["winAmount"] = message?.finish?.betWin ?? 0;
+        } else {
+            settledResults["winAmount"] = winningByChoice.win ? winningByChoice?.status?.bet : 0;
+        }
         return settledResults;
     }
 
@@ -130,6 +144,16 @@ export class BaseGame {
     async clickToChoice(choice: string): Promise<void> {
         const postfix = this.gameConfiguration.betBoard ? this.BetBoardPostfix : "";
         const locator = this.locator(`${choice}Choice${postfix}`);
+        if (locator) {
+            await locator.click(this.page);
+        }
+    }
+
+    async clickToSlotsChoice(choice: string): Promise<void> {
+        await this.locator("choiceMenu")?.click(this.page);
+        await this.waitForTimeout(500);
+        await this.locator("clearChoices")?.click(this.page);
+        const locator = this.locator(`${choice}Choice`);
 
         if (locator) {
             await locator.click(this.page);
@@ -152,6 +176,7 @@ export class BaseGame {
             await this.locator("hamburgerMenu")?.click(this.page);
             await this.waitForTimeout(500);
         }
+
         await this.locator("historyMenu")?.click(this.page);
         await this.waitForTimeout(500);
     }
@@ -164,8 +189,28 @@ export class BaseGame {
         await this.locator(`stake${amount}`)?.click(this.page);
     }
 
+    async clickStand(): Promise<void> {
+        await this.waitForTimeout(6000);
+        await this.locator("standcard")?.click(this.page);
+    }
+
+    async clickHit(): Promise<void> {
+        await this.locator("hitcard")?.click(this.page);
+    }
+    async clickSlotsStake(amount: number = 1): Promise<void> {
+        await this.locator("stakeMenu")?.click(this.page);
+        await this.waitForTimeout(500);
+        await this.locator(`stake${amount}`)?.click(this.page);
+    }
+
     async clickSubmitBet(): Promise<void> {
+        await this.waitForTimeout(500);
         await this.locator(`submit${this.BetBoardPostfix}`)?.click(this.page);
+    }
+
+    async clickSpin(): Promise<void> {
+        await this.waitForTimeout(500);
+        await this.locator("spin")?.click(this.page);
     }
 
     async clickOutSide(): Promise<void> {

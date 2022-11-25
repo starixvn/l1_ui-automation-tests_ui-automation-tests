@@ -6,4 +6,8 @@ export enum GameEvent {
     WinStatus = "status",
     History = "history",
     GameConfig = "gameConfigs",
+    EndDeal = "endDeal",
+    HitCard = "hit",
+    Stand = "stand",
+    Deal = "deal",
 }

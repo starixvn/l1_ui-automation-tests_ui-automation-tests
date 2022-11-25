@@ -10,7 +10,7 @@ export const BitCoinMasterConfigs: GameConfiguration = {
     },
     choices: ["up", "down", "odd", "even"],
     hedgeBetGroups: [["up", "down"]],
-    maxTimeout: 900 * 1000, // miliseconds,
+    maxTimeout: 100 * 1000, // miliseconds,
     odds: {
         up: 1.96,
         down: 1.96,

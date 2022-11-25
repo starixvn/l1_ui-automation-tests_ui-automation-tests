@@ -12,9 +12,9 @@ export const FPCConfigs: GameConfiguration = {
     hedgeBetGroups: [["fish", "crab"]],
     maxTimeout: 200 * 1000, // miliseconds,
     odds: {
-        single: 3,
-        double: 3.6,
-        triple: 7,
+        single: 2,
+        double: 3.5,
+        triple: 6,
     },
     betBoard: false,
 };
