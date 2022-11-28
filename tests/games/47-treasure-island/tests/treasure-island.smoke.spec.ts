@@ -28,7 +28,7 @@ class TreasureIslandSmokeSpec extends SlotGameBase {
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act
-            const placeBetResponse = await this.player.placeBetSlots(bet.choice, bet.amount);
+            const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);
             const settledResults = await this.game.waitForSettlement();
             
             // Assert
