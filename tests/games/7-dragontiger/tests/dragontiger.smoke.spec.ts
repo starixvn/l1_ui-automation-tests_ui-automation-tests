@@ -17,7 +17,6 @@ class DragonTigerSmokeSpec extends MiniGameBase {
 
         super(smokeOptions);
     }
-
 }
 
 new DragonTigerSmokeSpec().start();

@@ -1,5 +1,5 @@
-import { test, expect } from "../../../core/base-fixture";
-import { GameEvent } from "../../../_shared/events";
+import {test, expect} from '../../../core/base-fixture'
+import {GameEvent} from '../../../_shared/events'
 import { BitCoinMasterLocators } from "../locators/bitcoin-master-locators";
 import { BitCoinMasterConfigs } from "../bitcoin-master-configs";
 import { IBaseOptions, MiniGameBase } from "../../../core/smoke-game-bases";
