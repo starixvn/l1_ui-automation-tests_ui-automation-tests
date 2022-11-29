@@ -2,6 +2,7 @@ import { test, expect } from "../base-fixture";
 import { GameEvent } from "../../_shared/events";
 import { BasePlayer, BaseGame } from "..";
 import IBaseOptions from "./base-options";
+
 export interface SlotGameOptions extends IBaseOptions {
     placeBetChoices: string[];
     placeBetAmount?: number;

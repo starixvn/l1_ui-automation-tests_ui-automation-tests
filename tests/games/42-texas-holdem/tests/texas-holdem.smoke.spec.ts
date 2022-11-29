@@ -2,14 +2,14 @@ import { test, expect } from "../../../core/base-fixture";
 import { GameEvent } from "../../../_shared/events";
 import { TexasHoldemPokerrLocators } from "../locators/texas-holdem-locators";
 import { TexasHoldemPokerrConfigs } from "../texas-holdem-configs";
-import { CardGameOptions, CardGameBase } from "../../../core/smoke-game-bases/card-game-base.spec";
+import { IBaseOptions, CardGameBase } from "../../../core/smoke-game-bases";
 
 class TexasHoldemPokerrSmokeSpec extends CardGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: CardGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [TexasHoldemPokerrConfigs.choices[0],TexasHoldemPokerrConfigs.choices[1]],
             gameConfiguration: TexasHoldemPokerrConfigs,
             locators: TexasHoldemPokerrLocators,
@@ -20,9 +20,6 @@ class TexasHoldemPokerrSmokeSpec extends CardGameBase {
         super(smokeOptions);
     }
 
-    // protected inGameOddsTests(): void {
-        
-    // }
 
     protected inGameBetChoiceTests(): void {
         test("AND bet choices should be displayed on table", async () => {
@@ -45,7 +42,7 @@ class TexasHoldemPokerrSmokeSpec extends CardGameBase {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            const bet = { choice: this.options.placeBetChoices[0], amount: 10 };
+            const bet = { choice: this.options.placeBetChoices[0], amount: 1 };
             this.game.attachSocketAndCaptureEvent(GameEvent.Deal);        
            
             // Act

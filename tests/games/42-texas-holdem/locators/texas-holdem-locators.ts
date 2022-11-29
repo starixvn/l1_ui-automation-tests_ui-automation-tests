@@ -8,7 +8,7 @@ export const TexasHoldemPokerrLocators = [
     new ImageLocator("hamburgerMenu", 40, 190, 30, 30),
     new ImageLocator("historyMenu", 43, 454, 20, 20),
     new ImageLocator("historyPopup", 538, 25, 200, 73),
-    new ImageLocator("stake10", 413, 610, 80, 60),
+    new ImageLocator("stake1", 413, 610, 80, 60),
     new ImageLocator("submitBetBoard", 982, 596, 80, 69),
     new ImageLocator("followcard", 982, 596, 80, 69),
     new ImageLocator("standcard", 1116, 537, 90, 90),

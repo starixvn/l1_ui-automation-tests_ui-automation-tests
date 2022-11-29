@@ -12,5 +12,5 @@ export const FPCLocators = [
     new ImageLocator("hamburgerMenu", 0, 0, 0, 0), //no hamberger icon
     new ImageLocator("historyMenu", 346, 360, 0, 0),
     new ImageLocator("historyPopup", 455, 50, 300, 70),
-    new ImageLocator("stake5", 467, 525, 0, 0),
+    new ImageLocator("stake1", 467, 525, 0, 0),
 ];

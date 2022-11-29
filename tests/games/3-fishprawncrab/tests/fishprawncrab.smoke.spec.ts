@@ -1,15 +1,14 @@
 import { FPCLocators } from "../locators/fishprawncrab-locators";
 import { FPCConfigs } from "../fishprawncrab-configs";
-import { MiniGameOptions, MiniGameBase } from "../../../core/smoke-game-bases/mini-game-base.spec";
+import {IBaseOptions, MiniGameBase } from "../../../core/smoke-game-bases";
 
 class FPCSmokeSpec extends MiniGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: MiniGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [FPCConfigs.choices[3]],
-            placeBetAmount: 5 ,
             gameConfiguration: FPCConfigs,
             locators: FPCLocators,
             waitBetTimeout: 10000,

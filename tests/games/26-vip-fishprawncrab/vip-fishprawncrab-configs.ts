@@ -12,12 +12,12 @@ export const VIPFPCConfigs: GameConfiguration = {
     hedgeBetGroups: [["mountain", "ocean"]],
     maxTimeout: 200 * 1000, // miliseconds,
     odds: {
-        single: 3,
-        double: 3.6,
-        triple: 7,
-        anyTriple: 34,
-        mountain: 1.98,
-        ocean: 1.98,
+        single: 2,
+        double: 3.5,
+        triple: 6,
+        anyTriple: 33,
+        mountain: 1.96,
+        ocean: 1.96,
     },
     betBoard: false,
 };

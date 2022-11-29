@@ -1,14 +1,13 @@
-import {test} from '../../../core/base-fixture'
 import { NightClubLocators } from "../locators/night-club-locators";
 import { NightClubConfigs } from "../night-club-configs";
-import { SlotGameOptions, SlotGameBase } from "../../../core/smoke-game-bases/slot-game-base.spec";
+import { IBaseOptions, SlotGameBase } from "../../../core/smoke-game-bases";
 
 class NightClubSmokeSpec extends SlotGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: SlotGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [NightClubConfigs.choices[0]],
             gameConfiguration: NightClubConfigs,
             locators: NightClubLocators,

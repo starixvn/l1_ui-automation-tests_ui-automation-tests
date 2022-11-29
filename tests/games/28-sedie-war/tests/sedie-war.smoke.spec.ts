@@ -17,6 +17,7 @@ class SedieWarSmokeSpec extends TableGameBase {
 
         super(smokeOptions);
     }
+    protected inGameDealerTests(): void {}
 }
 
 new SedieWarSmokeSpec().start();

@@ -1,4 +1,4 @@
-import { test } from "../../../core/base-fixture";
+import {test} from '../../../core/base-fixture'
 import { BlockchainBaccaratLocators } from "../locators/blockchain-baccarat-locators";
 import { BlockchainBaccaratConfigs } from "../blockchain-baccarat-configs";
 import { IBaseOptions, TableGameBase } from "../../../core/smoke-game-bases";
@@ -20,9 +20,11 @@ class BlockchainBaccaratSmokeSpec extends TableGameBase {
 
     protected inGameDealerTests(): void {
         test("Close game guide at first time load", async () => {
-            await this.game.waitForTimeout(5000);
+            await this.game.waitForTimeout(5000)
             await this.game.clickLocator("closeguide");
         });
+       
+
     }
 }
 

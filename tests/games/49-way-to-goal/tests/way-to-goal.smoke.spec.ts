@@ -1,14 +1,13 @@
-import {test} from '../../../core/base-fixture'
 import { WayToGoalLocators } from "../locators/way-to-goal-locators";
 import { WayToGoalConfigs } from "../way-to-goal-configs";
-import { SlotGameOptions, SlotGameBase } from "../../../core/smoke-game-bases/slot-game-base.spec";
+import { IBaseOptions, SlotGameBase } from "../../../core/smoke-game-bases";
 
 class WayToGoalSmokeSpec extends SlotGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: SlotGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [WayToGoalConfigs.choices[0]],
             gameConfiguration: WayToGoalConfigs,
             locators: WayToGoalLocators,

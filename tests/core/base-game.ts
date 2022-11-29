@@ -103,6 +103,7 @@ export class BaseGame {
     async waitForSettlement(subGameName?: string): Promise<any> {
         const message = await waitForMessage(this.gameSocket, GameEvent.Settlement, this.getGameName(subGameName), this.msgpack);
         const winningByChoice = this.latestCaptureEvent(GameEvent.WinStatus);
+
         let settledResults = {
             settlementResult: message?.finish?.settlementResult,
             odds: this.odds,
@@ -110,7 +111,7 @@ export class BaseGame {
         if (this.gameConfiguration.slotsgame) {
             settledResults["winAmount"] = message?.finish?.betWin ?? 0;
         } else {
-            settledResults["winAmount"] = winningByChoice.win ? winningByChoice?.status?.bet : 0;
+            settledResults["winAmount"] = winningByChoice.status.win ? winningByChoice.status.bet : 0;
         }
         return settledResults;
     }

@@ -1,15 +1,14 @@
 import {test, expect} from '../../../core/base-fixture'
-import {GameEvent} from '../../../_shared/events'
 import { RouletteLocators } from "../locators/roulette-locators";
 import { RouletteConfigs } from "../roulette-configs";
-import { MiniGameOptions, MiniGameBase } from "../../../core/smoke-game-bases/mini-game-base.spec";
+import { IBaseOptions, MiniGameBase } from "../../../core/smoke-game-bases";
 
 class RouletteSmokeSpec extends MiniGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: MiniGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [RouletteConfigs.choices[0]],
             gameConfiguration: RouletteConfigs,
             locators: RouletteLocators,

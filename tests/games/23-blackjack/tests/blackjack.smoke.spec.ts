@@ -1,13 +1,13 @@
 import { BlackJackLocators } from "../locators/blackjack-locators";
 import { BlackJackConfigs } from "../blackjack-configs";
-import { CardGameOptions, CardGameBase } from "../../../core/smoke-game-bases/card-game-base.spec";
+import { IBaseOptions, CardGameBase } from "../../../core/smoke-game-bases";
 
 class BlackJackSmokeSpec extends CardGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: CardGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [BlackJackConfigs.choices[0],BlackJackConfigs.choices[1],BlackJackConfigs.choices[2]],
             gameConfiguration: BlackJackConfigs,
             locators: BlackJackLocators,

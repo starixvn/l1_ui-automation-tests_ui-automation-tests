@@ -2,14 +2,14 @@ import { test, expect } from "../../../core/base-fixture";
 import { GameEvent } from "../../../_shared/events";
 import { LotteryLocators } from "../locators/lottery-locators";
 import { LotteryConfigs } from "../lottery-configs";
-import { ITableGameOptions, TableGameBase } from "../../../core/smoke-game-bases/table-game-base.spec";
+import { IBaseOptions, TableGameBase } from "../../../core/smoke-game-bases";
 
 class LotterySmokeSpec extends TableGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: ITableGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [LotteryConfigs.choices[4],LotteryConfigs.choices[5]],
             gameConfiguration: LotteryConfigs,
             locators: LotteryLocators,
@@ -27,7 +27,7 @@ class LotterySmokeSpec extends TableGameBase {
         test.setTimeout(this.options.gameConfiguration.maxTimeout);
         await this.game.clickLocator("othersChoice")
         
-        const bet = { choice: "others" , amount: 2 };
+        const bet = { choice: "others" , amount: 1 };
         this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
         // Act

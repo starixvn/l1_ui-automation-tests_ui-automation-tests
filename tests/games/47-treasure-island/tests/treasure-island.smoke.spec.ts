@@ -2,14 +2,14 @@ import { test, expect } from "../../../core/base-fixture";
 import { GameEvent } from "../../../_shared/events";
 import { TreasureIslandLocators } from "../locators/treasure-island-locators";
 import { TreasureIslandConfigs } from "../treasure-island-configs";
-import { SlotGameOptions, SlotGameBase } from "../../../core/smoke-game-bases/slot-game-base.spec";
+import { IBaseOptions, SlotGameBase } from "../../../core/smoke-game-bases";
 
 class TreasureIslandSmokeSpec extends SlotGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: SlotGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [TreasureIslandConfigs.choices[0]],
             gameConfiguration: TreasureIslandConfigs,
             locators: TreasureIslandLocators,

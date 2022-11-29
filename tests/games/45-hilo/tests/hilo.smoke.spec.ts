@@ -2,14 +2,14 @@ import { test, expect } from "../../../core/base-fixture";
 import { GameEvent } from "../../../_shared/events";
 import { HiLoLocators } from "../locators/hilo-locators";
 import { HiLoConfigs } from "../hilo-configs";
-import { MiniGameOptions, MiniGameBase } from "../../../core/smoke-game-bases/mini-game-base.spec";
+import { IBaseOptions, MiniGameBase } from "../../../core/smoke-game-bases";
 
 class HiLoSmokeSpec extends MiniGameBase {
     /**
      *
      */
     constructor() {
-        const smokeOptions: MiniGameOptions = {
+        const smokeOptions: IBaseOptions = {
             placeBetChoices: [HiLoConfigs.choices[0], HiLoConfigs.choices[1]],
             gameConfiguration: HiLoConfigs,
             locators: HiLoLocators,
