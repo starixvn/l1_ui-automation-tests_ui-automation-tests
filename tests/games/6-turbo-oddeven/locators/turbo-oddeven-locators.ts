@@ -8,10 +8,10 @@ export const TurboOddEvenLocators = [
     new ImageLocator("playerBalance", 192, 644, 125, 23),
     new ImageLocator("historyMenu", 341, 211, 61, 59),
     new ImageLocator("historyPopup", 465, 70, 300, 70),
-    new ImageLocator("errorMessage", 546, 365, 193, 30),
+    new ImageLocator("errorMessage", 546, 370, 193, 25),
     new ImageLocator("oddChoiceBetBoard", 391, 369, 157, 42),
     new ImageLocator("evenChoiceBetBoard", 742, 369, 157, 42),
-    new ImageLocator("stake5", 436, 489, 97, 36),
+    new ImageLocator("stake1", 436, 489, 97, 36),
     new ImageLocator("submitBetBoard", 730, 595, 119, 31),
     new ImageLocator("outside", 0, 0, 0, 0),
 ];

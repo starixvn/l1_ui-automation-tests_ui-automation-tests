@@ -26,20 +26,33 @@ class LotterySmokeSpec extends TableGameBase {
         test("THEN player able to place a bet and settle", async () => {
         test.setTimeout(this.options.gameConfiguration.maxTimeout);
         await this.game.clickLocator("othersChoice")
-        
-        const bet = { choice: "others" , amount: 1 };
+        const bet = { choice: {group:'others',betchoice: 'big'} , amount: 1 };
         this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
         // Act
-        const placeBetResponse = await this.player.placeBet(LotteryConfigs.hedgeBetGroups[0][0], bet.amount);
+        const placeBetResponse = await this.player.placeBet(bet.choice.betchoice, bet.amount);
         const settledResults = await this.game.waitForSettlement();
             
         // Assert
         expect(placeBetResponse.endBet).toBe(bet.amount);
         expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
-        expect(bet).toMatchWinning(settledResults);
+        expect(await toMatchWinning(settledResults,bet)).toBeTruthy()
     });
 }
 }
 
 new LotterySmokeSpec().start();
+
+
+const toMatchWinning = async (settledResults: object, bet: object) => {
+    const odds = settledResults.settlementResult[bet.choice.group][ bet.choice.betchoice] ? settledResults.odds[bet.choice.group] : 0;
+    const expectedAmount = bet.amount * odds;
+    
+    if (expectedAmount === settledResults.winAmount) {
+        return true
+    }
+    else {
+        console.log( `failed. Expected ${expectedAmount} but received ${settledResults.winAmount}`);
+        return false
+    }
+};

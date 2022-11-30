@@ -16,9 +16,9 @@ export const VipBaccaratConfigs: GameConfiguration = {
         banker: 1.95,
         big: 1.54,
         small: 2.5,
-        tie: 8,
-        playerPair: 11,
-        bankerPair: 11,
+        tie: 9,
+        playerPair: 12,
+        bankerPair: 12,
     },
     betBoard: false,
 };

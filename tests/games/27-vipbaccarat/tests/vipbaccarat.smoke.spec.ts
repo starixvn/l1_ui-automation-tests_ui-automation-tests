@@ -10,6 +10,7 @@ class VipBaccaratSmokeSpec extends TableGameBase {
         const smokeOptions: IBaseOptions = {
             placeBetChoices: [VipBaccaratConfigs.choices[3]],
             gameConfiguration: VipBaccaratConfigs,
+            placeBetAmount: 10,
             locators: VipBaccaratLocators,
             waitBetTimeout: 9000,
             snapshotFolderPath: __filename,

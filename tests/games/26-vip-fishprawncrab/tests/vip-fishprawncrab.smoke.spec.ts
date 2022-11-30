@@ -10,6 +10,7 @@ class VIPFPCSmokeSpec extends TableGameBase {
         const smokeOptions: IBaseOptions = {
             placeBetChoices: [VIPFPCConfigs.choices[7]],
             gameConfiguration: VIPFPCConfigs,
+            placeBetAmount: 10,
             locators: VIPFPCLocators,
             waitBetTimeout: 12000,
             snapshotFolderPath: __filename,

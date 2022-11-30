@@ -9,7 +9,7 @@ class TurboBigSmallSmokeSpec extends BalancedBettingGameBase {
     constructor() {
         const smokeOptions: IBaseOptions = {
             placeBetChoices: [TurboOddEvenConfigs.choices[0]],
-            placeBetAmount: 5,
+            placeBetAmount: 1,
             gameConfiguration: TurboOddEvenConfigs,
             locators: TurboOddEvenLocators,
             snapshotFolderPath: __filename,

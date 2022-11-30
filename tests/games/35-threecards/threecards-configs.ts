@@ -14,10 +14,10 @@ export const ThreeCardsConfigs: GameConfiguration = {
     odds: {
         red: 1.96,
         black: 1.96,
-        diamonds: 1.65,
-        hearts: 1.65,
-        spades: 1.65,
-        clubs: 1.65,
+        diamonds: 1.68,
+        hearts: 1.68,
+        spades: 1.68,
+        clubs: 1.68,
     },
     betBoard: false,
 };

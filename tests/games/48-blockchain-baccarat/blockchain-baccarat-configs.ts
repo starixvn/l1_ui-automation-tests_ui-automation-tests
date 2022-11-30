@@ -12,8 +12,8 @@ export const BlockchainBaccaratConfigs: GameConfiguration = {
     hedgeBetGroups: [["player", "banker"]],
     maxTimeout: 300 * 1000, // miliseconds,
     odds: {
-        player: 2.5,
-        banker: 1.96,
+        player: 2,
+        banker: 1.95,
         big: 1.54,
         small: 2.5,
         tie: 9,

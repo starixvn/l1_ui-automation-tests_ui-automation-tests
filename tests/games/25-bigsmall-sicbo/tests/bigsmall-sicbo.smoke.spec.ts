@@ -17,6 +17,10 @@ class BigSmallSicBoSmokeSpec extends TableGameBase {
 
         super(smokeOptions);
     }
+
+    protected inGameDealerTests(): void {
+        
+    }
 }
 
 new BigSmallSicBoSmokeSpec().start();
