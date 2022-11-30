@@ -83,7 +83,7 @@ export class MiniGameBase {
     start(): void {
         test.beforeEach(async ({}, testInfo) => {
             testInfo.snapshotPath = (name: string) => {
-                const snapshotPath = `${this.options.snapshotFolderPath}-snapshots\\${name}`;
+                const snapshotPath = this.options.snapshotFolderPath + "-snapshots/" + name;
 
                 return snapshotPath;
             };

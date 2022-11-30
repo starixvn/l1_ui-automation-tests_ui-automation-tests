@@ -8,7 +8,7 @@ import { waitForMessage, parseSocketPayload } from "./../_shared/socket-helpers"
 import { GameEvent } from "./../_shared/events";
 
 export class BaseGame {
-    readonly LobbyTimeout: number = 40000;
+    readonly LobbyTimeout: number = 50000;
     readonly BetBoardPostfix: string = "BetBoard";
 
     readonly page: Page;
@@ -122,7 +122,7 @@ export class BaseGame {
 
     async capture(locatorName: string): Promise<ImageSnapshot> {
         const locator = this.locator(locatorName);
-
+        
         return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
     }
 

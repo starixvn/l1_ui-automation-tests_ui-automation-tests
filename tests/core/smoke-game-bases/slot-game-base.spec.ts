@@ -27,17 +27,16 @@ export class SlotGameBase {
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             const bet = { choice: this.options.placeBetChoices[0], amount: this.options.placeBetAmount ?? 1 };
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
-            
+
             // Act
             const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);
             const settledResults = await this.game.waitForSettlement();
-            
+
             // Assert
             expect(placeBetResponse.endBet).toBe(bet.amount * parseInt(bet.choice));
             expect(bet).toMatchWinningSlotsGame(settledResults);
         });
     }
-
 
     protected ticketHistoryTests() {
         test("AND player could open history popup", async () => {
@@ -56,7 +55,7 @@ export class SlotGameBase {
     start(): void {
         test.beforeEach(async ({}, testInfo) => {
             testInfo.snapshotPath = (name: string) => {
-                const snapshotPath = `${this.options.snapshotFolderPath}-snapshots\\${name}`;
+                const snapshotPath = this.options.snapshotFolderPath + "-snapshots/" + name;
 
                 return snapshotPath;
             };

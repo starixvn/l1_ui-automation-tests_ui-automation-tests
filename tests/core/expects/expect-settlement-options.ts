@@ -12,14 +12,6 @@ expect.extend({
             });
 
         if (isEqual) {
-        const uniqueBetOptions = Array.from(new Set(settlementBetOptions));
-        const isEqual =
-            uniqueBetOptions.length === betOptions.length &&
-            uniqueBetOptions.every(function (value, index) {
-                return betOptions.includes(value);
-            });
-
-        if (isEqual) {
             return {
                 message: () => "passed",
                 pass: true,

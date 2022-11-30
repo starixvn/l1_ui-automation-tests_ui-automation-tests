@@ -47,11 +47,10 @@ export class CardGameBase {
             // Act
             const placebetdeal = await this.player.placeBet(bet.choice, bet.amount);
             const standresult = await this.player.standCard();
-            console.log(placebetdeal, standresult);
             
             // Assert
-            // expect(placebetdeal.deal.hands[0].bet).toBe(bet.amount);
-            // expect(placebetdeal.deal.hands[0].pos).toBe(parseInt(bet.choice));
+            expect(placebetdeal.deal.hands[0].bet).toBe(bet.amount);
+            expect(placebetdeal.deal.hands[0].pos).toBe(parseInt(bet.choice));
         });
     }
 
@@ -73,7 +72,7 @@ export class CardGameBase {
     start(): void {
         test.beforeEach(async ({}, testInfo) => {
             testInfo.snapshotPath = (name: string) => {
-                const snapshotPath = `${this.options.snapshotFolderPath}-snapshots\\${name}`;
+                const snapshotPath = this.options.snapshotFolderPath + "-snapshots/" + name;
 
                 return snapshotPath;
             };

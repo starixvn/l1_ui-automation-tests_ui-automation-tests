@@ -1,4 +1,4 @@
-FROM hub.lumigame.com/base/playwright:v1.24.0-focal
+FROM hub.lumigame.com/pentagon-base/qc-auto-image@sha256:0a852fdf85ca8a6653025ad39984a6f1156bc2c2c3b36ca84064cc523c104681
 
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
