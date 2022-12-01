@@ -37,7 +37,7 @@ smoketest:
   image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests:main
   stage: test
   tags:
-    - power-docker-test-runner
+    - smoke-test 
   script:
     - npm run test --env=$ENV --game=$GAMEID
   after_script:
