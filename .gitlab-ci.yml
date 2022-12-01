@@ -42,7 +42,7 @@ smoketest:
     - npm run test --env=$ENV --game=$GAMEID
   after_script:
     - du -hs /ms-playwright/*
-  retry: 2      
+  retry: 1      
 
   artifacts:
     paths:
