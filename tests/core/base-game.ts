@@ -179,7 +179,7 @@ export class BaseGame {
         }
 
         await this.locator("historyMenu")?.click(this.page);
-        await this.waitForTimeout(500);
+        await this.waitForTimeout(1000);
     }
 
     async captureErrorMessage(): Promise<ImageSnapshot> {
