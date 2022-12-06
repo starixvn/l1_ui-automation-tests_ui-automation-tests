@@ -46,6 +46,7 @@ export default {
         48: ["IT59Test789"],
         49: ["IT55Test789"],
         50: ["IT56Test789"],
+        60: ["IT57Test789"],
     },
     mapGameId: {
         1: 1612,
@@ -90,6 +91,7 @@ export default {
         48: 1655,
         49: 1656,
         50: 1659,
+        60: 1667,
         
     },
     pwd: "1234aaAA",
