@@ -27,8 +27,8 @@ export const FanTanConfigs: GameConfiguration = {
     hedgeBetGroups: [["odd", "even"]],
     maxTimeout: 100 * 1000, // miliseconds,
     odds: {
-        odd: 1.96,
         even: 1.96,
+        odd: 1.96,
         fan1: 3.85,
         fan2: 3.85,
         fan3: 3.85,
