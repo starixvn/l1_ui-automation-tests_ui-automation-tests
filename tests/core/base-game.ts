@@ -102,7 +102,8 @@ export class BaseGame {
 
     async waitForSettlement(subGameName?: string): Promise<any> {
         const message = await waitForMessage(this.gameSocket, GameEvent.Settlement, this.getGameName(subGameName), this.msgpack);
-        const winningByChoice = await waitForMessage(this.gameSocket, GameEvent.WinStatus, this.getGameName(subGameName), this.msgpack);
+        await this.page.waitForTimeout(200); // add sleep due to feature Publish round result prior to settlement
+        const winningByChoice = this.latestCaptureEvent(GameEvent.WinStatus);
         
         let settledResults = {
             settlementResult: message?.finish?.settlementResult,
