@@ -18,7 +18,7 @@ before_script:
   - npm ci --cache .npm
 
 docker-build:
-  image: hub.lumigame.com/base/playwright:v1.24.0-focal
+  image: registry.nexdev.net:5050/docker/docker-engine/docker:20.10.7
   tags:
     - docker-automation-test
   stage: build
@@ -26,6 +26,8 @@ docker-build:
     - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  rules:   
+    - if: $CI_COMMIT_TAG =~ /build-image/         
   script:   
      - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
      - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
