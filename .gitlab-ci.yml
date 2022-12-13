@@ -34,7 +34,7 @@ docker-build:
   when: always
 
 smoketest:
-  image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests:docker-automation-test
+  image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests
   stage: test
   tags:
     - auto-test-prod
