@@ -31,10 +31,10 @@ docker-build:
   script:   
      - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
      - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-  when: always
+  when: manual
 
 smoketest:
-  image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests
+  image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests:docker-automation-test
   stage: test
   tags:
     - auto-test-prod
@@ -49,6 +49,6 @@ smoketest:
       - playwright-report
       - screenshots
       - test-results   
-    when: always
+    when: manual
     expire_in: 1 day
 
