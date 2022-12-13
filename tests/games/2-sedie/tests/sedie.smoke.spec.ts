@@ -10,7 +10,7 @@ class SedieSmokeSpec extends TableGameBase {
         const smokeOptions: IBaseOptions = {
             gameConfiguration: SedieConfigs,
             locators: SedieLocators,
-            waitBetTimeout: 5000,
+            waitBetTimeout: 8000,
             placeBetChoices: [SedieConfigs.choices[0]],
             snapshotFolderPath: __filename,
         };
