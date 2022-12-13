@@ -42,13 +42,14 @@ smoketest:
     - npm run test --env=$ENV --game=$GAMEID
   after_script:
     - du -hs /ms-playwright/*
-  retry: 1      
+  retry: 1    
+  when: manual  
 
   artifacts:
     paths:
       - playwright-report
       - screenshots
       - test-results   
-    when: manual
+    when: always
     expire_in: 1 day
 
