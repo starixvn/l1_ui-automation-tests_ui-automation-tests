@@ -11,7 +11,7 @@ class NightClubSmokeSpec extends SlotGameBase {
             placeBetChoices: [NightClubConfigs.choices[0]],
             gameConfiguration: NightClubConfigs,
             locators: NightClubLocators,
-            waitBetTimeout: 1000,
+            waitBetTimeout: 5000,
             snapshotFolderPath: __filename,
         };
         super(smokeOptions);

@@ -13,7 +13,7 @@ class TreasureIslandSmokeSpec extends SlotGameBase {
             placeBetChoices: [TreasureIslandConfigs.choices[0]],
             gameConfiguration: TreasureIslandConfigs,
             locators: TreasureIslandLocators,
-            waitBetTimeout: 1000,
+            waitBetTimeout: 5000,
             snapshotFolderPath: __filename,
         };
         super(smokeOptions);

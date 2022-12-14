@@ -16,6 +16,7 @@ export class SlotGameBase {
 
     protected inGameOddsTests() {
         test("AND odds should be correct", async () => {
+            await this.game.waitForTimeout(this.options.waitBetTimeout);
             // Assert
             expect(this.game.odds).toStrictEqual(this.options.gameConfiguration.odds);
         });

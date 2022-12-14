@@ -11,7 +11,7 @@ class FourGuardiansSmokeSpec extends SlotGameBase {
             placeBetChoices: [FourGuardiansConfigs.choices[0]],
             gameConfiguration: FourGuardiansConfigs,
             locators: FourGuardiansLocators,
-            waitBetTimeout: 1000,
+            waitBetTimeout: 5000,
             snapshotFolderPath: __filename,
         };
         super(smokeOptions);

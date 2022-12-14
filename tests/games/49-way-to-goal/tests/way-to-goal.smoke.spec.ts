@@ -11,7 +11,7 @@ class WayToGoalSmokeSpec extends SlotGameBase {
             placeBetChoices: [WayToGoalConfigs.choices[0]],
             gameConfiguration: WayToGoalConfigs,
             locators: WayToGoalLocators,
-            waitBetTimeout: 1000,
+            waitBetTimeout: 5000,
             snapshotFolderPath: __filename,
         };
         super(smokeOptions);
