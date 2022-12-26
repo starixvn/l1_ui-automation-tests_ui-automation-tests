@@ -13,7 +13,7 @@ class HiLoSmokeSpec extends MiniGameBase {
             placeBetChoices: [HiLoConfigs.choices[0], HiLoConfigs.choices[1]],
             gameConfiguration: HiLoConfigs,
             locators: HiLoLocators,
-            waitBetTimeout: 1000,
+            waitBetTimeout: 5000,
             snapshotFolderPath: __filename,
         };
 
@@ -57,9 +57,9 @@ const placeBethilo = async (game: any, choice: string, amount: number) => {
     await game.attachSocketAndCaptureEvent(GameEvent.EndDeal);
     await game.clickLocator("stake" + amount);
     await game.clickLocator("startbet");
-    await game.waitForTimeout(1500);
+    await game.waitForTimeout(2000);
     await game.clickLocator(choice + "Choice");
-    await game.waitForTimeout(1500);
+    await game.waitForTimeout(2000);
     await game.clickLocator("collect");
     await game.waitForTimeout(500);
     let message = await game.latestCaptureEvent(GameEvent.EndDeal);

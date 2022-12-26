@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "scripts": {
         "pretest": "rimraf screenshots",
-        "test": "playwright test",
+        "test": "playwright test --project=Smoke_CI",
+        "e2e": "playwright test --project=E2E_CI",
+        "slot": "playwright test --project=E2E_CI",
         "update-snapshots": "playwright test --update-snapshots",
         "report": "npx playwright show-report",
         "create-test-image": "docker rmi test-playwright-docker:latest & docker build -t test-playwright-docker .",

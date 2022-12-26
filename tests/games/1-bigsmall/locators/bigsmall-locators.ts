@@ -2,10 +2,10 @@ import { ImageLocator } from "../../../core/base-image-locator";
 
 export const BigSmallLocators = [
     new ImageLocator("dealer", 610, 230, 60, 30),
-
     new ImageLocator("bigChoice", 415, 270, 90, 50),
-    new ImageLocator("bigOwnbet", 430, 325, 65, 29),
+    new ImageLocator("bigOwnbet", 442, 406, 45, 35),
     new ImageLocator("smallChoice", 774, 270, 89, 59),
+    new ImageLocator("smallOwnbet", 405, 790, 45, 35),
     new ImageLocator("playerBalance", 192, 644, 125, 23),
     new ImageLocator("historyMenu", 380, 240, 52, 42),
     new ImageLocator("historyPopup", 465, 70, 300, 70),

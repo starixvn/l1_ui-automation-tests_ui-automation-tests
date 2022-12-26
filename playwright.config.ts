@@ -15,7 +15,7 @@ const gameId = process.env.npm_config_game ?? "9";
 
 const config: PlaywrightTestConfig = {
     testDir: "./tests",
-    timeout: 120 * 1000,
+    timeout: 0,
     expect: {
         timeout: 10 * 1000,
         toMatchSnapshot: {
@@ -50,7 +50,22 @@ const config: PlaywrightTestConfig = {
                 ...devices["Desktop Chrome"],
             },
         },
+        {
+            name: "E2E_CI",
+            testMatch: `**/${gameId}-*/tests/*.e2e.spec.ts`,
+            use: {
+                ...devices["Desktop Chrome"],
+            },
+        },
+        {
+            name: "Slot_Game",
+            testMatch: `**/SlotGames/tests/test.spec.ts`,
+            use: {
+                ...devices["Desktop Chrome"],
+            },
+        },
     ],
+    
 
     /* Folder for test artifacts such as screenshots, videos, traces, etc. */
     // outputDir: 'test-results/',
