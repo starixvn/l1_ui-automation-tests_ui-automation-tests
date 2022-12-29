@@ -30,4 +30,5 @@ export class BalancedBettingGameBase extends MiniGameBase {
             expect(bet).toMatchWinningAndRefund(settledResults);
         });
     }
+
 }

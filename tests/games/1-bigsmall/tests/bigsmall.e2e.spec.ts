@@ -17,13 +17,23 @@ class BigSmallE2ESpec extends BalancedBettingGameBase {
         super(E2EOptions);
     }
 
-    protected test1(): void {
-        test("test1", async () => {
-            test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            console.log('done');
-            
-        });
+    protected extendtest2(): void {
+        console.log('extendtest2');
+        
     }
+
+    protected test1(){
+        console.log('tét1');
+        
+    }
+
+    protected runScenario(){
+        this.extendtest2()
+        this.test1()
+
+        super.runScenario()
+    }
+
 }
 
 

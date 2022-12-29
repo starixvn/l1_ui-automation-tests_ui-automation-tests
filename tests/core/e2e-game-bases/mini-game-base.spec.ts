@@ -42,9 +42,11 @@ export class MiniGameBase {
 
             // Act
             const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);
+            const betChoice = await this.game.captureOwnbet(bet.choice);
             const settledResults = await this.game.waitForSettlement();
 
             // Assert
+            expect(betChoice.image).toMatchSnapshot(betChoice.name);
             expect(placeBetResponse.endBet).toBe(bet.amount);
             expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
             expect(bet).toMatchWinning(settledResults);

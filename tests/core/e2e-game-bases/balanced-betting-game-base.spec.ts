@@ -1,122 +1,50 @@
 import { test, expect } from "../base-fixture";
 import { GameEvent } from "../../_shared/events";
 import { BasePlayer, BaseGame } from "..";
-import IBaseOptions from "./base-options";
+import { MiniGameBase } from "./mini-game-base.spec";
 
-export class BalancedBettingGameBase {
+export class BalancedBettingGameBase extends MiniGameBase {
     game: BaseGame;
     player: BasePlayer;
-
-    constructor(protected options: IBaseOptions) {}
-
-    protected inGameBetChoiceTests() {
-        test("AND bet choices should be displayed on table", async () => {
-            // Arrange
-            test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            await this.game.waitUntilNextRound();
-            await this.game.waitForTimeout(this.options.waitBetTimeout);
-
-            for (const placeBetChoice of this.options.placeBetChoices) {
-                // Act
-                const betChoice = await this.game.captureChoice(placeBetChoice);
-
-                // Assert
-                expect(betChoice.image).toMatchSnapshot(betChoice.name);
-            }
-        });
-    }
-
-    protected inGameOddsTests() {
-        test("AND odds should be correct", async () => {
-            // Assert
-            expect(this.game.odds).toStrictEqual(this.options.gameConfiguration.odds);
-        });
-    }
 
     protected placeBetAndSettleTests() {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
-            for (const placeBetChoice of this.options.placeBetChoices) {
-                const bet = { choice: placeBetChoice, amount: this.options.placeBetAmount ?? 1, refund: 0 };
-                this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
-
-                // Act
-                const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);
-                const betChoice = await this.game.captureOwnbet(placeBetChoice);
-                const settledResults = await this.game.waitForSettlement();
-                await this.game.waitForTimeout(5000);
-                const historyPayload = await this.player.openHistory();
-                const ticketHistory = historyPayload.history.betLogs.shift();
-                bet.refund = ticketHistory.refund;               
-
-                await this.game.clickOutSide();
-
-                // Assert
-                expect(placeBetResponse.endBet).toBe(bet.amount);
-                expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
-                expect(bet).toMatchWinningAndRefund(settledResults);
-            }
-        });
-    }
-
-    protected hedgeBetTests() {
-        test("THEN player should get error when they hedge their bets", async () => {
-            // Arrange
-            const { maxTimeout, hedgeBetGroups } = this.options.gameConfiguration;
-            test.setTimeout(maxTimeout);
+            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            const bet = { choice: this.options.placeBetChoices[0], amount: this.options.placeBetAmount ?? 1, refund: 0 };
+            this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act
-            await this.player.placeHedgeBet(hedgeBetGroups[0], this.options.placeBetAmount ?? 1);
-            const error = await this.game.captureErrorMessage();
-
-            // Assert
-            expect(error.image).toMatchSnapshot(error.name);
-        });
-    }
-
-    protected ticketHistoryTests() {
-        test("AND player could open history popup", async () => {
-            // Arrange
+            const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);
+            const settledResults = await this.game.waitForSettlement();
+            await this.game.waitForTimeout(5000);
             const historyPayload = await this.player.openHistory();
+            const ticketHistory = historyPayload.history.betLogs.shift();
+            bet.refund = ticketHistory.refund;
 
-            // Act
-            const historySnapshot = await this.game.captureHistory();
+            await this.game.clickOutSide();
 
             // Assert
-            expect(historyPayload.history.betLogs.length).toBeGreaterThan(0);
-            expect(historySnapshot.image).toMatchSnapshot(historySnapshot.name);
+            expect(placeBetResponse.endBet).toBe(bet.amount);
+            expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
+            expect(bet).toMatchWinningAndRefund(settledResults);
         });
     }
 
-    start(): void {
-        test.beforeEach(async ({}, testInfo) => {
-            testInfo.snapshotPath = (name: string) => {
-                const snapshotPath = this.options.snapshotFolderPath + "-snapshots/" + name;
-
-                return snapshotPath;
-            };
-        });
-
-        test.use({
-            gameConfigurations: this.options.gameConfiguration,
-            locators: this.options.locators,
-        });
-
-        test.describe.serial(`${this.options.gameConfiguration.name} E2E Tests`, () => {
-            test.beforeAll(async ({ baseGame }) => {
-                this.game = baseGame;
-                this.player = new BasePlayer(this.game);
-            });
-
-            this.runScenario();
-        });
+    protected test2(){
+        console.log('extend function2 trong base');
+        
     }
 
-    protected runScenario() {
-        this.inGameBetChoiceTests();
-        this.inGameOddsTests();
+
+
+    protected override runScenario(): void {
+        this.inGameBetChoiceTests()
+        this.inGameOddsTests()
         this.placeBetAndSettleTests();
-        this.hedgeBetTests();
-        this.ticketHistoryTests();
-    }
+        this.hedgeBetTests()
+        this.ticketHistoryTests()
+        this.test2()
+    } 
+
 }
