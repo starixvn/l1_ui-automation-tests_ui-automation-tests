@@ -3,9 +3,10 @@ import type { WebSocket as PlaywrightWs } from "playwright-core";
 import { ImageLocator, ImageSnapshot } from "./base-image-locator";
 import { GameConfiguration } from "./game-configuration";
 import { ssoToGame, getConfig } from "./../lobby/lobby";
-
 import { waitForMessage, parseSocketPayload } from "./../_shared/socket-helpers";
 import { GameEvent } from "./../_shared/events";
+import {Tesseract} from "tesseract.ts";
+
 
 export class BaseGame {
     readonly LobbyTimeout: number = 50000;
@@ -56,6 +57,12 @@ export class BaseGame {
     attachSocketAndCaptureEvent(event: string) {
         this.capturedEvents[event] = "";
     }
+
+    async getTextLocator(locatorName:string) {
+        const buffer = await this.capture(locatorName)
+        const data = await Tesseract.recognize(buffer.image)
+        return data.text.length >1 ?data.text :null
+      };
 
     latestCaptureEvent(event: string): any | undefined {
         const message = this.capturedEvents[event];
@@ -131,6 +138,10 @@ export class BaseGame {
         return this.capture("dealer");
     }
 
+    async captureTitle(): Promise<ImageSnapshot> {
+        return this.capture("title");
+    }
+
     async captureChoice(choice: string): Promise<ImageSnapshot> {
         return this.capture(`${choice}Choice`);
     }
@@ -145,21 +156,14 @@ export class BaseGame {
 
     async clickToChoice(choice: string): Promise<void> {
         const postfix = this.gameConfiguration.betBoard ? this.BetBoardPostfix : "";
-        const locator = this.locator(`${choice}Choice${postfix}`);
-        if (locator) {
-            await locator.click(this.page);
-        }
+        await this.clickLocator(`${choice}Choice${postfix}`)
     }
 
     async clickToSlotsChoice(choice: string): Promise<void> {
-        await this.locator("choiceMenu")?.click(this.page);
+        await this.clickLocator("choiceMenu")
         await this.waitForTimeout(500);
-        await this.locator("clearChoices")?.click(this.page);
-        const locator = this.locator(`${choice}Choice`);
-
-        if (locator) {
-            await locator.click(this.page);
-        }
+        await this.clickLocator("clearChoices")
+        await this.clickLocator(`${choice}Choice`)
     }
 
     async clickLocator(element: string): Promise<void> {
@@ -175,12 +179,27 @@ export class BaseGame {
 
     async clickHistory(): Promise<void> {
         if (this.locator("hamburgerMenu")) {
-            await this.locator("hamburgerMenu")?.click(this.page);
+            await this.clickLocator("hamburgerMenu")
             await this.waitForTimeout(500);
         }
 
-        await this.locator("historyMenu")?.click(this.page);
+        await this.clickLocator("historyMenu")
         await this.waitForTimeout(1000);
+    }
+
+    async clickGuide(): Promise<void> {
+        if (this.locator("hamburgerMenu")) {
+            await this.clickLocator("hamburgerMenu")
+            await this.waitForTimeout(500);
+        }
+
+        await this.clickLocator("guideMenu")
+        await this.waitForTimeout(3000);
+    }
+
+    async getGuideContent() {
+        let getguidecontent = this.page.frameLocator("iframe").locator("id=container-guide").textContent();
+        return getguidecontent
     }
 
     async captureErrorMessage(): Promise<ImageSnapshot> {
@@ -188,35 +207,37 @@ export class BaseGame {
     }
 
     async clickStake(amount: number = 1): Promise<void> {
-        await this.locator(`stake${amount}`)?.click(this.page);
+        await this.clickLocator(`stake${amount}`)
     }
 
     async clickStand(): Promise<void> {
         await this.waitForTimeout(6000);
-        await this.locator("standcard")?.click(this.page);
+        await this.clickLocator("standcard")
     }
 
     async clickHit(): Promise<void> {
-        await this.locator("hitcard")?.click(this.page);
+        await this.clickLocator("hitcard")
     }
+
     async clickSlotsStake(amount: number = 1): Promise<void> {
-        await this.locator("stakeMenu")?.click(this.page);
+        await this.clickLocator("stakeMenu")
         await this.waitForTimeout(500);
-        await this.locator(`stake${amount}`)?.click(this.page);
+        await this.clickLocator(`stake${amount}`)
     }
 
     async clickSubmitBet(): Promise<void> {
         await this.waitForTimeout(500);
-        await this.locator(`submit${this.BetBoardPostfix}`)?.click(this.page);
+        await this.clickLocator(`submit${this.BetBoardPostfix}`)
     }
 
     async clickSpin(): Promise<void> {
         await this.waitForTimeout(500);
-        await this.locator("spin")?.click(this.page);
+        await this.clickLocator("spin")
     }
 
     async clickOutSide(): Promise<void> {
-        await this.locator("outside")?.click(this.page);
+        await this.clickLocator("outside")
         await this.waitForTimeout(500);
     }
+
 }

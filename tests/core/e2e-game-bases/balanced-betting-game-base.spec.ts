@@ -32,19 +32,22 @@ export class BalancedBettingGameBase extends MiniGameBase {
     }
 
     protected test2(){
-        console.log('extend function2 trong base');
+        async () => {
+        let a= await this.game.getTextFromImage('test1.jpg')
+        console.log('extend function2 trong base',a);
+        }
         
     }
 
 
 
     protected override runScenario(): void {
+        this.test2()
         this.inGameBetChoiceTests()
         this.inGameOddsTests()
         this.placeBetAndSettleTests();
         this.hedgeBetTests()
         this.ticketHistoryTests()
-        this.test2()
     } 
 
 }

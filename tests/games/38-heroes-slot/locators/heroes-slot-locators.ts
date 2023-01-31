@@ -12,4 +12,6 @@ export const HeroesSlotLocators = [
     new ImageLocator("spin", 1121, 641),
     new ImageLocator("submitBetBoard", 635, 665),
     new ImageLocator("clearChoices", 916, 575),
+    new ImageLocator("outside", 5, 5, 2, 2),
+
 ];
