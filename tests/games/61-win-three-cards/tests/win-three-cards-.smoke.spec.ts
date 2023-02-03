@@ -1,5 +1,5 @@
-import { winthreecardsLocators } from "../locators/winthreecards-locators";
-import { winthreecardsConfigs } from "../winthreecards-configs";
+import { winthreecardsLocators } from "../locators/win-three-cards-locators";
+import { winthreecardsConfigs } from "../win-three-cards-configs";
 import { IBaseOptions, TableGameBase } from "../../../core/smoke-game-bases";
 
 class winthreecardsSmokeSpec extends TableGameBase {
