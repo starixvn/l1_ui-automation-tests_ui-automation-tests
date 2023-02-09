@@ -17,7 +17,7 @@ class winthreecardsSmokeSpec extends TableGameBase {
 
         super(smokeOptions);
     }
-    protected override inGameDealerTests(): void {}
+    // protected override inGameDealerTests(): void {}
 
 }
 

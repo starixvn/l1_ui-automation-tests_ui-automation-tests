@@ -48,7 +48,8 @@ export default {
         49: ["supertestte120201011"],
         50: ["supertestte120201012"],
         60: ["supertestte120201013"],
-        62: ["supertestte120201002"],
+        61: ["supertestte120201002"],
+        62: ["supertestte120201003"],
 
     },
     mapGameId: {
@@ -96,6 +97,7 @@ export default {
         49: 1656,
         50: 1659,
         60: 1667,
+        61: 1668,
         62: 1669,
     },
     pwd: "1234aa",

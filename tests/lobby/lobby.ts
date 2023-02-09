@@ -81,7 +81,8 @@ const loginUAT = async (page: Page, accountId: string, pwd: string) => {
     await page.fill(UATLocator.memberIdInput, accountId);
     await page.fill(UATLocator.pwdInput, pwd);
     await page.click(UATLocator.loginButton);
-    await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
+    await page.waitForTimeout(15000) //hard sleep when running smoke-test on CI runner
+
 };
 
 const loginPROD = async (page: Page, accountId: string, pwd: string) => {
@@ -89,7 +90,7 @@ const loginPROD = async (page: Page, accountId: string, pwd: string) => {
     await page.fill(PRODLocator.pwdInput, pwd);
     await page.click(PRODLocator.loginButton);
     await page.waitForLoadState("domcontentloaded");
-    await page.waitForTimeout(15000) //hard sleep when running smoke-test on CI runner
+    await page.waitForTimeout(20000) //hard sleep when running smoke-test on CI runner
 };
 
 const loginSIT = async (page: Page, accountId: string, pwd: string) => {
