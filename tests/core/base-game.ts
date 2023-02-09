@@ -138,10 +138,6 @@ export class BaseGame {
         return this.capture("dealer");
     }
 
-    async captureTitle(): Promise<ImageSnapshot> {
-        return this.capture("title");
-    }
-
     async captureChoice(choice: string): Promise<ImageSnapshot> {
         return this.capture(`${choice}Choice`);
     }
@@ -152,6 +148,10 @@ export class BaseGame {
 
     async captureHistory(): Promise<ImageSnapshot> {
         return this.capture(`historyPopup`);
+    }
+
+    async captureLocator(locator:string): Promise<ImageSnapshot> {
+        return this.capture(locator);
     }
 
     async clickToChoice(choice: string): Promise<void> {
