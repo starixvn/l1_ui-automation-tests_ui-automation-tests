@@ -30,7 +30,7 @@ docker-build:
     - docker build --build-arg GAME_ID=$GAMEID --pull -t "$CI_REGISTRY_IMAGE:$GAMEID-$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$GAMEID-$CI_COMMIT_REF_SLUG"
   rules:
-  - if: $CI_COMMIT_TAG =~ /^build-\d*- */
+  - if: $CI_COMMIT_TAG =~ /build/
     when: on_success
   when: manual
 
