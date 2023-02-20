@@ -26,10 +26,9 @@ docker-build:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY     
   script:
     - GAMEID=$(echo $CI_COMMIT_TAG | cut -d'-' -f 2)
-    - IMAGETAG=$(echo $CI_COMMIT_TAG | cut -d'-' -f 3)
     - echo ----- BUILD TESTS GAME $GAMEID ------
-    - docker build --build-arg GAME_ID=$GAMEID --pull -t "$CI_REGISTRY_IMAGE:$GAMEID-$IMAGETAG" .
-    - docker push "$CI_REGISTRY_IMAGE:$GAMEID-$IMAGETAG"
+    - docker build --build-arg GAME_ID=$GAMEID --pull -t "$CI_REGISTRY_IMAGE:$GAMEID-main" .
+    - docker push "$CI_REGISTRY_IMAGE:$GAMEID-main"
   rules:
   - if: $CI_COMMIT_TAG =~ /build/
     when: on_success
@@ -58,3 +57,15 @@ smoketest:
     when: always
     expire_in: 1 day
 
+cleanup:
+  stage: ".post"
+  before_script:
+  - echo $CI_COMMIT_TAG
+  script:
+  - curl --request DELETE --header "PRIVATE-TOKEN:$CI_JOB_TOKEN" $GITLAB_API_URL/projects/$CI_PROJECT_ID/repository/tags/$CI_COMMIT_TAG
+  tags:
+  - docker
+  allow_failure: true
+  rules:
+  - if: $CI_COMMIT_TAG =~ /build/
+    when: always
