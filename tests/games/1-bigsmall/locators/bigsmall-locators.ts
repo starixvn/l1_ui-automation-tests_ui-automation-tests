@@ -7,7 +7,7 @@ export const BigSmallLocators = [
     new ImageLocator("smallChoice", 774, 270, 89, 59),
     new ImageLocator("smallOwnbet", 405, 790, 45, 35),
     new ImageLocator("playerBalance", 192, 644, 125, 23),
-    new ImageLocator("historyMenu", 380, 240, 52, 42),
+    new ImageLocator("historyMenu", 328, 316, 52, 42),
     new ImageLocator("historyPopup", 465, 70, 300, 70),
     new ImageLocator("errorMessage", 546, 385, 193, 30),
     new ImageLocator("bigChoiceBetBoard", 391, 369, 157, 42),
