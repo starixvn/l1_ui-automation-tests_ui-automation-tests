@@ -46,8 +46,8 @@ smoketest:
     - du -hs /ms-playwright/*
   retry: 1    
   rules:
-  - if: $CI_PIPELINE_SOURCE == "pipeline"
-    when: on_success
+  - if: $CI_PIPELINE_SOURCE == "trigger"
+    when: always
   when: manual
 
   artifacts:
