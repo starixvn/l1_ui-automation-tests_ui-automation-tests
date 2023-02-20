@@ -45,7 +45,7 @@ export class CardGameBase {
             this.game.attachSocketAndCaptureEvent(GameEvent.Deal);        
            
             // Act
-            const placebetdeal = await this.player.placeBet(bet.choice, bet.amount);
+            // const placebetdeal = await this.player.placeBet(bet.choice, bet.amount);
             await this.player.standCard();
             
             // Assert

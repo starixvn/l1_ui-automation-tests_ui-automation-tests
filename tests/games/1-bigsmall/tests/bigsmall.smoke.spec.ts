@@ -15,13 +15,7 @@ class BigSmallSmokeSpec extends BalancedBettingGameBase {
         super(smokeOptions);
     }
 
-    protected extendtest2(): void {
-        console.log('extendtest2');
-        
-    }
-
     protected override runScenario(){
-        this.extendtest2()
         super.runScenario()
     }
 

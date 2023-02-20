@@ -6,6 +6,9 @@ import sit from "./config.sit";
 import uat from "./config.uat";
 import prod from "./config.prod";
 import configLocal3 from "./config.local3";
+import local1Cors1 from "./config.local1Cors1";
+import local1Cors2 from "./config.local1Cors2";
+
 
 export const configs = {
     local: { ...local },
@@ -15,4 +18,6 @@ export const configs = {
     sit: { ...sit },
     uat: { ...uat },
     prod: { ...prod },
+    local1Cors1: { ...local1Cors1 },
+    local1Cors2: { ...local1Cors2 },
 };

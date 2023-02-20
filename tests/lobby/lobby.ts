@@ -20,10 +20,22 @@ export const ssoToGame = async (page: Page, gameId: number = 2): Promise<void> =
         throw new Error(`Missing test account for game id ${gameId}!!!`);
     }
 
-    if (env.includes("local")) {
+    if (env.includes("local1Cors1")) {
         const memberId = config.gameAccounts[gameId][0]; //TODO could use chance pickone
         const memberSiteLink = `${config.memberSite}?obCustId=${memberId}&balance=20000`;
         await page.goto(memberSiteLink);
+        await page.waitForTimeout(500);
+        const ssoLink = (await page.locator(LobbyLocator.ssoLink).textContent()) ?? "";
+        await page.goto(`${ssoLink.replace("gameId=0", `gameId=${gameId}`)}`);
+    } else if (env.includes("local1Cors2")) {
+        const memberId = config.gameAccounts[gameId][0]; //TODO could use chance pickone
+        const memberSiteLink = `${config.memberSite}?obCustId=${memberId}&balance=20000`;
+        await page.goto(memberSiteLink);
+        await page.locator("text=Advance").click();
+        await page.locator("id=operatorId").fill("ONEworks_VG");
+        await page.locator("id=operatorSecret").fill("OWVG@123");
+        await page.locator("id=get-token").click();
+        await page.waitForTimeout(500);
         const ssoLink = (await page.locator(LobbyLocator.ssoLink).textContent()) ?? "";
 
         await page.goto(`${ssoLink.replace("gameId=0", `gameId=${gameId}`)}`);
@@ -89,7 +101,7 @@ const loginPROD = async (page: Page, accountId: string, pwd: string) => {
     await page.fill(PRODLocator.pwdInput, pwd);
     await page.click(PRODLocator.loginButton);
     await page.waitForLoadState("domcontentloaded");
-    await page.waitForTimeout(15000)
+    await page.waitForTimeout(15000);
 };
 
 const loginSIT = async (page: Page, accountId: string, pwd: string) => {

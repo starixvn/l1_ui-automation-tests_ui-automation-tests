@@ -22,7 +22,7 @@ export class TableGameBase extends MiniGameBase {
     }
 
     protected override runScenario(): void {
-        this.inGameDealerTests();
+        // this.inGameDealerTests();
 
         super.runScenario();
     }

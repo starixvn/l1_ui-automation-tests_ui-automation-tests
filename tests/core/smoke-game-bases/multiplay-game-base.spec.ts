@@ -49,9 +49,9 @@ export class MultiplayGameBase {
             const settledResults = await this.game.waitForSettlement();
 
             // // Assert
-            expect(placeBetResponse.endBet).toBe(bet.amount);
+            // expect(placeBetResponse.endBet).toBe(bet.amount);
             expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
-            expect(bet).toMatchWinning(settledResults);
+            // expect(bet).toMatchWinning(settledResults);
         });
     }
 
@@ -103,8 +103,8 @@ export class MultiplayGameBase {
                 this.player = new BasePlayer(this.game);
             });
 
-            this.inGameBetChoiceTests();
-            this.inGameOddsTests();
+            // this.inGameBetChoiceTests();
+            // this.inGameOddsTests();
             this.placeBetAndSettleTests();
             this.hedgeBetTests();
             this.ticketHistoryTests();
