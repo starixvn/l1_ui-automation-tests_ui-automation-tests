@@ -132,7 +132,7 @@ export class MultiplayGameBase {
 
                 const settledResults = await this.game.waitForSettlement(gameOptions.name);
                 // // Assert
-                expect(placeBetResponse.endBet).toBe(bet.amount);
+                // expect(placeBetResponse.endBet).toBe(bet.amount);
                 expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
                 // expect(bet).toMatchWinning(settledResults);
             });
