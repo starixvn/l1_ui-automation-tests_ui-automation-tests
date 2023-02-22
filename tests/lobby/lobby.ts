@@ -88,12 +88,13 @@ const selectGroupCurrency = async (page: Page, groupCurrencyId: string) => {
 };
 
 const loginUAT = async (page: Page, accountId: string, pwd: string) => {
-    await page.click(UATLocator.loginDiv);
-    await page.selectOption(UATLocator.langDropdown, { value: UATLocator.vnLangOption });
+    // await page.click(UATLocator.loginDiv);
+    // await page.selectOption(UATLocator.langDropdown, { value: UATLocator.vnLangOption });
     await page.fill(UATLocator.memberIdInput, accountId);
     await page.fill(UATLocator.pwdInput, pwd);
-    await page.click(UATLocator.loginButton);
+    await page.click(UATLocator.loginButton);    
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
+    await page.waitForTimeout(15000);
 };
 
 const loginPROD = async (page: Page, accountId: string, pwd: string) => {
