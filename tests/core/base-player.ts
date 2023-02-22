@@ -1,5 +1,6 @@
 import { GameEvent } from "../_shared/events";
 import { BaseGame } from "./base-game";
+import { CSLocatorNames } from "./base-classic-slot-locator";
 
 export class BasePlayer {
     readonly game: BaseGame;
@@ -28,6 +29,32 @@ export class BasePlayer {
             return await this.betOn(choice, amount, subGameName);
         }
     }
+
+    async selectPayline(choice: string): Promise<void> {
+        await this.game.clickLocator(CSLocatorNames.btnPayline)
+        await this.game.waitForTimeout(500);
+        await this.game.clickLocator(CSLocatorNames.btnClearPayline);
+        await this.game.clickLocator(choice);
+        await this.game.clickLocator(CSLocatorNames.btnConfirmPayline);
+        await this.game.waitForTimeout(500);
+    }
+
+    async selectBetStake(stake: string): Promise<void> {
+        await this.game.clickLocator(CSLocatorNames.cboBetLevel);
+        await this.game.waitForTimeout(500);
+        await this.game.clickLocator(stake);
+        await this.game.waitForTimeout(1000);
+    }
+
+    async placeBetClassicSlot(choice: string, stake: string ): Promise<any> {
+        await this.selectPayline(choice)     
+        await this.selectBetStake(stake)
+        await this.game.clickSpin()
+
+        return await this.game.waitForEndBet();
+    }
+
+    
     
 
     async betOn(choice: string, amount: number = 1, subGameName?: string): Promise<any> {    

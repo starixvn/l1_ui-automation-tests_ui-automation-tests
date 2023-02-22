@@ -2,7 +2,7 @@ import { GameConfiguration } from "../../core/game-configuration";
 export const FourGuardiansConfigs: GameConfiguration = {
     id: 29,
     name: "FourGuardians",
-    choices: ["1", "All", "Odd", "Even"],
+    choices: ["Payline1", "AllPayline", "OddPayline", "EvenPayline"],
     maxTimeout: 100 * 1000, // miliseconds,
     odds: {
         "0": { "2": 0, "3": 2, "4": 5, "5": 10 },

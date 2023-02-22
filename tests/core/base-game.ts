@@ -5,8 +5,9 @@ import { GameConfiguration } from "./game-configuration";
 import { ssoToGame, getConfig } from "./../lobby/lobby";
 import { waitForMessage, parseSocketPayload } from "./../_shared/socket-helpers";
 import { GameEvent } from "./../_shared/events";
-import {Tesseract} from "tesseract.ts";
-
+import { Tesseract } from "tesseract.ts";
+import { CSLocatorNames } from "./base-classic-slot-locator";
+import { expect } from "@playwright/test";
 
 export class BaseGame {
     readonly LobbyTimeout: number = 50000;
@@ -58,11 +59,11 @@ export class BaseGame {
         this.capturedEvents[event] = "";
     }
 
-    async getTextLocator(locatorName:string) {
-        const buffer = await this.capture(locatorName)
-        const data = await Tesseract.recognize(buffer.image)
-        return data.text.length >1 ?data.text :null
-      };
+    async getTextLocator(locatorName: string) {
+        const buffer = await this.capture(locatorName);
+        const data = await Tesseract.recognize(buffer.image);
+        return data.text.length > 1 ? data.text : null;
+    }
 
     latestCaptureEvent(event: string): any | undefined {
         const message = this.capturedEvents[event];
@@ -111,7 +112,7 @@ export class BaseGame {
         const message = await waitForMessage(this.gameSocket, GameEvent.Settlement, this.getGameName(subGameName), this.msgpack);
         await this.page.waitForTimeout(200); // add sleep due to feature Publish round result prior to settlement
         const winningByChoice = this.latestCaptureEvent(GameEvent.WinStatus);
-        
+
         let settledResults = {
             settlementResult: message?.finish?.settlementResult,
             odds: this.odds,
@@ -130,7 +131,7 @@ export class BaseGame {
 
     async capture(locatorName: string): Promise<ImageSnapshot> {
         const locator = this.locator(locatorName);
-        
+
         return locator ? await locator.snapshot(this.page) : Promise.resolve({ name: "", image: Buffer.from("") });
     }
 
@@ -150,20 +151,20 @@ export class BaseGame {
         return this.capture(`historyPopup`);
     }
 
-    async captureLocator(locator:string): Promise<ImageSnapshot> {
+    async captureLocator(locator: string): Promise<ImageSnapshot> {
         return this.capture(locator);
     }
 
     async clickToChoice(choice: string): Promise<void> {
         const postfix = this.gameConfiguration.betBoard ? this.BetBoardPostfix : "";
-        await this.clickLocator(`${choice}Choice${postfix}`)
+        await this.clickLocator(`${choice}Choice${postfix}`);
     }
 
     async clickToSlotsChoice(choice: string): Promise<void> {
-        await this.clickLocator("choiceMenu")
+        await this.clickLocator("choiceMenu");
         await this.waitForTimeout(500);
-        await this.clickLocator("clearChoices")
-        await this.clickLocator(`${choice}Choice`)
+        await this.clickLocator("clearChoices");
+        await this.clickLocator(`${choice}Choice`);
     }
 
     async clickLocator(element: string): Promise<void> {
@@ -179,27 +180,27 @@ export class BaseGame {
 
     async clickHistory(): Promise<void> {
         if (this.locator("hamburgerMenu")) {
-            await this.clickLocator("hamburgerMenu")
+            await this.clickLocator("hamburgerMenu");
             await this.waitForTimeout(500);
         }
 
-        await this.clickLocator("historyMenu")
+        await this.clickLocator("historyMenu");
         await this.waitForTimeout(1000);
     }
 
     async clickGuide(): Promise<void> {
         if (this.locator("hamburgerMenu")) {
-            await this.clickLocator("hamburgerMenu")
+            await this.clickLocator("hamburgerMenu");
             await this.waitForTimeout(500);
         }
 
-        await this.clickLocator("guideMenu")
+        await this.clickLocator("guideMenu");
         await this.waitForTimeout(3000);
     }
 
     async getGuideContent() {
         let getguidecontent = this.page.frameLocator("iframe").locator("id=container-guide").textContent();
-        return getguidecontent
+        return getguidecontent;
     }
 
     async captureErrorMessage(): Promise<ImageSnapshot> {
@@ -207,37 +208,88 @@ export class BaseGame {
     }
 
     async clickStake(amount: number = 1): Promise<void> {
-        await this.clickLocator(`stake${amount}`)
+        await this.clickLocator(`stake${amount}`);
     }
 
     async clickStand(): Promise<void> {
         await this.waitForTimeout(6000);
-        await this.clickLocator("standcard")
+        await this.clickLocator("standcard");
     }
 
     async clickHit(): Promise<void> {
-        await this.clickLocator("hitcard")
+        await this.clickLocator("hitcard");
     }
 
     async clickSlotsStake(amount: number = 1): Promise<void> {
-        await this.clickLocator("stakeMenu")
+        await this.clickLocator("stakeMenu");
         await this.waitForTimeout(500);
-        await this.clickLocator(`stake${amount}`)
+        await this.clickLocator(`stake${amount}`);
     }
 
     async clickSubmitBet(): Promise<void> {
         await this.waitForTimeout(500);
-        await this.clickLocator(`submit${this.BetBoardPostfix}`)
+        await this.clickLocator(`submit${this.BetBoardPostfix}`);
     }
 
     async clickSpin(): Promise<void> {
         await this.waitForTimeout(500);
-        await this.clickLocator("spin")
+        const locator = this.locator("spin");
+        if (locator) {
+            await locator.click(this.page);
+        } else {
+            await this.clickLocator(CSLocatorNames.btnSpin);
+        }
     }
 
     async clickOutSide(): Promise<void> {
-        await this.clickLocator("outside")
+        const locator = this.locator("outside");
+        if (locator) {
+            await locator.click(this.page);
+        } else {
+            await this.clickLocator(CSLocatorNames.btnClosePopup);
+        }
         await this.waitForTimeout(500);
     }
 
+    async verifyImageExist(image: string): Promise<void> {
+        const captureimage = await this.captureLocator(image);
+        expect(captureimage.image, `verify ${image}`).toMatchSnapshot(captureimage.name);
+    }
+
+    
+    async mouseDragDrop(from: Pos, to: Pos): Promise<void> {
+        let xPos = from.xPos, yPos = from.yPos
+        await this.page.mouse.move(xPos, yPos);
+        await this.page.mouse.down()
+        await this.page.waitForTimeout(500)
+        xPos = to.xPos, yPos = to.yPos
+        await this.page.mouse.move(xPos, yPos)   
+        await this.page.waitForTimeout(1000)
+        await this.page.mouse.up()
+
+    }
+
+    async mouseWhell(to: Pos): Promise<void> {
+        let xPos = to.xPos, yPos = to.yPos
+        await this.page.mouse.wheel(xPos, yPos);
+
+    }
+
+    async elementCapture(element: string): Promise<void> {
+        // await this.page.locator(element).screenshot({path: 'test.png'})
+        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][1]").screenshot({path: 'guide1.png'})
+        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][2]").screenshot({path: 'guide2.png'})
+        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][3]").screenshot({path: 'guide3.png'})
+        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][4]").screenshot({path: 'guide4.png'})
+        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][5]").screenshot({path: 'guide5.png'})
+        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][6]").screenshot({path: 'guide6.png'})
+        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][7]").screenshot({path: 'guide7.png'})
+
+
+    }
+}
+
+export interface Pos {
+    xPos: number;
+    yPos: number;
 }

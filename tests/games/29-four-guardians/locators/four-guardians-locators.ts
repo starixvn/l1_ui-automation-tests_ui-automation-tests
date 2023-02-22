@@ -1,13 +1,7 @@
 import { ImageLocator } from "../../../core/base-image-locator";
 
 
-export const classicLocatorNames = {
-    choideName: "choice-name",
-
-}
-
 export const FourGuardiansLocators = [
-    new ImageLocator(classicLocatorNames.choideName, 130, 649),
     new ImageLocator("1Choice", 194, 125, 115, 67),
     new ImageLocator("AllChoice", 139, 114, 970, 440),
     new ImageLocator("EvenChoice", 139, 114, 970, 440),
