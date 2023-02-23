@@ -7,7 +7,6 @@ import { waitForMessage, parseSocketPayload } from "./../_shared/socket-helpers"
 import { GameEvent } from "./../_shared/events";
 import { Tesseract } from "tesseract.ts";
 import { CSLocatorNames } from "./base-classic-slot-locator";
-import { expect } from "@playwright/test";
 
 export class BaseGame {
     readonly LobbyTimeout: number = 50000;
@@ -251,42 +250,24 @@ export class BaseGame {
         await this.waitForTimeout(500);
     }
 
-    async verifyImageExist(image: string): Promise<void> {
-        const captureimage = await this.captureLocator(image);
-        expect(captureimage.image, `verify ${image}`).toMatchSnapshot(captureimage.name);
-    }
-
-    
     async mouseDragDrop(from: Pos, to: Pos): Promise<void> {
-        let xPos = from.xPos, yPos = from.yPos
+        let xPos = from.xPos,
+            yPos = from.yPos;
         await this.page.mouse.move(xPos, yPos);
-        await this.page.mouse.down()
-        await this.page.waitForTimeout(500)
-        xPos = to.xPos, yPos = to.yPos
-        await this.page.mouse.move(xPos, yPos)   
-        await this.page.waitForTimeout(1000)
-        await this.page.mouse.up()
-
+        await this.page.mouse.down();
+        await this.page.waitForTimeout(500);
+        (xPos = to.xPos), (yPos = to.yPos);
+        await this.page.mouse.move(xPos, yPos);
+        await this.page.waitForTimeout(1000);
+        await this.page.mouse.up();
     }
 
     async mouseWhell(to: Pos): Promise<void> {
-        let xPos = to.xPos, yPos = to.yPos
+        let xPos = to.xPos,
+            yPos = to.yPos;
         await this.page.mouse.wheel(xPos, yPos);
-
     }
 
-    async elementCapture(element: string): Promise<void> {
-        // await this.page.locator(element).screenshot({path: 'test.png'})
-        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][1]").screenshot({path: 'guide1.png'})
-        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][2]").screenshot({path: 'guide2.png'})
-        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][3]").screenshot({path: 'guide3.png'})
-        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][4]").screenshot({path: 'guide4.png'})
-        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][5]").screenshot({path: 'guide5.png'})
-        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][6]").screenshot({path: 'guide6.png'})
-        await this.page.frameLocator("iframe").locator("xpath=//*[@id='container-guide']//li[@class='guide-item'][7]").screenshot({path: 'guide7.png'})
-
-
-    }
 }
 
 export interface Pos {

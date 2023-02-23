@@ -1,9 +1,8 @@
 import { test, expect } from "../base-fixture";
 import { GameEvent } from "../../_shared/events";
-import { BasePlayer, BaseGame } from "..";
+import { BasePlayer, BaseGame, ImageCheck} from "..";
 import IBaseOptions from "./base-options";
 import { CSLocatorNames } from "../base-classic-slot-locator";
-import { Page } from "@playwright/test";
 
 // const fs = require('fs');
 
@@ -15,6 +14,7 @@ export interface SlotGameOptions extends IBaseOptions {
 export class SlotGameBase {
     game: BaseGame;
     player: BasePlayer;
+    imageCheck: ImageCheck;
 
     constructor(protected options: SlotGameOptions) {}
 
@@ -29,22 +29,24 @@ export class SlotGameBase {
 
     protected UIGeneral() {
         test("Verify game name", async () => {
-            await this.game.verifyImageExist(CSLocatorNames.imgGameName);
+            console.log(CSLocatorNames.imgGameName);
+            
+            await this.imageCheck.verifyImageExist(CSLocatorNames.imgGameName);
         });
 
         test("Verify RoundID is empty", async () => {
-            await this.game.verifyImageExist(CSLocatorNames.lblRoundID);
+            await this.imageCheck.verifyImageExist(CSLocatorNames.lblRoundID);
         });
 
         test("Verify payline number in right & left column", async () => {
-            await this.game.verifyImageExist(CSLocatorNames.imgLeftNumbersColumn);
-            await this.game.verifyImageExist( CSLocatorNames.imgRightNumbersColumn);
+            await this.imageCheck.verifyImageExist(CSLocatorNames.imgLeftNumbersColumn);
+            await this.imageCheck.verifyImageExist( CSLocatorNames.imgRightNumbersColumn);
         });
     }
 
     protected PayLine() {
         test("Verify default paylines when opening game", async () => {
-            await this.game.verifyImageExist(CSLocatorNames.btnPayline);
+            await this.imageCheck.verifyImageExist(CSLocatorNames.btnPayline);
         });
 
         test("Verify UI of Payline", async () => {
@@ -70,7 +72,7 @@ export class SlotGameBase {
             // Act submit button is disabled
             await this.game.clickLocator(CSLocatorNames.btnClearPayline);
             await this.game.waitForTimeout(2000);
-            await this.game.verifyImageExist(CSLocatorNames.imgConfirmPaylineDisabled);
+            await this.imageCheck.verifyImageExist(CSLocatorNames.imgConfirmPaylineDisabled);
 
             //Post-Condition
             await closePayLineBoard(this.game);
@@ -213,15 +215,8 @@ export class SlotGameBase {
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             await this.game.clickLocator(CSLocatorNames.mnuHamburger);
             await this.game.clickLocator(CSLocatorNames.icoGuide);
-            await this.game.waitForTimeout(1000)
-            // let guidecontent = await this.game.getGuideContent();
-            // await this.game.mouseDragDrop({xPos:1136, yPos:173},{xPos:1136, yPos:400})
-            // await this.game.mouseWhell({xPos:1139, yPos:597})
-            await this.game.elementCapture("")
-            // console.log(typeof guidecontent);
-            // await fs.writeFileSync('guide.txt', guidecontent)
-            // Assert
-            // expect(this.options.gameConfiguration.guidecontent, "verify guide content").toEqual(guidecontent);
+            await this.game.waitForTimeout(1000)     
+            await this.imageCheck.verifyGuideImages(this.options.snapshotFolderPath + "-snapshots/")
             await this.game.clickLocator(CSLocatorNames.btnClosePopup);
         });
     }
