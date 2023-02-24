@@ -1,6 +1,7 @@
 import { test, expect } from "../base-fixture";
 import { GameEvent } from "../../_shared/events";
-import { BasePlayer, BaseGame, ImageCheck} from "..";
+import { BasePlayer, BaseGame, ImageCheck } from "..";
+import type { Page } from "@playwright/test";
 import IBaseOptions from "./base-options";
 import { CSLocatorNames } from "../base-classic-slot-locator";
 
@@ -12,9 +13,10 @@ export interface SlotGameOptions extends IBaseOptions {
 }
 
 export class SlotGameBase {
+    page: Page;
     game: BaseGame;
     player: BasePlayer;
-    imageCheck: ImageCheck;
+    imagecheck: ImageCheck;
 
     constructor(protected options: SlotGameOptions) {}
 
@@ -29,24 +31,22 @@ export class SlotGameBase {
 
     protected UIGeneral() {
         test("Verify game name", async () => {
-            console.log(CSLocatorNames.imgGameName);
-            
-            await this.imageCheck.verifyImageExist(CSLocatorNames.imgGameName);
+            await this.imagecheck.verifyImageExist(CSLocatorNames.imgGameName);
         });
 
         test("Verify RoundID is empty", async () => {
-            await this.imageCheck.verifyImageExist(CSLocatorNames.lblRoundID);
+            await this.imagecheck.verifyImageExist(CSLocatorNames.lblRoundID);
         });
 
         test("Verify payline number in right & left column", async () => {
-            await this.imageCheck.verifyImageExist(CSLocatorNames.imgLeftNumbersColumn);
-            await this.imageCheck.verifyImageExist( CSLocatorNames.imgRightNumbersColumn);
+            await this.imagecheck.verifyImageExist(CSLocatorNames.imgLeftNumbersColumn);
+            await this.imagecheck.verifyImageExist(CSLocatorNames.imgRightNumbersColumn);
         });
     }
 
     protected PayLine() {
         test("Verify default paylines when opening game", async () => {
-            await this.imageCheck.verifyImageExist(CSLocatorNames.btnPayline);
+            await this.imagecheck.verifyImageExist(CSLocatorNames.btnPayline);
         });
 
         test("Verify UI of Payline", async () => {
@@ -72,7 +72,7 @@ export class SlotGameBase {
             // Act submit button is disabled
             await this.game.clickLocator(CSLocatorNames.btnClearPayline);
             await this.game.waitForTimeout(2000);
-            await this.imageCheck.verifyImageExist(CSLocatorNames.imgConfirmPaylineDisabled);
+            await this.imagecheck.verifyImageExist(CSLocatorNames.imgConfirmPaylineDisabled);
 
             //Post-Condition
             await closePayLineBoard(this.game);
@@ -148,22 +148,11 @@ export class SlotGameBase {
         test("Verify user can not spin by keys when history is displayed", async () => {});
     }
 
-    
-// const logmsg = async(page:Page) {
-//     page.on('websocket', ws => {
-//         console.log(`WebSocket opened: ${ws.url()}>`);
-//         ws.on('framesent', event => console.log(event.payload));
-//         ws.on('framereceived', event => console.log(event.payload));
-//         ws.on('close', () => console.log('WebSocket closed'));
-//       });
-
-// }
-
     protected placeBetAndSettleTests() {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
-            test.setTimeout(this.options.gameConfiguration.maxTimeout);   
-            const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "numeric", year: "numeric" });         
+            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "numeric", year: "numeric" });
             const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: CSLocatorNames.lblBetLevel1 };
             let bettime = new Date().toLocaleTimeString("en-US", { hour12: false, hour: "numeric", minute: "numeric" });
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
@@ -215,8 +204,8 @@ export class SlotGameBase {
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             await this.game.clickLocator(CSLocatorNames.mnuHamburger);
             await this.game.clickLocator(CSLocatorNames.icoGuide);
-            await this.game.waitForTimeout(1000)     
-            await this.imageCheck.verifyGuideImages(this.options.snapshotFolderPath + "-snapshots/")
+            await this.game.waitForTimeout(3000);
+            await this.imagecheck.verifyGuideImages(this.options.snapshotFolderPath + "-snapshots/");
             await this.game.clickLocator(CSLocatorNames.btnClosePopup);
         });
     }
@@ -239,6 +228,7 @@ export class SlotGameBase {
             test.beforeAll(async ({ baseGame }) => {
                 this.game = baseGame;
                 this.player = new BasePlayer(this.game);
+                this.imagecheck = new ImageCheck(this.game, this.page);
             });
 
             this.runScenario();
@@ -338,4 +328,3 @@ const clickSpin = async (game: any) => {
     await game.clickLocator(CSLocatorNames.btnSpin);
     await game.waitForTimeout(500);
 };
-
