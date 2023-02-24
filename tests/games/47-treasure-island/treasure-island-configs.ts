@@ -2,7 +2,7 @@ import { GameConfiguration } from "../../core/game-configuration";
 export const TreasureIslandConfigs: GameConfiguration = {
     id: 47,
     name: "TreasureIsland",
-    choices: ["0.4","25"],
+    choices: ["1.2","25"],
     maxTimeout: 100 * 1000, // miliseconds,
     odds: {
       "symbols": {

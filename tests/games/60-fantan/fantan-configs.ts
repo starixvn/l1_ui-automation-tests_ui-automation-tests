@@ -37,9 +37,9 @@ export const FanTanConfigs: GameConfiguration = {
         kwok23: 1.96,
         kwok34: 1.96,
         kwok41: 1.96,
-        chun123: 1.32,
-        chun124: 1.32,
-        chun134: 1.32,
-        chun234: 1.32,
+        chun123: 1.31,
+        chun124: 1.31,
+        chun134: 1.31,
+        chun234: 1.31,
     },
 };
