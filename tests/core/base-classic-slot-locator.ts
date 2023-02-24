@@ -44,7 +44,7 @@ export const CSLocatorNames = {
     btnClosePopup: "btnClosePopup", //Others
 };
 
-export const classicSlotLocators = [
+export const ClassicSlotLocators = [
     new ImageLocator(CSLocatorNames.imgGameName, 493, 15, 313, 100),
     new ImageLocator(CSLocatorNames.lblRoundID, 899, 83, 152, 23),
     new ImageLocator(CSLocatorNames.btnPayline, 64, 615, 120, 60),

@@ -1,24 +1,22 @@
-import { expect } from "@playwright/test";
 import type { Page } from "@playwright/test";
-import { BaseGame } from "..";
+import { expect } from "@playwright/test";
+import { BaseGame } from "../base-game";
 
 export class ImageCheck {
     readonly page: Page;
-    game: BaseGame;
+    readonly game: BaseGame;
 
-    constructor(page: Page) {
+    constructor(game: BaseGame, page: Page) {
+        this.game = game;
         this.page = page;
     }
 
     async verifyImageExist(image: string): Promise<void> {
-        console.log(image);
-
-        // const captureimage = await this.game.captureLocator(image);
-        // expect(captureimage.image, `verify ${image}`).toMatchSnapshot(captureimage.name);
+        const captureimage = await this.game.captureLocator(image);
+        expect(captureimage.image, `verify ${image}`).toMatchSnapshot(captureimage.name);
     }
 
     async verifyGuideImages(path: string): Promise<void> {
-        console.log(path);
         let totalItems = await this.page
             .frameLocator("iframe")
             .locator("xpath=//*[@id='container-guide']//li[@class='guide-item']")
