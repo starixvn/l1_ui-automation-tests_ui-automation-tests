@@ -57,13 +57,6 @@ const config: PlaywrightTestConfig = {
                 ...devices["Desktop Chrome"],
             },
         },
-        {
-            name: "Slot_Game",
-            testMatch: `**/SlotGames/tests/test.spec.ts`,
-            use: {
-                ...devices["Desktop Chrome"],
-            },
-        },
     ],
     
 

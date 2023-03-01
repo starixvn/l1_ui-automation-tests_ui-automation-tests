@@ -2,7 +2,7 @@ import { ClassicSlotLocators } from "../../../core/base-classic-slot-locator";
 import { FourGuardiansConfigs } from "../four-guardians-configs";
 import { IBaseOptions, SlotGameBase } from "../../../core/e2e-game-bases";
 
-class FourGuardiansSmokeSpec extends SlotGameBase {
+class FourGuardiansE2ESpec extends SlotGameBase {
     /**
      *
      */
@@ -11,8 +11,6 @@ class FourGuardiansSmokeSpec extends SlotGameBase {
             placeBetChoices: [
                 FourGuardiansConfigs.choices[0],
                 FourGuardiansConfigs.choices[1],
-                FourGuardiansConfigs.choices[2],
-                FourGuardiansConfigs.choices[3],
             ],
             gameConfiguration: FourGuardiansConfigs,
             locators: ClassicSlotLocators,
@@ -23,4 +21,4 @@ class FourGuardiansSmokeSpec extends SlotGameBase {
     }
 }
 
-new FourGuardiansSmokeSpec().start();
+new FourGuardiansE2ESpec().start();

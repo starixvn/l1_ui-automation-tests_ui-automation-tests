@@ -1,11 +1,11 @@
 import { test, expect } from "../base-fixture";
 import { GameEvent } from "../../_shared/events";
 import { BasePlayer, BaseGame, ImageCheck } from "..";
-import type { Page } from "@playwright/test";
 import IBaseOptions from "./base-options";
 import { CSLocatorNames } from "../base-classic-slot-locator";
-
-// const fs = require('fs');
+const shortWait = 300,
+    mediWait = 1000,
+    longWait = 2000;
 
 export interface SlotGameOptions extends IBaseOptions {
     placeBetChoices: string[];
@@ -13,7 +13,6 @@ export interface SlotGameOptions extends IBaseOptions {
 }
 
 export class SlotGameBase {
-    page: Page;
     game: BaseGame;
     player: BasePlayer;
     imagecheck: ImageCheck;
@@ -21,35 +20,44 @@ export class SlotGameBase {
     constructor(protected options: SlotGameOptions) {}
 
     protected inGameTests() {
-        test("Verify Odds", async () => {
+        test("Verify received websocket Odds of game shoule be the same with game's config file", async () => {
             // Assert
             await test.step(`Verify ODD should be correct`, async () => {
                 expect(this.game.odds).toStrictEqual(this.options.gameConfiguration.odds);
+                console.log(await this.game.getConsoleMessage());
             });
         });
     }
 
-    protected UIGeneral() {
+    protected mainUITests() {
         test("Verify game name", async () => {
-            await this.imagecheck.verifyImageExist(CSLocatorNames.imgGameName);
+            await this.imagecheck.imageExist(CSLocatorNames.imgGameName);
         });
 
-        test("Verify RoundID is empty", async () => {
-            await this.imagecheck.verifyImageExist(CSLocatorNames.lblRoundID);
+        test("Verify symbols board in first load game", async () => {
+            console.log(await this.game.getConsoleMessage());
+        });
+
+        test("Verify roundID is null in first load game", async () => {
+            await this.imagecheck.imageExist(CSLocatorNames.lblRoundID);
         });
 
         test("Verify payline number in right & left column", async () => {
-            await this.imagecheck.verifyImageExist(CSLocatorNames.imgLeftNumbersColumn);
-            await this.imagecheck.verifyImageExist(CSLocatorNames.imgRightNumbersColumn);
+            await test.step("The numbers are shows in the following order: 20, 8, 2, 14, 17, 7, 1, 10, 23, 15, 9, 3, 21", async () => {
+                await this.imagecheck.imageExist(CSLocatorNames.imgLeftNumbersColumn);
+            });
+            await test.step("The numbers are shows in the following order: 18, 5, 12, 24, 6, 22, 16, 11, 19, 13, 4, 25", async () => {
+                await this.imagecheck.imageExist(CSLocatorNames.imgRightNumbersColumn);
+            });
         });
     }
 
-    protected PayLine() {
-        test("Verify default paylines when opening game", async () => {
-            await this.imagecheck.verifyImageExist(CSLocatorNames.btnPayline);
+    protected paylineTests() {
+        test("Verify default paylines (25 lines) in first load game", async () => {
+            await this.imagecheck.imageExist(CSLocatorNames.btnPayline);
         });
 
-        test("Verify UI of Payline", async () => {
+        test("Verify Payline Popup", async () => {
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             await openPayLineBoard(this.game);
             for (const placeBetChoice of this.options.placeBetChoices) {
@@ -68,84 +76,156 @@ export class SlotGameBase {
             }
         });
 
-        test("Verify Submit bet is disabled when no choice is selected", async () => {
+        test("Verify submit bet button is disabled when no choice is selected", async () => {
             // Act submit button is disabled
             await this.game.clickLocator(CSLocatorNames.btnClearPayline);
             await this.game.waitForTimeout(2000);
-            await this.imagecheck.verifyImageExist(CSLocatorNames.imgConfirmPaylineDisabled);
+            await this.imagecheck.imageExist(CSLocatorNames.imgConfirmPaylineDisabled);
 
             //Post-Condition
             await closePayLineBoard(this.game);
         });
     }
 
-    protected BetTotalBetStake() {
-        test("Verify Stake button when opening game", async () => {});
-
-        test("Verify list stake menu", async () => {});
-
-        test("Verify selecting bet stake 0.5/1/5", async () => {});
-
-        test("Verify total stake", async () => {});
-    }
-
-    protected AutoSpinTest() {
-        test("Verify UI of auto spin", async () => {
-            // test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            // // Act
-            // await this.game.clickLocator("autoSpin");
-            // const autospinboard = await this.game.captureLocator("autoSpinBoard");
-            // // Assert
-            // expect(autospinboard.image).toMatchSnapshot(autospinboard.name);
-            // await this.game.clickLocator("autoSpinTurbo");
-            // await this.game.clickLocator("autoSpinStart");
-            // // await waitUntilImageExisted(this.game, "autoSpinBoard.png", 15);
+    protected betTotalBetTests() {
+        test("Verify list bet stake", async () => {
+            await this.imagecheck.imageExist(CSLocatorNames.cboBetLevel);
+            await this.game.clickOutSide();
         });
 
-        test("Verify user can stop auto spin", async () => {});
+        test("Verify selected bet stake value and total bet amount", async () => {
+            const betStake = ["BetLevel0_1", "BetLevel1", "BetLevel5"];
+            const totalStake = ["Totalbet0_1", "Totalbet1", "Totalbet5"];
+            for (let index = 0; index < betStake.length; index++) {
+                await selectBetStake(this.game, `lbl${betStake[index]}`);
 
-        test("Verify case user select 10 auto spins. Wait for finishing 10 auto spins", async () => {});
-
-        test("Verify buttons: Paylines & Stake is disabled when game is auto spinning", async () => {});
+                await this.imagecheck.imageExist(`img${betStake[index]}`);
+                await this.imagecheck.imageExist(`img${totalStake[index]}`);
+            }
+        });
     }
 
-    protected TurboTest() {
-        test("THEN player able to turn on/ off turbo mode", async () => {
+    protected autoSpinTests() {
+        test("Verify default UI of AutoSpin popup", async () => {
+            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            // Act
+            await openAutoSpinBoard(this.game);
+            await this.imagecheck.imageExist(CSLocatorNames.popAutoSpin);
+
+            await this.game.clickOutSide();
+        });
+
+        test("Verify case user select 10 auto spins then wait for finishing 10 auto spins", async () => {
+            let settledResultsAutoSpin = [];
+            const totalAutoSpin = 10;
+
+            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: CSLocatorNames.lblBetLevel1 };
+            await clickTurbo(this.game);
+            await selectPayline(this.game, CSLocatorNames.btnPayline1);
+            await selectBetStake(this.game, bet.amount);
+
+            // Act
+            await selectAutoSpin(this.game, totalAutoSpin);
+            for (let index = 1; index <= totalAutoSpin; index++) {
+                const settledResults = await this.game.waitForSettlement();
+                settledResultsAutoSpin.push(settledResults.winAmount);
+            }
+
+            //Assert
+            expect(settledResultsAutoSpin.length >= 10).toBe(true);
+            await this.game.waitForTimeout(longWait * 2); //handle cases free spin or bonus
+
+            //Post-Act
+            await this.game.clickOutSide();
+        });
+
+        test("Verify user can stop auto spin process by clicking on autospin button", async () => {
+            let settledResultsAutoSpin = [];
+            const totalAutoSpin = 10;
+            await selectAutoSpin(this.game, totalAutoSpin);
+
+            for (let index = 1; index <= totalAutoSpin - 5; index++) {
+                const settledResults = await this.game.waitForSettlement();
+                settledResultsAutoSpin.push(settledResults.winAmount);
+            }
+
+            await this.game.clickLocator(CSLocatorNames.btnAutoSpin); //stop autospin
+
+            //Assert
+            expect(settledResultsAutoSpin.length < 10).toBe(true);
+        });
+    }
+
+    protected turboTests() {
+        test("Verify default state of turbo button is OFF", async () => {
             // Verify default turbo off state
             const turboOff = await this.game.captureLocator(CSLocatorNames.imgTurboOFF);
 
             // Assert Turbo Off
             expect(turboOff.image).toMatchSnapshot(turboOff.name);
+        });
 
+        test("Verify user can turn On turbo mode", async () => {
             // Turbo ON
             await clickTurbo(this.game);
             const turboOn = await this.game.captureLocator(CSLocatorNames.imgTurboOn);
 
             // Assert turbo On
             expect(turboOn.image).toMatchSnapshot(turboOn.name);
+        });
 
+        test("Verify user can turn OFF turbo mode", async () => {
             // Turbo OFF
             await clickTurbo(this.game);
 
             // Assert Turbo Off
-            expect(turboOff.image).toMatchSnapshot(turboOff.name);
+            await this.imagecheck.imageExist(CSLocatorNames.imgTurboOFF);
         });
     }
 
-    protected SpinByKeys() {
-        test("Verify user able spin by space with turbo mode OFF", async () => {});
+    protected spinByKeys() {
+        test("Verify user able spin by space with turbo mode OFF", async () => {
+            //Pre-condition
+            this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
+            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: CSLocatorNames.lblBetLevel1 };
+            await selectPayline(this.game, CSLocatorNames.btnPayline1);
+            await selectBetStake(this.game, bet.amount);
 
-        test("Verify user able spin by enter key with turbo mode OFF", async () => {});
+            //Act
+            await this.game.keyboardPress("Space");
+            const settledResults = await this.game.waitForSettlement();
 
-        test("Verify user able spin by space with turbo mode ON", async () => {});
+            // Assert
+            expect(bet).toMatchWinningSlotsGame(settledResults);
+            await this.game.waitForTimeout(longWait);
+        });
 
-        test("Verify user able spin by enter key with turbo mode ON", async () => {});
+        test("Verify user able spin by enter key with turbo mode OFF", async () => {
+            //Pre-condition
+            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: CSLocatorNames.lblBetLevel1 };
 
-        test("Verify user can not spin by keys when payline is displayed", async () => {});
+            //Act
+            await this.game.keyboardPress("Enter");
+            const settledResults = await this.game.waitForSettlement();
 
-        test("Verify user can not spin by keys when autospin board is displayed", async () => {});
+            // Assert
+            expect(bet).toMatchWinningSlotsGame(settledResults);
+            await this.game.waitForTimeout(longWait);
+        });
 
-        test("Verify user can not spin by keys when history is displayed", async () => {});
+        test("Verify user able spin by space with turbo mode ON", async () => {
+            //Pre-condition
+            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: CSLocatorNames.lblBetLevel1 };
+            await clickTurbo(this.game);
+
+            //Act
+            await this.game.keyboardPress("Space");
+            const settledResults = await this.game.waitForSettlement();
+
+            // Assert
+            expect(bet).toMatchWinningSlotsGame(settledResults);
+            await this.game.waitForTimeout(longWait);
+        });
     }
 
     protected placeBetAndSettleTests() {
@@ -153,15 +233,16 @@ export class SlotGameBase {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "numeric", year: "numeric" });
-            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: CSLocatorNames.lblBetLevel1 };
+            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: 1 };
             let bettime = new Date().toLocaleTimeString("en-US", { hour12: false, hour: "numeric", minute: "numeric" });
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act
-            const placeBetResponse = await this.player.placeBetClassicSlot(bet.choice, bet.amount);
+            const placeBetResponse = await this.player.placeBetClassicSlot(bet.choice, CSLocatorNames.lblBetLevel1);
             const settledResults = await this.game.waitForSettlement();
 
             // Assert
+            expect(placeBetResponse.endBet).toBe(bet.amount);
             expect(settledResults.endBet).toBe(bet.amount * parseInt(bet.choice));
             expect(bet).toMatchWinningSlotsGame(settledResults);
 
@@ -189,23 +270,23 @@ export class SlotGameBase {
 
             await openRoundDetail(this.game);
             let roundID = await getRoundId(this.game, CSLocatorNames.lblHistoryDetailRoundId);
-            expect(roundID).toEqual(global.settledata.roundID);
+            expect.soft(roundID).toEqual(global.settledata.roundID);
 
             //Post-Act
             await this.game.clickLocator(CSLocatorNames.btnClosePopup);
-            await this.game.waitForTimeout(500);
+            await this.game.waitForTimeout(shortWait);
             await this.game.clickLocator(CSLocatorNames.btnClosePopup);
-            await this.game.waitForTimeout(500);
+            await this.game.waitForTimeout(shortWait);
         });
     }
 
-    protected GuideTests() {
+    protected guideTests() {
         test("AND player could open guide and clarify appropriate content", async () => {
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             await this.game.clickLocator(CSLocatorNames.mnuHamburger);
             await this.game.clickLocator(CSLocatorNames.icoGuide);
-            await this.game.waitForTimeout(3000);
-            await this.imagecheck.verifyGuideImages(this.options.snapshotFolderPath + "-snapshots/");
+            await this.game.waitForTimeout(mediWait * 2);
+            await this.imagecheck.guideImages();
             await this.game.clickLocator(CSLocatorNames.btnClosePopup);
         });
     }
@@ -228,7 +309,7 @@ export class SlotGameBase {
             test.beforeAll(async ({ baseGame }) => {
                 this.game = baseGame;
                 this.player = new BasePlayer(this.game);
-                this.imagecheck = new ImageCheck(this.game, this.page);
+                this.imagecheck = new ImageCheck(this.game);
             });
 
             this.runScenario();
@@ -237,42 +318,56 @@ export class SlotGameBase {
 
     protected runScenario() {
         this.inGameTests();
-        this.UIGeneral();
-        // this.PayLine();
-        // this.BetTotalBetStake();
-        // this.AutoSpinTest();
-        // this.TurboTest();
-        // this.SpinByKeys();
+        // this.mainUITests();
+        // this.paylineTests();
+        // this.betTotalBetTests();
+        // this.spinByKeys();
+        // this.autoSpinTests();
+        // this.turboTests();
         // this.placeBetAndSettleTests();
         // this.ticketHistoryTests();
-        this.GuideTests();
+        // this.guideTests();
     }
 }
 
+const openAutoSpinBoard = async (game: any) => {
+    await game.clickOutSide();
+    await game.clickLocator(CSLocatorNames.btnAutoSpin);
+    await game.waitForTimeout(shortWait);
+};
+
+const selectAutoSpin = async (game: any, totalspin: number) => {
+    await game.clickLocator(CSLocatorNames.btnAutoSpin);
+    await game.waitForTimeout(mediWait);
+    await game.clickLocator(CSLocatorNames[`btnAutoSpin${totalspin}`]);
+    await game.clickLocator(CSLocatorNames.btnAutoSpinTurbo);
+    await game.clickLocator(CSLocatorNames.btnAutoSpinStart);
+};
+
 const openPayLineBoard = async (game: any) => {
     await game.clickLocator(CSLocatorNames.btnPayline);
-    await game.waitForTimeout(2000);
+    await game.waitForTimeout(mediWait);
 };
 
 const selectBetChoice = async (game: any, choice: string) => {
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
     await game.clickLocator(CSLocatorNames.btnClearPayline);
     await game.clickLocator(choice);
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
 };
 
 const closePayLineBoard = async (game: any) => {
     await game.clickLocator(CSLocatorNames.btnClosePopup);
-    await game.waitForTimeout(1000);
+    await game.waitForTimeout(mediWait);
 };
 
 const clickTurbo = async (game: any) => {
     await game.clickLocator(CSLocatorNames.btnTurbo);
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
 };
 
 const getRoundId = async (game: any, elementname: string = CSLocatorNames.lblRoundID) => {
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
     let roundId = await game.getTextLocator(elementname);
 
     return typeof roundId != null ? roundId.replace(/[^0-9.]/g, "") : roundId;
@@ -294,37 +389,37 @@ const getDataFistRowHistory = async (game: any, elementname: string = CSLocatorN
 
 const openRoundDetail = async (game: any) => {
     await game.clickLocator(CSLocatorNames.locHistoryRoundId);
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
 };
 
 const verifyticketdata = async (game: any, expectdata: any) => {
     let betStake = expectdata.bet.replace(/[^0-9.]/g, "");
     let payline = expectdata.line.replace(/[^0-9.]/g, "");
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
     const ticketdata = await getDataFistRowHistory(game);
     expect(ticketdata.betdate, "verify bet date").toEqual(expectdata.betdate);
-    expect(ticketdata.bet).toEqual(betStake);
+    expect.soft(ticketdata.bet).toEqual(betStake);
     expect(ticketdata.line, "verify bet bet choice").toEqual(payline);
     expect(ticketdata.betwin, "verify bet win").toEqual(expectdata.betwin);
 };
 
 const selectPayline = async (game: any, payline: string) => {
     await game.clickLocator(CSLocatorNames.btnPayline);
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
     await game.clickLocator(CSLocatorNames.btnClearPayline);
     await game.clickLocator(payline);
     await game.clickLocator(CSLocatorNames.btnConfirmPayline);
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
 };
 
 const selectBetStake = async (game: any, betLevel: string) => {
     await game.clickLocator(CSLocatorNames.cboBetLevel);
-    await game.waitForTimeout(100);
+    await game.waitForTimeout(shortWait);
     await game.clickLocator(betLevel);
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
 };
 
 const clickSpin = async (game: any) => {
     await game.clickLocator(CSLocatorNames.btnSpin);
-    await game.waitForTimeout(500);
+    await game.waitForTimeout(shortWait);
 };

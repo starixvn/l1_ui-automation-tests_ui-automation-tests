@@ -16,7 +16,6 @@ class FortuneCatSmokeSpec extends SlotGameBase {
         };
         super(smokeOptions);
     }
-
 }
 
 new FortuneCatSmokeSpec().start();

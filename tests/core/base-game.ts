@@ -268,6 +268,24 @@ export class BaseGame {
         await this.page.mouse.wheel(xPos, yPos);
     }
 
+    async getCountFrameLocator(locator: string) {
+        return this.page.frameLocator("iframe").locator(locator).count();
+    }
+
+    async captureFrameLocator(locator: string, path: string) {
+        return this.page.frameLocator("iframe").locator(locator).screenshot({ path: path });
+    }
+
+    async keyboardPress(key: string) {
+        return this.page.keyboard.press(key);
+    }
+
+    async getConsoleMessage() {
+        this.page.on("console", (msg) => {
+            if (msg.type() !== "error") return msg.text();
+            else console.log(`Error text: "${msg.text()}"`);
+        });
+    }
 }
 
 export interface Pos {
