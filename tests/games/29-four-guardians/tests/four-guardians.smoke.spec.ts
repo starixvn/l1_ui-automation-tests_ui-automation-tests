@@ -8,7 +8,7 @@ class FourGuardiansSmokeSpec extends SlotGameBase {
      */
     constructor() {
         const smokeOptions: IBaseOptions = {
-            placeBetChoices: [FourGuardiansConfigs.choices[0]],
+            placeBetChoices: ["1","25"],
             gameConfiguration: FourGuardiansConfigs,
             locators: FourGuardiansLocators,
             waitBetTimeout: 5000,

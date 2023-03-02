@@ -15,7 +15,7 @@ const gameId = process.env.npm_config_game ?? "9";
 
 const config: PlaywrightTestConfig = {
     testDir: "./tests",
-    timeout: 0,
+    timeout: 120 * 1000,
     expect: {
         timeout: 10 * 1000,
         toMatchSnapshot: {
@@ -58,7 +58,6 @@ const config: PlaywrightTestConfig = {
             },
         },
     ],
-    
 
     /* Folder for test artifacts such as screenshots, videos, traces, etc. */
     // outputDir: 'test-results/',

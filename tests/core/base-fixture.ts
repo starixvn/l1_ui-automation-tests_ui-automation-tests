@@ -1,9 +1,7 @@
 import { test as base } from "@playwright/test";
-
 import { ImageLocator } from "./base-image-locator";
 import { GameConfiguration } from "./game-configuration";
 import { BaseGame } from "./base-game";
-import { ImageCheck } from "./expects/expect-images";
 
 type BaseFixtures = {
     gameConfigurations: GameConfiguration;
