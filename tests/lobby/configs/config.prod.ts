@@ -4,6 +4,7 @@ export default {
     lobbyTimeout: 20000, // 20s
     enabledMsgPack: true,
     gameAccounts: {
+        0: ["supertestte120201001"],
         1: ["supertestte120201002"],
         2: ["supertestte120201003"],
         3: ["supertestte120201004"],
@@ -47,6 +48,7 @@ export default {
         48: ["supertestte120201009"],
         49: ["supertestte120201011"],
         50: ["supertestte120201012"],
+        59: ["supertestte120201004"],
         60: ["supertestte120201013"],
         61: ["supertestte120201002"],
         62: ["supertestte120201003"],
@@ -96,6 +98,7 @@ export default {
         48: 1655,
         49: 1656,
         50: 1659,
+        59: 1666,
         60: 1667,
         61: 1668,
         62: 1669,
