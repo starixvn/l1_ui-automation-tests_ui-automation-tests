@@ -4,6 +4,7 @@ export default {
     lobbyTimeout: 20000, // 20s
     enabledMsgPack: false,
     gameAccounts: {
+        0: ["222220"],
         1: ["222221"],
         2: ["222222"],
         3: ["222223"],

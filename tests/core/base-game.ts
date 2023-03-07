@@ -52,6 +52,7 @@ export class BaseGame {
             }
         });
         await this.page.waitForTimeout(this.LobbyTimeout);
+        await this.getConsoleMessage()
     }
 
     attachSocketAndCaptureEvent(event: string) {
@@ -281,10 +282,9 @@ export class BaseGame {
     }
 
     async getConsoleMessage() {
-        this.page.on("console", (msg) => {
-            if (msg.type() !== "error") return msg.text();
-            else console.log(`Error text: "${msg.text()}"`);
-        });
+        this.page.on('console', (msg) => {
+            console.log(msg);
+          });
     }
 }
 

@@ -24,7 +24,6 @@ export class SlotGameBase {
             // Assert
             await test.step(`Verify ODD should be correct`, async () => {
                 expect(this.game.odds).toStrictEqual(this.options.gameConfiguration.odds);
-                console.log(await this.game.getConsoleMessage());
             });
         });
     }
@@ -318,15 +317,15 @@ export class SlotGameBase {
 
     protected runScenario() {
         this.inGameTests();
-        // this.mainUITests();
-        // this.paylineTests();
-        // this.betTotalBetTests();
-        // this.spinByKeys();
-        // this.autoSpinTests();
-        // this.turboTests();
-        // this.placeBetAndSettleTests();
-        // this.ticketHistoryTests();
-        // this.guideTests();
+        this.mainUITests();
+        this.paylineTests();
+        this.betTotalBetTests();
+        this.spinByKeys();
+        this.autoSpinTests();
+        this.turboTests();
+        this.placeBetAndSettleTests();
+        this.ticketHistoryTests();
+        this.guideTests();
     }
 }
 
