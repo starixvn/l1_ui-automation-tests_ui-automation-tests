@@ -19,11 +19,11 @@ class LobbySmokeSpec extends SlotGameBase {
         super(smokeOptions);
     }
 
-    protected testBigSmall(): void {
-        test("Test Game BigSmall", async () => {
+    protected testSedie(): void {
+        test("Test Game Sedie", async () => {
             // Assert
-            await this.imagecheck.imageExist(`imgBigSmall`);
-            await closeGame(this.game, "BigSmall");
+            await this.imagecheck.imageExist(`imgSedie`);
+            await closeGame(this.game, "Sedie");
         });
     }
 
@@ -72,14 +72,22 @@ class LobbySmokeSpec extends SlotGameBase {
 
     protected testSlotsGames(): void {
         test("testSlotsGames", async () => {
-            test.setTimeout(180 * 1000);
+            test.setTimeout(300 * 1000);
             const listGames1 = ["FortuneCat", "HeroesSlot", "NightClub", "TreasureIsland", "ForGuardians"];
             const listGames2 = ["WayToGoal", "FruitSlot"];
             await selectGameCategory(this.game, "Slots");
             for (const iterator of listGames1) {
-                await openGame(this.game, iterator, longWait);
-                await this.imagecheck.imageExist(`img${iterator}`);
-                await closeGame(this.game, iterator);
+                if (iterator !== "ForGuardians") {
+                    await openGame(this.game, iterator, longWait);
+                    await this.imagecheck.imageExist(`img${iterator}`);
+                    await closeGame(this.game, iterator);  
+                }
+                else{
+                    await openGame(this.game, iterator, longWait+10000);
+                    await this.imagecheck.imageExist(`img${iterator}`);
+                    await closeGame(this.game, iterator);  
+                }
+
             }
 
             for (const iterator2 of listGames2) {
@@ -94,10 +102,11 @@ class LobbySmokeSpec extends SlotGameBase {
 
     protected testKenoLotteryGames(): void {
         test("testKenoLotteryGames", async () => {
+            test.setTimeout(130 * 1000);
             const listGames = ["KenoProMax", "Lottery", "MegaKeno"];
             await selectGameCategory(this.game, "Keno");
             for (const iterator of listGames) {
-                await openGame(this.game, iterator);
+                await openGame(this.game, iterator,longWait);
                 await this.imagecheck.imageExist(`img${iterator}`);
                 await closeGame(this.game, iterator);
             }
@@ -109,7 +118,7 @@ class LobbySmokeSpec extends SlotGameBase {
             const listGames = ["FanTan", "FishPrawnCrab", "BitCoin", "VipFishPrawnCrab", "Roulette"];
             await selectGameCategory(this.game, "Others");
             for (const iterator of listGames) {
-                await openGame(this.game, iterator);
+                await openGame(this.game, iterator,midWait);
                 await this.imagecheck.imageExist(`img${iterator}`);
                 await closeGame(this.game, iterator);
             }
@@ -117,13 +126,10 @@ class LobbySmokeSpec extends SlotGameBase {
     }
 
     protected runScenario(): void {
-        this.testBigSmall();
-        this.testSedieGames();
-        // this.testBigSmallGames();
-        // this.testCardsGames();
-        // this.testSlotsGames();
-        // this.testKenoLotteryGames();
-        // this.testOthersGames();
+        this.testSedie();
+        this.testKenoLotteryGames();
+        this.testOthersGames();
+        this.testSlotsGames();
     }
 }
 
