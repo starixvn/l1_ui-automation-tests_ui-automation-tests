@@ -51,6 +51,6 @@ export const FruitSlotConfigs: GameConfiguration = {
         cherry: 5,
         cherry3: 3,
         big: 1.96,
-        small: 1.98,
+        small: 1.96,
     },
 };
