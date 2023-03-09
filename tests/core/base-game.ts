@@ -9,7 +9,7 @@ import { Tesseract } from "tesseract.ts";
 import { CSLocatorNames } from "./base-classic-slot-locator";
 
 export class BaseGame {
-    readonly LobbyTimeout: number = 70000; 
+    readonly LobbyTimeout: number = 70000;
     readonly BetBoardPostfix: string = "BetBoard";
 
     readonly page: Page;
@@ -51,8 +51,8 @@ export class BaseGame {
                 });
             }
         });
+        await this.logConsole();
         await this.page.waitForTimeout(this.LobbyTimeout);
-        await this.getConsoleMessage()
     }
 
     attachSocketAndCaptureEvent(event: string) {
@@ -112,7 +112,7 @@ export class BaseGame {
         const message = await waitForMessage(this.gameSocket, GameEvent.Settlement, this.getGameName(subGameName), this.msgpack);
         await this.page.waitForTimeout(500); // add sleep due to feature Publish round result prior to settlement
         const winningByChoice = this.latestCaptureEvent(GameEvent.WinStatus);
-        
+
         let settledResults = {
             settlementResult: message?.finish?.settlementResult,
             odds: this.odds,
@@ -281,10 +281,10 @@ export class BaseGame {
         return this.page.keyboard.press(key);
     }
 
-    async getConsoleMessage() {
-        this.page.on('console', (msg) => {
+    async logConsole() {
+        this.page.on("console", (msg) => {
             console.log(msg);
-          });
+        });
     }
 }
 
