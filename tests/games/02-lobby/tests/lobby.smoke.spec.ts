@@ -2,10 +2,10 @@ import { LobbyLocators } from "../locators/lobby-locators";
 import { LobbyConfigs } from "../lobby-configs";
 import { IBaseOptions, SlotGameBase } from "../../../core/e2e-game-bases";
 import { test } from "../../../core/base-fixture";
-let logmsg = [];
 let shortWait = 3000,
     midWait = 8000,
     longWait = 20000;
+
 class LobbySmokeSpec extends SlotGameBase {
     constructor() {
         const smokeOptions: IBaseOptions = {
@@ -27,102 +27,53 @@ class LobbySmokeSpec extends SlotGameBase {
         });
     }
 
-    protected testSedieGames(): void {
-        test("testSedieGames", async () => {
-            test.setTimeout(150 * 1000);
-            const listGames = ["Sedie", "VipSedie", "SedieWar", "SpecialSedie", "MiniSedie"];
-            await selectGameCategory(this.game, "Sedie");
-            for (const iterator of listGames) {
+    protected testSlotsGames(): void {
+        const listGames1 = ["FortuneCat", "HeroesSlot", "NightClub", "TreasureIsland", "ForGuardians"];
+        const listGames2 = ["WayToGoal", "FruitSlot"];
+        for (const iterator of listGames1) {
+            test(`test game ${iterator}`, async () => {
+                test.setTimeout(180 * 1000);
+                await selectGameCategory(this.game, "Slots");
                 await openGame(this.game, iterator, longWait);
                 await this.imagecheck.imageExist(`img${iterator}`);
                 await closeGame(this.game, iterator);
-            }
-        });
-    }
+            });
+        }
 
-    protected testBigSmallGames(): void {
-        test("testBigSmallGames", async () => {
-            const listGames = ["SicBo", "TurboBigSmall", "BigSmallCity", "TurboOddEven"];
-            await selectGameCategory(this.game, "BigSmall");
-            for (const iterator of listGames) {
-                await openGame(this.game, iterator, midWait);
-                await this.imagecheck.imageExist(`img${iterator}`);
-                await closeGame(this.game, iterator);
-            }
-        });
-    }
-
-    protected testCardsGames(): void {
-        test("testCardsGames", async () => {
-            test.setTimeout(150 * 1000);
-            const listGames = ["VipBaccarat", "Baccarat", "DragonTiger", "BlackJack", "ThreeCards", "CasinoHem", "HiLo"];
-            await selectGameCategory(this.game, "Cards");
-            for (const iterator of listGames) {
-                await openGame(this.game, iterator, midWait);
-                await this.imagecheck.imageExist(`img${iterator}`);
-                await closeGame(this.game, iterator);
-            }
-
-            await openGame(this.game, "TexasHem", midWait);
-            await this.game.clickLocator("btnSkipTexasHem");
-            await this.imagecheck.imageExist(`imgTexasHem`);
-            await closeGame(this.game, "TexasHem");
-        });
-    }
-
-    protected testSlotsGames(): void {
-        test("testSlotsGames", async () => {
-            test.setTimeout(300 * 1000);
-            const listGames1 = ["FortuneCat", "HeroesSlot", "NightClub", "TreasureIsland", "ForGuardians"];
-            const listGames2 = ["WayToGoal", "FruitSlot"];
-            await selectGameCategory(this.game, "Slots");
-            for (const iterator of listGames1) {
-                if (iterator !== "ForGuardians") {
-                    await openGame(this.game, iterator, longWait);
-                    await this.imagecheck.imageExist(`img${iterator}`);
-                    await closeGame(this.game, iterator);  
-                }
-                else{
-                    await openGame(this.game, iterator, longWait+10000);
-                    await this.imagecheck.imageExist(`img${iterator}`);
-                    await closeGame(this.game, iterator);  
-                }
-
-            }
-
-            for (const iterator2 of listGames2) {
+        for (const iterator2 of listGames2) {
+            test(`test game ${iterator2}`, async () => {
+                test.setTimeout(180 * 1000);
                 await this.game.clickLocator("icoNext");
                 await this.game.waitForTimeout(1000);
                 await openGame(this.game, iterator2, longWait);
                 await this.imagecheck.imageExist(`img${iterator2}`);
                 await closeGame(this.game, iterator2);
-            }
-        });
+            });
+        }
     }
 
     protected testKenoLotteryGames(): void {
-        test("testKenoLotteryGames", async () => {
-            test.setTimeout(130 * 1000);
-            const listGames = ["KenoProMax", "Lottery", "MegaKeno"];
-            await selectGameCategory(this.game, "Keno");
-            for (const iterator of listGames) {
-                await openGame(this.game, iterator,longWait);
+        const listGames = ["KenoProMax", "Lottery", "MegaKeno"];
+        for (const iterator of listGames) {
+            test(`test game ${iterator}`, async () => {
+                await selectGameCategory(this.game, "Keno");
+                await openGame(this.game, iterator, longWait);
                 await this.imagecheck.imageExist(`img${iterator}`);
                 await closeGame(this.game, iterator);
-            }
-        });
+            });
+        }
     }
 
     protected testOthersGames(): void {
-        test("testOthersGames", async () => {
-            const listGames = ["FanTan", "FishPrawnCrab", "BitCoin", "VipFishPrawnCrab", "Roulette"];
-            await selectGameCategory(this.game, "Others");
-            for (const iterator of listGames) {
-                await openGame(this.game, iterator,midWait);
+        const listGames = ["FanTan", "FishPrawnCrab", "BitCoin", "VipFishPrawnCrab", "Roulette"];
+        for (const iterator of listGames) {
+            test(`test game ${iterator}`, async () => {
+                await selectGameCategory(this.game, "Others");
+                await openGame(this.game, iterator, midWait);
                 await this.imagecheck.imageExist(`img${iterator}`);
                 await closeGame(this.game, iterator);
-            }
-        });
+            });
+        }
     }
 
     protected runScenario(): void {

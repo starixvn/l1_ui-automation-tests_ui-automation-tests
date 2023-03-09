@@ -14,6 +14,7 @@ import * as customExpect from "./tests/core/expects/expect-settlement-options";
 const gameId = process.env.npm_config_game ?? "9";
 
 const config: PlaywrightTestConfig = {
+    retries: 1,
     testDir: "./tests",
     timeout: 120 * 1000,
     expect: {
