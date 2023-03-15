@@ -11,5 +11,6 @@ export const VipBaccaratLocators = [
     new ImageLocator("historyPopup", 555, 40, 200, 40),
     new ImageLocator("stake10", 441, 616, 0, 0),
     new ImageLocator("errorMessage", 460, 518, 350, 25),
-
+    new ImageLocator("msgMaxbetLimit", 478, 520, 350, 22),
+    new ImageLocator("btnRightArrow", 924, 600, 35, 35),
 ];

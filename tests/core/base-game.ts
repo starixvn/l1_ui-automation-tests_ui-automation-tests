@@ -207,6 +207,10 @@ export class BaseGame {
         return this.capture(`errorMessage`);
     }
 
+    async captureErrorBetLimit(): Promise<ImageSnapshot> {
+        return this.capture(`msgMaxbetLimit`);
+    }
+
     async clickStake(amount: number = 1): Promise<void> {
         await this.clickLocator(`stake${amount}`);
     }

@@ -11,4 +11,6 @@ export const SedieLocators = [
     new ImageLocator("historyMenu", 21, 346, 52, 42),
     new ImageLocator("historyPopup", 465, 70, 609, 186),
     new ImageLocator("errorMessage", 459, 492, 380, 37),
+    new ImageLocator("msgMaxbetLimit", 478, 488, 400, 30),
+    new ImageLocator("btnRightArrow", 911, 588, 35, 35),
 ];

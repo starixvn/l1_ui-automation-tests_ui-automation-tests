@@ -8,5 +8,6 @@ export const BigSmallSicBoLocators = [
     new ImageLocator("historyPopup", 579, 87, 150, 30),
     new ImageLocator("errorMessage", 465, 480, 340, 30),
     new ImageLocator("stake1", 424, 632),
-
+    new ImageLocator("msgMaxbetLimit", 468, 482, 350, 22),
+    new ImageLocator("btnRightArrow", 924, 610, 35, 35),
 ];

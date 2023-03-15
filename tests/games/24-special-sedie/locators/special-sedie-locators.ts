@@ -12,5 +12,7 @@ export const SpecialSedieLocators = [
     new ImageLocator("oddChoiceBetBoard", 740, 393, 123, 27),
     new ImageLocator("stake1", 436, 489, 97, 36),
     new ImageLocator("submitBetBoard", 730, 595, 119, 31),
-    new ImageLocator("outside", 0, 0, 0, 0),
+    new ImageLocator("outside", 5, 5, 5, 5),
+    new ImageLocator("msgMaxbetLimit", 492, 393, 350, 25),
+    new ImageLocator("stake1000", 770, 542, 60, 20),
 ];

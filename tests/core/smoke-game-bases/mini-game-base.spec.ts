@@ -66,6 +66,21 @@ export class MiniGameBase {
         });
     }
 
+    protected maxBetTests() {
+        test("THEN player should get error when they reach max bet", async () => {
+            // Arrange
+            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            const bet = { choice: this.options.placeBetChoices[0], amount:[this.options.placeBetAmount ?? 1, 1000]  };
+
+            // Act
+            await this.player.placeMaxBet(bet.choice ,bet.amount);
+            const error = await this.game.captureErrorBetLimit();
+
+            // Assert
+            expect(error.image).toMatchSnapshot(error.name);
+        });
+    }
+
     protected ticketHistoryTests() {
         test("AND player could open history popup", async () => {
             // Arrange
@@ -109,6 +124,7 @@ export class MiniGameBase {
         this.inGameOddsTests();
         this.placeBetAndSettleTests();
         this.hedgeBetTests();
+        this.maxBetTests()
         this.ticketHistoryTests();
     }
 }

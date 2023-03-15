@@ -10,4 +10,6 @@ export const FanTanLocators = [
     new ImageLocator("historyMenu", 82, 490, 0, 0),
     new ImageLocator("historyPopup", 518, 108, 254, 32),
     new ImageLocator("errorMessage", 470, 508, 357, 27),
+    new ImageLocator("msgMaxbetLimit", 480, 516, 350, 30),
+    new ImageLocator("btnRightArrow", 905, 610, 35, 35),
 ];

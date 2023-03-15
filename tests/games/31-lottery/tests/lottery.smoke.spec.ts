@@ -22,6 +22,10 @@ class LotterySmokeSpec extends TableGameBase {
     protected inGameDealerTests(): void {
     }
 
+    protected maxBetTests(): void {
+        
+    }
+
     protected placeBetAndSettleTests(): void {
         test("THEN player able to place a bet and settle", async () => {
         test.setTimeout(this.options.gameConfiguration.maxTimeout);

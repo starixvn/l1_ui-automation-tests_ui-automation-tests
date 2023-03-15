@@ -8,5 +8,6 @@ export const VIPFPCLocators = [
     new ImageLocator("historyPopup", 564, 71, 150, 35),
     new ImageLocator("stake10", 467, 618, 0, 0),
     new ImageLocator("errorMessage", 410, 532, 450, 30),
-
+    new ImageLocator("msgMaxbetLimit", 472, 530, 350, 22),
+    new ImageLocator("btnRightArrow", 960, 600, 35, 35),
 ];

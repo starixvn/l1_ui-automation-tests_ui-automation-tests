@@ -1,0 +1,28 @@
+import { ImageLocator } from "../../../core/base-image-locator";
+
+export const BigSmallCityLocators = [
+    new ImageLocator("bigChoice", 255, 320, 100, 60),
+    new ImageLocator("bigOwnbet", 282, 408, 66, 30),
+    new ImageLocator("smallChoice", 600, 320, 115, 60),
+    new ImageLocator("smallOwnbet", 621, 408, 66, 30),
+    new ImageLocator("outside", 10, 10, 5, 5),
+    new ImageLocator("historyMenu", 164, 344, 52, 42),
+    new ImageLocator("historyPopup", 560, 76, 180, 20),
+    new ImageLocator("errorMessage", 369, 392, 320, 35),
+    new ImageLocator("closeguide", 890, 571, 100, 20),
+    new ImageLocator("big2Choice", 860, 150, 100, 40),
+    new ImageLocator("small2Choice", 990, 150, 100, 40),
+    new ImageLocator("big3Choice", 860, 340, 100, 40),
+    new ImageLocator("small3Choice", 990, 340, 100, 40),
+    new ImageLocator("big4Choice", 860, 530, 100, 40),
+    new ImageLocator("small4Choice", 990, 530, 100, 40),
+    new ImageLocator("errorMessage2", 833, 163, 200, 50),
+    new ImageLocator("errorMessage3", 833, 350, 200, 50),
+    new ImageLocator("errorMessage4", 833, 544, 200, 50),
+    new ImageLocator("msgMaxbetLimit", 336, 377, 300, 50),
+    new ImageLocator("btnRightArrow", 705, 495, 35, 35),
+    new ImageLocator("imgGame1", 430, 230, 105, 25),
+    new ImageLocator("imgGame2", 900, 90, 110, 25),
+    new ImageLocator("imgGame3", 919, 278, 80, 25),
+    new ImageLocator("imgGame4", 895, 466, 120, 25),
+];

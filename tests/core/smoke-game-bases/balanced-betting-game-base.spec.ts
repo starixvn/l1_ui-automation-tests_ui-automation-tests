@@ -31,4 +31,8 @@ export class BalancedBettingGameBase extends MiniGameBase {
         });
     }
 
+  protected ticketHistoryTests(): void {
+      //remove this case cause above test has covered it
+  }  
+
 }

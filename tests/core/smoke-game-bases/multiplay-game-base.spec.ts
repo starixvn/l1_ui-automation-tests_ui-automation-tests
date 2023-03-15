@@ -20,6 +20,7 @@ export class MultiplayGameBase {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             await this.game.waitUntilNextRound();
+
             await this.game.clickLocator("closeguide");
             await this.game.waitForTimeout(this.options.waitBetTimeout);
             // Act
@@ -69,6 +70,20 @@ export class MultiplayGameBase {
         });
     }
 
+    protected maxBetTests() {
+        test("THEN player should get error when they reach max bet", async () => {
+            // Arrange
+            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            const bet = { choice: this.options.placeBetChoices[0], amount: [this.options.placeBetAmount ?? 1, 1000] };
+            // Act
+            await this.player.placeMaxBet(bet.choice, bet.amount);
+            const error = await this.game.captureErrorBetLimit();
+
+            // Assert
+            expect(error.image).toMatchSnapshot(error.name);
+        });
+    }
+
     protected ticketHistoryTests() {
         test("AND player could open history popup", async () => {
             // Arrange
@@ -109,6 +124,7 @@ export class MultiplayGameBase {
             this.hedgeBetTests();
             this.ticketHistoryTests();
             this.subGameplaceBetAndSettleTests();
+            this.maxBetTests();
         });
     }
 
@@ -134,7 +150,6 @@ export class MultiplayGameBase {
                 // // Assert
                 expect(placeBetResponse.endBet).toBe(bet.amount);
                 expect(settledResults.settlementResult).toMatchBetOptions(this.options.gameConfiguration.choices);
-                // expect(bet).toMatchWinning(settledResults);
             });
         });
     }

@@ -32,7 +32,7 @@ export class CardGameBase {
     protected inGameOddsTests() {
         test("AND odds should be correct", async () => {
             // Assert
-            
+
             expect(this.game.odds).toStrictEqual(this.options.gameConfiguration.odds);
         });
     }
@@ -42,18 +42,35 @@ export class CardGameBase {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             const bet = { choice: this.options.placeBetChoices[0], amount: this.options.placeBetAmount ?? 1 };
-            this.game.attachSocketAndCaptureEvent(GameEvent.Deal);        
-           
+            this.game.attachSocketAndCaptureEvent(GameEvent.Deal);
+
             // Act
             const placebetdeal = await this.player.placeBet(bet.choice, bet.amount);
             await this.player.standCard();
-            
+
             // Assert
             expect(placebetdeal.deal.hands[0].bet).toBe(bet.amount);
             expect(placebetdeal.deal.hands[0].pos).toBe(parseInt(bet.choice));
         });
     }
 
+    protected maxBetTests() {
+        test("THEN player should get error when they reach max bet", async () => {
+            // Arrange
+            test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            await this.game.waitForTimeout(7000);
+            const bet = { choice: this.options.placeBetChoices[0], amount: [this.options.placeBetAmount ?? 1, 1000] };
+
+            // Act
+            await this.player.placeMaxBet(bet.choice, bet.amount);
+            const error = await this.game.captureErrorBetLimit();
+
+            // Assert
+            expect(error.image).toMatchSnapshot(error.name);
+            await this.game.clickLocator(`btnCancelBet`);
+            await this.game.waitForTimeout(1000);
+        });
+    }
 
     protected ticketHistoryTests() {
         test("AND player could open history popup", async () => {
@@ -97,6 +114,7 @@ export class CardGameBase {
         this.inGameBetChoiceTests();
         this.inGameOddsTests();
         this.placeBetAndSettleTests();
+        this.maxBetTests();
         this.ticketHistoryTests();
     }
 }

@@ -11,6 +11,8 @@ export const RouletteLocators = [
     new ImageLocator("evenChoiceBetBoard", 340, 510, 120, 60),
     new ImageLocator("oddChoiceBetBoard", 750, 510, 120, 60),
     new ImageLocator("submitBetBoard", 619, 648, 100, 50),
+    new ImageLocator("msgMaxbetLimit", 478, 510, 300, 30),
+    new ImageLocator("btnRightArrow", 485, 630, 35, 35),
 ];
 
 

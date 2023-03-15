@@ -11,4 +11,6 @@ export const ThreeCardsLocators = [
     new ImageLocator("historyPopup", 560, 50, 180, 45),
     new ImageLocator("stake1", 467, 640, 0, 0),
     new ImageLocator("errorMessage", 466, 504, 350, 27),
+    new ImageLocator("msgMaxbetLimit", 473, 505, 350, 30),
+    new ImageLocator("btnRightArrow", 920, 615, 35, 35),
 ];

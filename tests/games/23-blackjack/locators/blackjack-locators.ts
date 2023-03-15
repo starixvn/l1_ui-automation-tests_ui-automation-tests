@@ -12,7 +12,9 @@ export const BlackJackLocators = [
     new ImageLocator("hitcard", 1177, 277, 105, 130),
     new ImageLocator("standcard", 1184, 448, 90, 90),
     new ImageLocator("cancelbet", 1184, 448, 90, 90),
-
+    new ImageLocator("msgMaxbetLimit", 440, 536, 400, 22),
+    new ImageLocator("btnRightArrow", 966, 609, 35, 35),
+    new ImageLocator("btnCancelBet", 1185, 457, 35, 35),
 ];
 
 

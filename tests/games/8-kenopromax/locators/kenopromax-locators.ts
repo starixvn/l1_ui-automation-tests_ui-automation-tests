@@ -10,5 +10,6 @@ export const KenoProMaxLocators = [
     new ImageLocator("historyPopup", 579, 80, 250, 30),
     new ImageLocator("stake1", 441, 616, 0, 0),
     new ImageLocator("errorMessage", 476, 508, 320, 20),
-
+    new ImageLocator("msgMaxbetLimit", 492, 504, 350, 22),
+    new ImageLocator("btnRightArrow", 931, 600, 35, 35),
 ];

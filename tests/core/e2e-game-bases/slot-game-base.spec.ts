@@ -34,7 +34,7 @@ export class SlotGameBase {
         });
 
         test("Verify symbols board in first load game", async () => {
-            console.log(await this.game.getConsoleMessage());
+            //Tobe implement later
         });
 
         test("Verify roundID is null in first load game", async () => {

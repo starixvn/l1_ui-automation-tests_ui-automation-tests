@@ -14,4 +14,7 @@ export const TurboOddEvenLocators = [
     new ImageLocator("stake1", 436, 489, 97, 36),
     new ImageLocator("submitBetBoard", 730, 595, 119, 31),
     new ImageLocator("outside", 5, 5, 5, 5),
+    new ImageLocator("msgMaxbetLimit", 488, 368, 350, 25),
+    new ImageLocator("stake1000", 770, 552, 60, 20),
+
 ];

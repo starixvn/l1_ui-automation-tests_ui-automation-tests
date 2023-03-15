@@ -11,5 +11,6 @@ export const BaccaratLocators = [
     new ImageLocator("historyPopup", 555, 40, 200, 40),
     new ImageLocator("stake1", 441, 616, 0, 0),
     new ImageLocator("errorMessage", 500, 562, 300, 25),
-
+    new ImageLocator("msgMaxbetLimit", 481, 565, 350, 22),
+    new ImageLocator("btnRightArrow", 921, 616, 35, 35),
 ];

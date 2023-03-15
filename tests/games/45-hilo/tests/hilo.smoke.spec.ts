@@ -49,6 +49,10 @@ class HiLoSmokeSpec extends MiniGameBase {
             expect(settledResults.endBet).toBe(bet.amount);
         });
     }
+
+    protected maxBetTests(): void {
+        'no bet limit test for this game'
+    }
 }
 
 new HiLoSmokeSpec().start();

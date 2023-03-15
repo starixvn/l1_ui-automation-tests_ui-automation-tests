@@ -20,6 +20,7 @@ export const MiniSedieLocators = [
     new ImageLocator("errorMessage2", 839, 146, 200, 35),
     new ImageLocator("errorMessage3", 839, 333, 200, 35),
     new ImageLocator("errorMessage4", 839, 520, 200, 35),
-
+    new ImageLocator("msgMaxbetLimit", 350, 392, 300, 22),
+    new ImageLocator("btnRightArrow", 712, 503, 35, 35),
 
 ];
