@@ -10,4 +10,6 @@ export const FruitSlotLocators = [
     new ImageLocator("historyMenu", 76, 485, 0, 0),
     new ImageLocator("historyPopup", 533, 40, 200, 30),
     new ImageLocator("errorMessage", 435, 553, 400, 30),
+    new ImageLocator("msgMaxbetLimit", 476, 558, 300, 25),
+    new ImageLocator("btnRightArrow", 890, 600, 35, 35),
 ];
