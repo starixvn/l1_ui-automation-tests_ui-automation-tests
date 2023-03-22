@@ -26,8 +26,8 @@ docker-build:
     - export CI_REGISTRY_IMAGE=$DOCKER_REG_LOCAL_URL/pentagon-base/ui-automation-tests
     - docker login -u $DOCKER_REG_LOCAL_USERNAME -p $DOCKER_REG_LOCAL_PASSWORD $DOCKER_REG_LOCAL_URL
   script:   
-     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
-     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+     - docker build --pull -t $CI_REGISTRY_IMAGE:latest .
+     - docker push $CI_REGISTRY_IMAGE:latest
   when: always
 
 smoketest:
@@ -39,8 +39,8 @@ smoketest:
     - npm run test --env=$ENV --game=$GAMEID
   after_script:
     - du -hs /ms-playwright/*
-  retry: 1    
-  when: always  
+  retry: 1
+  when: always   
 
   artifacts:
     paths:
