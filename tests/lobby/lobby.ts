@@ -13,7 +13,7 @@ export enum Environment {
 }
 
 export const ssoToGame = async (page: Page, gameId: number = 2): Promise<void> => {
-    const env = process.env.npm_config_env ?? Environment.LOCAL;
+    const env = (process.env.npm_config_env ?? Environment.LOCAL).toLowerCase();
     const config = getConfig();
 
     if (config.gameAccounts[gameId] == null) {
@@ -33,7 +33,7 @@ export const ssoToGame = async (page: Page, gameId: number = 2): Promise<void> =
 };
 
 export const getConfig = (): any => {
-    const env = process.env.npm_config_env ?? Environment.LOCAL;
+    const env = (process.env.npm_config_env ?? Environment.LOCAL).toLowerCase();
 
     return configs[env];
 };
