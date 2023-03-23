@@ -23,14 +23,15 @@ docker-build:
   services:
     - docker:dind
   before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY     
+    - export CI_REGISTRY_IMAGE=$DOCKER_REG_LOCAL_URL/pentagon-base/ui-automation-tests
+    - docker login -u $DOCKER_REG_LOCAL_USERNAME -p $DOCKER_REG_LOCAL_PASSWORD $DOCKER_REG_LOCAL_URL
   script:   
      - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
      - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   when: always
 
 smoketest:
-  image: git3.nexdev.net:5050/l1/ui-automation-tests/ui-automation-tests:main
+  image: hub.lumigame.com/pentagon-base/ui-automation-tests:latest
   stage: test
   tags:
     - auto-test-prod
