@@ -36,7 +36,7 @@ export enum PRODLocator {
     pwdInput = "id=txtPW",
     loginButton = "//a[contains(@class,'btn btn')]",
     langDropdown = "//div[contains(@class,'c-dropdown--lang')]",
-    vnLangOption = "//span[text()=''Tiếng Việt']",
+    vnLangOption = "//span[text()='Tiếng Việt']",
     enLangOption = "//span[text()='English']",
     cnLangOption = "//span[text()='繁體中文']",
     jaLangOption = "//span[text()='日本語']",
