@@ -10,7 +10,7 @@ export class ImageCheck {
 
     async imageExist(image: string): Promise<void> {
         const captureimage = await this.game.captureLocator(image);
-        expect(captureimage.image, `verify ${image}`).toMatchSnapshot(captureimage.name);
+        expect(captureimage.image, `verify ${image}`).toMatchSnapshot(image+'.png');
     }
 
     async guideImages(): Promise<void> {

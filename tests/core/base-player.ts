@@ -56,13 +56,13 @@ export class BasePlayer {
 
     async placeBet(choice: string, amount: number = 1, subGameName?: string): Promise<any> {
         if (this.game.gameConfiguration.slotsgame) {
-            return await this.betOnSlot(choice, amount);
+            return this.betOnSlot(choice, amount);
         } else if (this.game.gameConfiguration.cardgame) {
-            return await this.betOnCard(choice, amount);
+            return this.betOnCard(choice, amount);
         } else {
             await this.game.waitUntilPlaceBet(subGameName);
 
-            return await this.betOn(choice, amount, subGameName);
+            return this.betOn(choice, amount, subGameName);
         }
     }
 

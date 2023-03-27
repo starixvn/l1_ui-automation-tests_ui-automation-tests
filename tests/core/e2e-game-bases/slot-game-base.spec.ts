@@ -5,7 +5,7 @@ import IBaseOptions from "./base-options";
 import { CSLocatorNames } from "../base-classic-slot-locator";
 const shortWait = 300,
     mediWait = 1000,
-    longWait = 2000;
+    longWait = 5000;
 
 export interface SlotGameOptions extends IBaseOptions {
     placeBetChoices: string[];
@@ -34,7 +34,8 @@ export class SlotGameBase {
         });
 
         test("Verify symbols board in first load game", async () => {
-            //Tobe implement later
+            let boardID = await getBoardID()
+            await this.imagecheck.imageExist(`img${boardID}`);
         });
 
         test("Verify roundID is null in first load game", async () => {
@@ -132,7 +133,7 @@ export class SlotGameBase {
 
             //Assert
             expect(settledResultsAutoSpin.length >= 10).toBe(true);
-            await this.game.waitForTimeout(longWait * 2); //handle cases free spin or bonus
+            await this.game.waitForTimeout(longWait); //handle cases free spin or bonus
 
             //Post-Act
             await this.game.clickOutSide();
@@ -152,6 +153,7 @@ export class SlotGameBase {
 
             //Assert
             expect(settledResultsAutoSpin.length < 10).toBe(true);
+            await this.game.waitForTimeout(longWait); //handle cases free spin or bonus
         });
     }
 
@@ -186,9 +188,9 @@ export class SlotGameBase {
         test("Verify user able spin by space with turbo mode OFF", async () => {
             //Pre-condition
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
-            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: CSLocatorNames.lblBetLevel1 };
+            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: 1 };
             await selectPayline(this.game, CSLocatorNames.btnPayline1);
-            await selectBetStake(this.game, bet.amount);
+            await selectBetStake(this.game, CSLocatorNames.lblBetLevel1);
 
             //Act
             await this.game.keyboardPress("Space");
@@ -201,7 +203,7 @@ export class SlotGameBase {
 
         test("Verify user able spin by enter key with turbo mode OFF", async () => {
             //Pre-condition
-            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: CSLocatorNames.lblBetLevel1 };
+            let bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: 1 };
 
             //Act
             await this.game.keyboardPress("Enter");
@@ -214,7 +216,7 @@ export class SlotGameBase {
 
         test("Verify user able spin by space with turbo mode ON", async () => {
             //Pre-condition
-            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: CSLocatorNames.lblBetLevel1 };
+            const bet = { choice: `btn${this.options.placeBetChoices[0]}`, amount: 1 };
             await clickTurbo(this.game);
 
             //Act
@@ -242,10 +244,10 @@ export class SlotGameBase {
 
             // Assert
             expect(placeBetResponse.endBet).toBe(bet.amount);
-            expect(settledResults.endBet).toBe(bet.amount * parseInt(bet.choice));
             expect(bet).toMatchWinningSlotsGame(settledResults);
 
             // Post-Act
+            await this.game.waitForTimeout(longWait * 2); //handle case big win animation
             const settledata = {
                 roundID: await getRoundId(this.game),
                 betwin: settledResults.winAmount.toString(),
@@ -263,8 +265,9 @@ export class SlotGameBase {
             // Act
             await this.game.clickLocator(CSLocatorNames.mnuHamburger);
             await this.game.clickLocator(CSLocatorNames.icoHistory);
-
+            await this.game.waitForTimeout(longWait);
             // Assert
+            await this.game.captureLocator(CSLocatorNames.lblHistoryFirstRow);
             await verifyticketdata(this.game, global.settledata);
 
             await openRoundDetail(this.game);
@@ -273,18 +276,19 @@ export class SlotGameBase {
 
             //Post-Act
             await this.game.clickLocator(CSLocatorNames.btnClosePopup);
-            await this.game.waitForTimeout(shortWait);
+            await this.game.waitForTimeout(mediWait);
             await this.game.clickLocator(CSLocatorNames.btnClosePopup);
-            await this.game.waitForTimeout(shortWait);
+            await this.game.waitForTimeout(longWait);
         });
     }
 
     protected guideTests() {
         test("AND player could open guide and clarify appropriate content", async () => {
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
+            await this.game.waitForTimeout(longWait + 2000);
             await this.game.clickLocator(CSLocatorNames.mnuHamburger);
             await this.game.clickLocator(CSLocatorNames.icoGuide);
-            await this.game.waitForTimeout(mediWait * 2);
+            await this.game.waitForTimeout(longWait);
             await this.imagecheck.guideImages();
             await this.game.clickLocator(CSLocatorNames.btnClosePopup);
         });
@@ -341,6 +345,7 @@ const selectAutoSpin = async (game: any, totalspin: number) => {
     await game.clickLocator(CSLocatorNames[`btnAutoSpin${totalspin}`]);
     await game.clickLocator(CSLocatorNames.btnAutoSpinTurbo);
     await game.clickLocator(CSLocatorNames.btnAutoSpinStart);
+    await game.waitForTimeout(shortWait);
 };
 
 const openPayLineBoard = async (game: any) => {
@@ -375,30 +380,29 @@ const getRoundId = async (game: any, elementname: string = CSLocatorNames.lblRou
 const getDataFistRowHistory = async (game: any, elementname: string = CSLocatorNames.lblHistoryFirstRow) => {
     let tempdata = await game.getTextLocator(elementname);
     tempdata = await tempdata.split(" ");
+
     return {
         bettime: tempdata[0].toString(),
         betdate: tempdata[1].toString(),
-        roundID: tempdata[2].toString(),
-        bet: tempdata[3].toString(),
-        line: tempdata[4].toString(),
-        totalbet: tempdata[5].toString(),
-        betwin: tempdata[6].trim(),
+        // roundID: tempdata[2].toString().replace(/[^0-9.]/g, ""), // can not getn roundID in new slots games
+        bet: tempdata[2].toString().replace("'I", 1),
+        line: tempdata[3].toString().replace("'I", 1),
+        totalbet: tempdata[4].toString().replace("'I", 1),
+        betwin: tempdata[5].toString().replaceAll("\n", ""),
     };
 };
 
 const openRoundDetail = async (game: any) => {
     await game.clickLocator(CSLocatorNames.locHistoryRoundId);
-    await game.waitForTimeout(shortWait);
+    await game.waitForTimeout(mediWait);
 };
 
 const verifyticketdata = async (game: any, expectdata: any) => {
-    let betStake = expectdata.bet.replace(/[^0-9.]/g, "");
-    let payline = expectdata.line.replace(/[^0-9.]/g, "");
-    await game.waitForTimeout(shortWait);
+    let line = expectdata.line.replace("btnPayline", "");
     const ticketdata = await getDataFistRowHistory(game);
     expect(ticketdata.betdate, "verify bet date").toEqual(expectdata.betdate);
-    expect.soft(ticketdata.bet).toEqual(betStake);
-    expect(ticketdata.line, "verify bet bet choice").toEqual(payline);
+    expect(ticketdata.bet).toEqual(expectdata.bet);
+    expect(ticketdata.line, "verify bet bet choice").toEqual(line);
     expect(ticketdata.betwin, "verify bet win").toEqual(expectdata.betwin);
 };
 
@@ -421,4 +425,15 @@ const selectBetStake = async (game: any, betLevel: string) => {
 const clickSpin = async (game: any) => {
     await game.clickLocator(CSLocatorNames.btnSpin);
     await game.waitForTimeout(shortWait);
+};
+
+const getBoardID = async () => {
+    let boardId = "";
+    for (let index = 0; index <= 10; index++) {
+        if (logMsg[0] === "B" + index) {
+            boardId = "B" + index;
+            break;
+        }
+    }
+    return boardId
 };

@@ -52,6 +52,7 @@ export default {
         60: ["supertestte120201013"],
         61: ["supertestte120201002"],
         62: ["supertestte120201003"],
+        63: ["supertestte120201004"],
 
     },
     mapGameId: {
@@ -102,6 +103,7 @@ export default {
         60: 1667,
         61: 1668,
         62: 1669,
+        63: 1670,
     },
     pwd: "1234aa",
     groupCurrencyId: "61b048be7e6d8f000145357d",

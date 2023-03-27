@@ -1,4 +1,4 @@
-import { ClassicSlotLocators } from "../../../core/base-classic-slot-locator";
+import { ClassicSlotLocators } from "../locators/four-guardians-e2e-locators";
 import { FourGuardiansConfigs } from "../four-guardians-configs";
 import { IBaseOptions, SlotGameBase } from "../../../core/e2e-game-bases";
 

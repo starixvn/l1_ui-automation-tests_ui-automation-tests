@@ -3,6 +3,7 @@ import { GameEvent } from "../../_shared/events";
 import { BasePlayer, BaseGame } from "..";
 import { GameConfiguration } from "../game-configuration";
 import IBaseOptions from "./base-options";
+const langopt = process.env.npm_config_langopt ?? "vn";
 
 export interface MultiplayGameOptions extends IBaseOptions {
     gameConfiguration: GameConfiguration;
@@ -104,7 +105,7 @@ export class MultiplayGameBase {
     start(): void {
         test.beforeEach(async ({}, testInfo) => {
             testInfo.snapshotPath = (name: string) => {
-                const snapshotPath = this.options.snapshotFolderPath + "-snapshots/" + name;
+                const snapshotPath = (langopt === "vn")? this.options.snapshotFolderPath + "-snapshots/" + name : this.options.snapshotFolderPath + "-snapshots/" + langopt+'/'+ name
 
                 return snapshotPath;
             };

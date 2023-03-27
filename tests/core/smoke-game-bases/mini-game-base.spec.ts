@@ -2,6 +2,7 @@ import { test, expect } from "../base-fixture";
 import { GameEvent } from "../../_shared/events";
 import { BasePlayer, BaseGame } from "..";
 import IBaseOptions from "./base-options";
+const langopt = process.env.npm_config_langopt ?? "vn";
 
 export class MiniGameBase {
     game: BaseGame;
@@ -98,7 +99,7 @@ export class MiniGameBase {
     start(): void {
         test.beforeEach(async ({}, testInfo) => {
             testInfo.snapshotPath = (name: string) => {
-                const snapshotPath = this.options.snapshotFolderPath + "-snapshots/" + name;
+                const snapshotPath = (langopt === "vn")? this.options.snapshotFolderPath + "-snapshots/" + name : this.options.snapshotFolderPath + "-snapshots/" + langopt+'/'+ name
 
                 return snapshotPath;
             };

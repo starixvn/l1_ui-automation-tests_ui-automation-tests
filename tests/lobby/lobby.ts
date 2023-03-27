@@ -15,6 +15,7 @@ export enum Environment {
 export const ssoToGame = async (page: Page, gameId: number = 2): Promise<void> => {
     const env = (process.env.npm_config_env ?? Environment.LOCAL).toLowerCase();
     const config = getConfig();
+    const langopt = process.env.npm_config_langopt ?? "vn";
 
     if (config.gameAccounts[gameId] == null) {
         throw new Error(`Missing test account for game id ${gameId}!!!`);
@@ -22,13 +23,16 @@ export const ssoToGame = async (page: Page, gameId: number = 2): Promise<void> =
 
     if (env.includes("local")) {
         const memberId = config.gameAccounts[gameId][0]; //TODO could use chance pickone
-        const memberSiteLink = `${config.memberSite}?obCustId=${memberId}&balance=20000`;
+        const memberSiteLink = `${config.memberSite}?obCustId=${memberId}&balance=20000`;        
         await page.goto(memberSiteLink);
+        await page.click(LobbyLocator.advancelbl)
+        await page.locator(LobbyLocator.langDropdown).selectOption(LobbyLocator[`${langopt}LangOption`]);
+        await page.click(LobbyLocator.tokenBtn)
+        await page.waitForTimeout(100)
         const ssoLink = (await page.locator(LobbyLocator.ssoLink).textContent()) ?? "";
-
         await page.goto(`${ssoLink.replace("gameId=0", `gameId=${gameId}`)}`);
     } else {
-        await loginMemberSite(page, config, env, gameId);
+        await loginMemberSite(page, config, env, gameId, langopt);
     }
 };
 
@@ -38,7 +42,7 @@ export const getConfig = (): any => {
     return configs[env];
 };
 
-const loginMemberSite = async (page: Page, config: any, env: string, gameId: number) => {
+const loginMemberSite = async (page: Page, config: any, env: string, gameId: number, langopt: string) => {
     const accountId = config.gameAccounts[gameId][0];
 
     await page.goto(config.memberSite);
@@ -50,7 +54,7 @@ const loginMemberSite = async (page: Page, config: any, env: string, gameId: num
             break;
 
         case Environment.PROD:
-            await loginPROD(page, accountId, config.pwd);
+            await loginPROD(page, accountId, config.pwd, langopt);
             break;
 
         default:
@@ -84,11 +88,13 @@ const loginUAT = async (page: Page, accountId: string, pwd: string) => {
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
 };
 
-const loginPROD = async (page: Page, accountId: string, pwd: string) => {
+const loginPROD = async (page: Page, accountId: string, pwd: string, langopt: string) => {
     await page.fill(PRODLocator.memberIdInput, accountId);
     await page.fill(PRODLocator.pwdInput, pwd);
     await page.click(PRODLocator.loginButton);
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
+    await page.click(PRODLocator.langDropdown);
+    await page.click(PRODLocator[`${langopt}LangOption`]);
 };
 
 const loginSIT = async (page: Page, accountId: string, pwd: string) => {

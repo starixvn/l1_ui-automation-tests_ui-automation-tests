@@ -287,7 +287,10 @@ export class BaseGame {
 
     async logConsole() {
         this.page.on("console", (msg) => {
-            console.log(msg);
+            if (msg.text().length < 3) {
+                logMsg.push(msg.text());
+            }
+            console.log(msg.text());
         });
     }
 }
