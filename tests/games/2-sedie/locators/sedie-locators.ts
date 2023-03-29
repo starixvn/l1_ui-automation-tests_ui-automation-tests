@@ -9,6 +9,7 @@ export const SedieLocators = [
     new ImageLocator("playerBalance", 192, 644, 125, 23),
     new ImageLocator("hamburgerMenu", 24, 146, 51, 56),
     new ImageLocator("historyMenu", 21, 346, 52, 42),
+    new ImageLocator("guideMenu", 31, 410, 40, 40),
     new ImageLocator("historyPopup", 465, 70, 609, 186),
     new ImageLocator("errorMessage", 459, 492, 380, 37),
     new ImageLocator("msgMaxbetLimit", 478, 488, 400, 30),

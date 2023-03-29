@@ -5,6 +5,7 @@ export enum LobbyLocator {
     ssoLink = "a:has-text('token')",
     advancelbl = "text=Advance",
     langDropdown = "id=language",
+    allLangOption = "vi-VN",
     vnLangOption = "vi-VN",
     enLangOption = "en-US",
     thLangOption = "th-TH",
@@ -36,9 +37,10 @@ export enum PRODLocator {
     pwdInput = "id=txtPW",
     loginButton = "//a[contains(@class,'btn btn')]",
     langDropdown = "//div[contains(@class,'c-dropdown--lang')]",
+    allLangOption = "//span[text()='Tiếng Việt']",
     vnLangOption = "//span[text()='Tiếng Việt']",
     enLangOption = "//span[text()='English']",
-    cnLangOption = "//span[text()='繁體中文']",
+    twLangOption = "//span[text()='繁體中文']",
     jaLangOption = "//span[text()='日本語']",
 }
 

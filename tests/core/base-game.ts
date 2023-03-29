@@ -9,7 +9,7 @@ import { Tesseract } from "tesseract.ts";
 import { CSLocatorNames } from "./base-classic-slot-locator";
 
 export class BaseGame {
-    readonly LobbyTimeout: number = 70000;
+    readonly LobbyTimeout: number = 40000;
     readonly BetBoardPostfix: string = "BetBoard";
 
     readonly page: Page;
@@ -290,7 +290,7 @@ export class BaseGame {
             if (msg.text().length < 3) {
                 logMsg.push(msg.text());
             }
-            console.log(msg.text());
+           // console.log(msg.text());
         });
     }
 }

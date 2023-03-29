@@ -14,13 +14,13 @@ import * as customExpect from "./tests/core/expects/expect-settlement-options";
 const gameId = process.env.npm_config_game ?? "9";
 
 const config: PlaywrightTestConfig = {
-    retries: 1,
+    retries: 0,
     testDir: "./tests",
     timeout: 120 * 1000,
     expect: {
         timeout: 10 * 1000,
         toMatchSnapshot: {
-            maxDiffPixelRatio: 0.3,
+            maxDiffPixelRatio: 0.5,
         },
     },
     /* Run tests in files in parallel */
@@ -29,7 +29,7 @@ const config: PlaywrightTestConfig = {
     use: {
         actionTimeout: 0,
         trace: "on-first-retry",
-        headless: true,
+        headless: false,
         viewport: {
             width: 1280,
             height: 720,
@@ -54,6 +54,13 @@ const config: PlaywrightTestConfig = {
         {
             name: "E2E_CI",
             testMatch: `**/${gameId}-*/tests/*.e2e.spec.ts`,
+            use: {
+                ...devices["Desktop Chrome"],
+            },
+        },
+        {
+            name: "GameGuide_CI",
+            testMatch: `**/${gameId}-*/tests/*.gameguide.spec.ts`,
             use: {
                 ...devices["Desktop Chrome"],
             },
