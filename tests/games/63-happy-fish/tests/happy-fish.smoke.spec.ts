@@ -8,7 +8,7 @@ class HappyFishSmokeSpec extends SlotGameBase {
      */
     constructor() {
         const smokeOptions: IBaseOptions = {
-            placeBetChoices: [HappyFishConfigs.choices[0]],
+            placeBetChoices: ["1","25"],
             gameConfiguration: HappyFishConfigs,
             locators: HappyFishLocators,
             waitBetTimeout: 1000,
