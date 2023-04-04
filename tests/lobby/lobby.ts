@@ -42,7 +42,7 @@ export const getConfig = (): any => {
     return configs[env];
 };
 
-export const loginMemberSite = async (page: Page, config: any, env: string, gameId: number, langopt: string) => {
+const loginMemberSite = async (page: Page, config: any, env: string, gameId: number, langopt: string) => {
     const accountId = config.gameAccounts[gameId][0];
 
     await page.goto(config.memberSite);

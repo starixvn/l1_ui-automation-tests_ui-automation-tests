@@ -1,12 +1,12 @@
-import { test, expect } from "../base-fixture";
+import { test } from "../base-fixture";
 import { BasePlayer, BaseGame, ImageCheck } from "..";
 import IBaseOptions from "./base-options";
-import { ssoToGame } from "../../lobby/lobby";
-import { basename } from "path";
-import { LobbyLocator} from "../../lobby/locators";
+import { LobbyLocator } from "../../lobby/locators";
 
 let langopt = process.env.npm_config_langopt ?? "vn";
+
 if (langopt == "all"){langopt = "vn"}
+
 export class GameGuideBase {
     game: BaseGame;
     player: BasePlayer;
