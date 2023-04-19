@@ -6,6 +6,7 @@ export const RouletteLocators = [
     new ImageLocator("oddChoice", 750, 510, 120, 60),
     new ImageLocator("historyMenu", 43, 248, 30, 30),
     new ImageLocator("historyPopup", 526, 82, 250, 40),
+    new ImageLocator("guideMenu", 37, 335, 50, 50),
     new ImageLocator("stake1", 221, 627, 50, 50),
     new ImageLocator("straightUpChoiceBetBoard", 129, 210, 50, 100),
     new ImageLocator("evenChoiceBetBoard", 340, 510, 120, 60),

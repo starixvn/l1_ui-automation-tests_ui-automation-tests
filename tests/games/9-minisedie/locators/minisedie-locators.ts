@@ -9,6 +9,7 @@ export const MiniSedieLocators = [
     new ImageLocator("outside", 10, 10, 0, 0),
     new ImageLocator("historyMenu", 186, 361, 52, 42),
     new ImageLocator("historyPopup", 555, 112, 180, 20),
+    new ImageLocator("guideMenu", 730, 442, 39, 33),
     new ImageLocator("errorMessage", 330, 392, 320, 35),
     new ImageLocator("closeguide", 953, 571),
     new ImageLocator("even2Choice", 900, 168, 100, 40),

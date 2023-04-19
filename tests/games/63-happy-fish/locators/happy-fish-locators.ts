@@ -8,6 +8,7 @@ export const HappyFishLocators = [
     new ImageLocator("hamburgerMenu", 42, 72, 65, 65),
     new ImageLocator("historyMenu", 50, 416, 50, 50),
     new ImageLocator("historyPopup", 546, 40, 192, 50),
+    new ImageLocator("guideMenu", 45, 495, 65, 65),
     new ImageLocator("stake1", 305, 550, 70, 50),
     new ImageLocator("spin", 927, 555, 120, 120),
     new ImageLocator("submitBetBoard", 532, 612, 210, 55),

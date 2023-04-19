@@ -10,6 +10,7 @@ export const VipSedieLocators = [
     new ImageLocator("hamburgerMenu", 24, 146, 51, 56),
     new ImageLocator("historyMenu", 21, 346, 52, 42),
     new ImageLocator("historyPopup", 465, 70, 609, 186),
+    new ImageLocator("guideMenu", 42, 397, 40, 40),
     new ImageLocator("errorMessage", 459, 520, 380, 37),
     new ImageLocator("msgMaxbetLimit", 488, 527, 350, 22),
     new ImageLocator("btnRightArrow", 910, 600, 35, 35),

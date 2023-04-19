@@ -8,6 +8,7 @@ export const HeroesSlotLocators = [
     new ImageLocator("hamburgerMenu", 44, 97),
     new ImageLocator("historyMenu", 51, 360),
     new ImageLocator("historyPopup", 530, 20, 200, 55),
+    new ImageLocator("guideMenu", 26, 400, 44, 44),
     new ImageLocator("stake1", 355, 638, 100, 40),
     new ImageLocator("spin", 1121, 641),
     new ImageLocator("submitBetBoard", 635, 665),

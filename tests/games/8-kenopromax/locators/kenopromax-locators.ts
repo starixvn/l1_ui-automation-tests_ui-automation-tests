@@ -7,6 +7,7 @@ export const KenoProMaxLocators = [
     new ImageLocator("playerBalance", 192, 644, 125, 23),
     new ImageLocator("hamburgerMenu", 0, 0, 0, 0), //no hamberger icon
     new ImageLocator("historyMenu", 57, 201, 0, 0),
+    new ImageLocator("guideMenu", 35, 263, 45, 45),
     new ImageLocator("historyPopup", 579, 80, 250, 30),
     new ImageLocator("stake1", 441, 616, 0, 0),
     new ImageLocator("errorMessage", 476, 508, 320, 20),

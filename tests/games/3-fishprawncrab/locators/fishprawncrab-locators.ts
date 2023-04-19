@@ -11,6 +11,7 @@ export const FPCLocators = [
     new ImageLocator("playerBalance", 192, 644, 125, 23),
     new ImageLocator("hamburgerMenu", 0, 0, 0, 0), //no hamberger icon
     new ImageLocator("historyMenu", 346, 360, 0, 0),
+    new ImageLocator("guideMenu", 926, 342, 35, 35),
     new ImageLocator("historyPopup", 455, 50, 300, 70),
     new ImageLocator("stake1", 467, 525, 0, 0),
     new ImageLocator("msgMaxbetLimit", 512, 457, 350, 30),
