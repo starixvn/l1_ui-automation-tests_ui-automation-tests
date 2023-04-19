@@ -58,6 +58,13 @@ const config: PlaywrightTestConfig = {
                 ...devices["Desktop Chrome"],
             },
         },
+        {
+            name: "GameGuide_CI",
+            testMatch: `**/${gameId}-*/tests/*.gameguide.spec.ts`,
+            use: {
+                ...devices["Desktop Chrome"],
+            },
+        },
     ],
 
     /* Folder for test artifacts such as screenshots, videos, traces, etc. */

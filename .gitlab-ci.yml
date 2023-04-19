@@ -41,7 +41,7 @@ smoketest:
     - du -hs /ms-playwright/*
   retry: 1
   rules:
-    - if: $MODE == "smoke"
+    - if: $MODE == "SMOKE"
       when: always
     - when: never
   artifacts:
@@ -63,7 +63,7 @@ gameguidetest:
     - du -hs /ms-playwright/*
   retry: 1
   rules:
-    - if: $MODE == "gameguide"
+    - if: $MODE == "GAMEGUIDE"
       when: always
     - when: never
   artifacts:
