@@ -50,3 +50,25 @@ smoketest:
     when: always
     expire_in: 1 day
 
+gameguidetest:
+  image: hub.lumigame.com/pentagon-base/ui-automation-tests:latest
+  stage: test
+  tags:
+    - auto-test-prod
+  script:
+    - npm run gameguide --env=$ENV --game=$GAMEID --langopt=$langopt
+  after_script:
+    - du -hs /ms-playwright/*
+  retry: 1
+  when: always   
+
+  artifacts:
+    paths:
+      - playwright-report
+      - screenshots
+      - test-results   
+    when: always
+    expire_in: 1 day
+
+
+
