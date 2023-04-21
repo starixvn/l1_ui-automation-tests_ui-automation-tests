@@ -10,7 +10,7 @@ class FourGuardiansGameGuideSpec extends GameGuideBase {
         const smokeOptions: IBaseOptions = {
             gameConfiguration: FourGuardiansConfigs,
             locators: FourGuardiansLocators,
-            waitBetTimeout: 20000,
+            waitBetTimeout: 5000,
             placeBetChoices: [FourGuardiansConfigs.choices[0]],
             snapshotFolderPath: __filename,
         };

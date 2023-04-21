@@ -40,7 +40,7 @@ export enum PRODLocator {
     vnLangOption = "//span[text()='Tiếng Việt']",
     allLangOption = "//span[text()='Tiếng Việt']",
     enLangOption = "//span[text()='English']",
-    cnLangOption = "//span[text()='繁體中文']",
+    twLangOption = "//span[text()='繁體中文']",
     jaLangOption = "//span[text()='日本語']",
 }
 
