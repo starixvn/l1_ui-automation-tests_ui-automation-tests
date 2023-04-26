@@ -11,7 +11,7 @@ class NightClubGameGuideSpec extends GameGuideBase {
             placeBetChoices: [NightClubConfigs.choices[0]],
             gameConfiguration: NightClubConfigs,
             locators: NightClubLocators,
-            waitBetTimeout: 20000,
+            waitBetTimeout: 5000,
             snapshotFolderPath: __filename,
         };
         super(smokeOptions);

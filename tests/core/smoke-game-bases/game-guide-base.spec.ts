@@ -18,7 +18,7 @@ export class GameGuideBase {
         test("Game guide should be correct in " + LobbyLocator[`${langopt}LangOption`], async () => {
             await this.game.waitForTimeout(this.options.waitBetTimeout);
             await this.game.clickGuide();
-            await this.game.waitForTimeout(3000)
+            await this.game.waitForTimeout(5000)
             await this.imageCheck.guideImages();
         });
     }
