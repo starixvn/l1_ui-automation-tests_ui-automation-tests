@@ -12,8 +12,8 @@ export const BigSmallConfigs: GameConfiguration = {
     hedgeBetGroups: [["big", "small"]],
     maxTimeout: 200 * 1000, // miliseconds,
     odds: {
-        big: 1.97,
-        small: 1.97,
+        big: 1.96,
+        small: 1.96,
     },
     betBoard: true,
 };
