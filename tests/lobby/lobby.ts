@@ -60,7 +60,6 @@ const loginMemberSite = async (page: Page, config: any, env: string, gameId: num
         default:
             await loginSIT(page, accountId, config.pwd);
     }
-
     await goToGameLobby(page, config, gameId);
 
     if (env !== Environment.SIT) {
@@ -69,7 +68,7 @@ const loginMemberSite = async (page: Page, config: any, env: string, gameId: num
 };
 
 const formatGameLobbyUrl = (url: string, lobbyDomain: string, operatorGameType: number): string => {
-    return `${url.replace(/\/[Ss]ports/g, "").replace("demo:one23@", "")}${lobbyDomain}${operatorGameType}`;
+    return `${url.replace("#MyAccount/f=ThemeAppbar", "")}${lobbyDomain}${operatorGameType}`;
 };
 
 const selectGroupCurrency = async (page: Page, groupCurrencyId: string) => {
@@ -80,12 +79,26 @@ const selectGroupCurrency = async (page: Page, groupCurrencyId: string) => {
 };
 
 const loginUAT = async (page: Page, accountId: string, pwd: string) => {
-    await page.click(UATLocator.loginDiv);
+    await page.setViewportSize({
+        width: 375,
+        height: 667,
+      });
+    //await page.click(UATLocator.loginDiv);
     await page.selectOption(UATLocator.langDropdown, { value: UATLocator.vnLangOption });
     await page.fill(UATLocator.memberIdInput, accountId);
     await page.fill(UATLocator.pwdInput, pwd);
     await page.click(UATLocator.loginButton);
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
+    await page.click ("//div[@class='survey-dialog__icon-close']")
+    await page.click ("//i[@class='ab-a__icon-me']")
+    //await page.waitForTimeout(10000)
+    await page.goto(page.url().replace("#Theme", "#MyAccount"))
+    await page.click(UATLocator.languageOption);
+    await page.click(UATLocator.vnOption);
+    await page.setViewportSize({
+        width: 1280,
+        height: 720,
+      });
 };
 
 const loginPROD = async (page: Page, accountId: string, pwd: string, langopt: string) => {
@@ -107,6 +120,10 @@ const loginSIT = async (page: Page, accountId: string, pwd: string) => {
 };
 
 const goToGameLobby = async (page: Page, config: any, gameId: number) => {
+    await page.waitForTimeout (10000);
+    //await page.click ("//div[@class='survey-dialog__icon-close']")
+    //await page.click ("//i[@class='pl-c__type-icon pl-c__type-icon--vgaming']")
     await page.goto(formatGameLobbyUrl(page.url(), config.lobbyDomain, config.mapGameId[gameId]));
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
+    console.log(page.url())
 };

@@ -15,7 +15,7 @@ export const VIPFPCConfigs: GameConfiguration = {
         single: 2,
         double: 3.5,
         triple: 6,
-        anyTriple: 33,
+        anyTriple: 31,
         mountain: 1.96,
         ocean: 1.96,
     },

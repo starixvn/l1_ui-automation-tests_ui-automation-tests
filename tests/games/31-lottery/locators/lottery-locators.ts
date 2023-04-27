@@ -9,7 +9,7 @@ export const LotteryLocators = [
     new ImageLocator("hamburgerMenu", 54, 633, 40, 40),
     new ImageLocator("historyMenu", 56, 418, 30, 30),
     new ImageLocator("historyPopup", 546, 50, 200, 60),
-    new ImageLocator("stake1", 386, 611, 50, 50),
+    new ImageLocator("stake10", 386, 611, 50, 50),
     new ImageLocator("errorMessage", 453, 576, 400, 25),
     new ImageLocator("msgMaxbetLimit", 943, 576, 350, 30),
     new ImageLocator("btnRightArrow", 920, 615, 35, 35),

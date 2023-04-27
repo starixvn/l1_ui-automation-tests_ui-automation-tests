@@ -28,6 +28,9 @@ export enum UATLocator {
     memberIdInput = "id=Username",
     pwdInput = "id=Password",
     loginButton = "id=LoginBtn",
+    meButton = "//i[@class='icon icon-me']",
+    languageOption = "//span[text()='Language']",
+    vnOption = "//div[text()='Tiếng Việt']",
     langDropdown = "id=Langid",
     vnLangOption = "vi-VN",
 }

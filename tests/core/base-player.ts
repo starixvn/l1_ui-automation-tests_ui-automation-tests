@@ -54,7 +54,7 @@ export class BasePlayer {
         await this.game.waitForTimeout(500);
     }
 
-    async placeBet(choice: string, amount: number = 1, subGameName?: string): Promise<any> {
+    async placeBet(choice: string, amount: number = 10, subGameName?: string): Promise<any> {
         if (this.game.gameConfiguration.slotsgame) {
             return this.betOnSlot(choice, amount);
         } else if (this.game.gameConfiguration.cardgame) {

@@ -26,7 +26,7 @@ class RouletteSmokeSpec extends MiniGameBase {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
             // this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
-            const bet = { choice: RouletteConfigs.choices[0], amount: 1 };
+            const bet = { choice: RouletteConfigs.choices[0], amount: 10 };
 
             // Act
             const placeBetResponse = await this.player.placeBet(bet.choice, bet.amount);

@@ -7,7 +7,7 @@ export const BlackJackLocators = [
     new ImageLocator("hamburgerMenu", 68, 240, 35, 35),
     new ImageLocator("historyMenu", 71, 438, 20, 20),
     new ImageLocator("historyPopup", 554, 68, 150, 40),
-    new ImageLocator("stake1", 426, 600, 40, 40),
+    new ImageLocator("stake10", 426, 600, 40, 40),
     new ImageLocator("submitBetBoard", 1177, 277, 105, 130),
     new ImageLocator("hitcard", 1177, 277, 105, 130),
     new ImageLocator("standcard", 1184, 448, 90, 90),

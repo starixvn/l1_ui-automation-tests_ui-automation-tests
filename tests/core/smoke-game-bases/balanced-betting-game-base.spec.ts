@@ -11,7 +11,7 @@ export class BalancedBettingGameBase extends MiniGameBase {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            const bet = { choice: this.options.placeBetChoices[0], amount: this.options.placeBetAmount ?? 1, refund: 0 };
+            const bet = { choice: this.options.placeBetChoices[0], amount: this.options.placeBetAmount ?? 10, refund: 10 };
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act

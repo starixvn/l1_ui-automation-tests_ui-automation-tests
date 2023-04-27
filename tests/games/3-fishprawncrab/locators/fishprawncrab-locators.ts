@@ -13,7 +13,7 @@ export const FPCLocators = [
     new ImageLocator("historyMenu", 346, 360, 0, 0),
     new ImageLocator("guideMenu", 926, 342, 35, 35),
     new ImageLocator("historyPopup", 455, 50, 300, 70),
-    new ImageLocator("stake1", 467, 525, 0, 0),
+    new ImageLocator("stake10", 467, 525, 0, 0),
     new ImageLocator("msgMaxbetLimit", 512, 457, 350, 30),
     new ImageLocator("btnRightArrow", 864, 509, 35, 35),
 ];

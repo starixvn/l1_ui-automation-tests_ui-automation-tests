@@ -9,7 +9,7 @@ export const NightClubLocators = [
     new ImageLocator("historyMenu", 85, 481, 0, 0),
     new ImageLocator("historyPopup", 432, 5, 410, 60),
     new ImageLocator("guideMenu", 60, 520, 50, 50),
-    new ImageLocator("stake1", 360, 660),
+    new ImageLocator("stake10", 360, 660),
     new ImageLocator("spin", 1131, 625),
     new ImageLocator("submitBetBoard", 633, 663),
     new ImageLocator("clearChoices", 957, 575),

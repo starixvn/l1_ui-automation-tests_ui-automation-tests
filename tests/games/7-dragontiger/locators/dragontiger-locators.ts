@@ -11,7 +11,7 @@ export const DragonTigerLocators = [
     new ImageLocator("historyMenu", 345, 321, 0, 0),
     new ImageLocator("guideMenu", 923, 325, 35, 35),
     new ImageLocator("historyPopup", 566, 75, 150, 50),
-    new ImageLocator("stake1", 467, 497, 0, 0),
+    new ImageLocator("stake10", 467, 497, 0, 0),
     new ImageLocator("errorMessage", 500, 423, 300, 18),
     new ImageLocator("msgMaxbetLimit", 512, 422, 350, 25),
     new ImageLocator("btnRightArrow", 864, 480, 35, 35),

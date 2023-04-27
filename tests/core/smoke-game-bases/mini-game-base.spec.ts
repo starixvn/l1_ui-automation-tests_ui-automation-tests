@@ -38,7 +38,7 @@ export class MiniGameBase {
         test("THEN player able to place a bet and settle", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            const bet = { choice: this.options.placeBetChoices[0], amount: this.options.placeBetAmount ?? 1 };
+            const bet = { choice: this.options.placeBetChoices[0], amount: this.options.placeBetAmount ?? 10 };
             this.game.attachSocketAndCaptureEvent(GameEvent.WinStatus);
 
             // Act
@@ -59,7 +59,7 @@ export class MiniGameBase {
             test.setTimeout(maxTimeout);
 
             // Act
-            await this.player.placeHedgeBet(hedgeBetGroups[0], this.options.placeBetAmount ?? 1);
+            await this.player.placeHedgeBet(hedgeBetGroups[0], this.options.placeBetAmount ?? 10);
             const error = await this.game.captureErrorMessage();
 
             // Assert
@@ -71,7 +71,7 @@ export class MiniGameBase {
         test("THEN player should get error when they reach max bet", async () => {
             // Arrange
             test.setTimeout(this.options.gameConfiguration.maxTimeout);
-            const bet = { choice: this.options.placeBetChoices[0], amount:[this.options.placeBetAmount ?? 1, 1000]  };
+            const bet = { choice: this.options.placeBetChoices[0], amount:[this.options.placeBetAmount ?? 10, 1000]  };
 
             // Act
             await this.player.placeMaxBet(bet.choice ,bet.amount);
